@@ -677,20 +677,30 @@ def ejecutar_monitoreo(api_client: APIClient, ticket: str) -> None:
                       if r.get("CodigoExterno") not in vistos]
 
             if nuevas:
-                print(f"\n[{ahora}] NUEVAS LICITACIONES ENCONTRADAS:")
-                print("─" * 70)
+                # Construir contenido del reporte
+                now = datetime.now()
+                timestamp = now.strftime("%Y-%m-%d %H:%M:%S")
+                filename = now.strftime("%Y%m%d_%H%M%S") + ".txt"
+                report_path = Path(DEFAULT_DOWNLOAD_DIR) / "monitoreo" / filename
+                report_path.parent.mkdir(parents=True, exist_ok=True)
+
+                lineas: list[str] = []
+                lineas.append(f"Reporte de Monitoreo - {timestamp}")
+                lineas.append(f"Terminos: {', '.join(terminos)}")
+                lineas.append(f"Licitaciones encontradas: {len(nuevas)}")
+                lineas.append("=" * 70)
+
                 for item in nuevas:
                     cod = item.get("CodigoExterno", "?")
                     nom = item.get("Nombre", "Sin nombre")
                     estado = item.get("CodigoEstado", "?")
                     cierre = item.get("FechaCierre", "No especificada")
 
-                    # Obtener detalles completos (descripcion, monto)
                     descripcion = ""
                     monto = "No especificado"
                     try:
                         detalle = fetch_licitacion(api_client, cod, ticket)
-                        descripcion = (detalle.get("Descripcion") or "")[:120]
+                        descripcion = (detalle.get("Descripcion") or "")[:200]
                         monto_val = detalle.get("MontoEstimado")
                         if isinstance(monto_val, (int, float)) and monto_val > 0:
                             monto = f"$ {monto_val:,.0f}"
@@ -698,16 +708,31 @@ def ejecutar_monitoreo(api_client: APIClient, ticket: str) -> None:
                     except Exception:
                         pass
 
-                    print(f"  Codigo     : {cod}")
-                    print(f"  Nombre     : {nom[:70]}")
+                    lineas.append("")
+                    lineas.append(f"  Codigo     : {cod}")
+                    lineas.append(f"  Nombre     : {nom[:70]}")
                     if descripcion:
-                        print(f"  Descripcion: {descripcion}...")
-                    print(f"  Cierre     : {cierre}")
-                    print(f"  Estado     : {estado}")
-                    print(f"  Monto      : {monto}")
-                    print("─" * 70)
+                        lineas.append(f"  Descripcion: {descripcion}{'...' if len(descripcion)>=200 else ''}")
+                    lineas.append(f"  Cierre     : {cierre}")
+                    lineas.append(f"  Estado     : {estado}")
+                    lineas.append(f"  Monto      : {monto}")
+                    lineas.append("-" * 70)
                     vistos.add(cod)
+
+                lineas.append("")
+
+                # Mostrar en pantalla
+                print(f"\n[{ahora}] NUEVAS LICITACIONES ENCONTRADAS:")
+                for linea in lineas[3:]:  # saltar cabecera para mostrar mas limpio
+                    print(linea)
                 print()
+
+                # Guardar a archivo
+                try:
+                    report_path.write_text("\n".join(lineas), encoding="utf-8")
+                    print(f"  Reporte guardado: {report_path}")
+                except Exception as e:
+                    logger.warning("Error al guardar reporte: %s", e)
             else:
                 # Solo mostrar punto en la misma linea
                 print(f"[{ahora}] Sin novedades.", end=" \n" if ciclo % 4 == 0 else " ")
