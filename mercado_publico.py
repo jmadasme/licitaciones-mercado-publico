@@ -120,14 +120,21 @@ def fetch_archivos(
     api_client: APIClient,
     codigo: str,
     ticket: str,
+    licitacion_data: dict[str, Any],
 ) -> list[dict[str, Any]]:
     """
-    Obtiene la lista de archivos/documentos asociados a una licitación.
+    Obtiene los documentos asociados a una licitación.
+
+    Busca documentos en:
+    1. UrlActa dentro de Adjudicacion (si la licitación está adjudicada)
+    2. Endpoint /Archivos.json (si existe para esta licitación)
+    3. Cualquier otro campo URL/documento en los datos
 
     Args:
         api_client: Instancia de APIClient.
         codigo: Código de la licitación.
         ticket: Ticket de autenticación.
+        licitacion_data: Datos completos de la licitación (para buscar URLs embebidas).
 
     Returns:
         list[dict]: Lista de documentos con sus metadatos.
@@ -136,15 +143,27 @@ def fetch_archivos(
     Raises:
         APIError: para errores HTTP o de red.
     """
+    documentos: list[dict[str, Any]] = []
+
+    # ── 1. Buscar UrlActa en Adjudicacion ──────────────────────────
+    adjudicacion = licitacion_data.get("Adjudicacion")
+    if isinstance(adjudicacion, dict):
+        url_acta = adjudicacion.get("UrlActa")
+        if url_acta:
+            documentos.append({
+                "Nombre": "Acta de Adjudicación",
+                "URL": str(url_acta),
+                "Tipo": "Acta",
+            })
+
+    # ── 2. Intentar endpoint de Archivos (API v1, puede no existir) ─
     endpoint = ARCHIVOS_ENDPOINT.format(codigo=codigo)
-    params: dict[str, str] = {
-        "ticket": ticket,
-    }
+    params: dict[str, str] = {"ticket": ticket}
 
     try:
         data = api_client.get_json(endpoint, params=params)
 
-        # Verificar si la API devolvió un error en el cuerpo JSON
+        # Si hay datos, extraer documentos
         if isinstance(data, dict) and "Mensaje" in data and "Codigo" in data:
             error_msg = data["Mensaje"]
             error_code = data["Codigo"]
@@ -153,34 +172,24 @@ def fetch_archivos(
                     f"Ticket inválido (código {error_code}): {error_msg}\n"
                     "Verifica tu MERCADO_PUBLICO_TICKET en el archivo .env"
                 )
+            # Si el endpoint no existe (404), lo ignoramos silenciosamente
+            if error_code == 404:
+                pass
             else:
                 logger.warning(
                     "Error de API al consultar archivos (código %d): %s",
                     error_code, error_msg,
                 )
-                return []
-
-        # La respuesta puede tener diferentes formas.
-        # Intentamos extraer la lista de archivos de forma flexible.
-        if isinstance(data, list):
-            return data
-
-        if isinstance(data, dict):
-            # Puede venir en "Archivos", "Documentos", "Listado", o ser el dict mismo
+        elif isinstance(data, list):
+            documentos.extend(data)
+        elif isinstance(data, dict):
             for key in ("Archivos", "Documentos", "Listado", "data", "Data"):
                 if key in data and isinstance(data[key], list):
-                    return data[key]
-            # Si no encontramos lista, asumimos que es un único elemento
-            # o un dict sin lista: devolvemos [data] si tiene Nombre/URL
-            if "Nombre" in data or "URL" in data or "Enlace" in data:
-                return [data]
-
-        # Si llegamos aquí, la estructura no es la esperada
-        logger.warning(
-            "Estructura inesperada en la respuesta de Archivos: %s",
-            type(data).__name__,
-        )
-        return []
+                    documentos.extend(data[key])
+                    break
+            else:
+                if "Nombre" in data or "URL" in data or "Enlace" in data:
+                    documentos.append(data)
 
     except requests.exceptions.HTTPError as e:
         status_code = e.response.status_code if e.response is not None else None
@@ -188,14 +197,13 @@ def fetch_archivos(
             raise InvalidTicketError(
                 "Ticket inválido (HTTP 400). Verifica tu MERCADO_PUBLICO_TICKET."
             ) from e
-        elif status_code == 404:
-            # No se encontraron archivos para esta licitación
-            logger.info("No se encontraron archivos para la licitación %s", codigo)
-            return []
-        else:
-            raise APIError(
-                f"Error HTTP {status_code} al consultar archivos: {e}"
-            ) from e
+        # 404 del endpoint Archivos: simplemente ignorar
+        if status_code != 404:
+            logger.warning("Error HTTP %d al consultar archivos: %s", status_code, e)
+    except Exception as e:
+        logger.debug("Error al consultar endpoint de archivos: %s", e)
+
+    return documentos
 
 
 def build_download_url(

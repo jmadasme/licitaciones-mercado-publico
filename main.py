@@ -357,7 +357,7 @@ def main() -> None:
 
             # ── 8. Consultar archivos ─────────────────────────────────
             try:
-                archivos_data = fetch_archivos(api_client, codigo, ticket)
+                archivos_data = fetch_archivos(api_client, codigo, ticket, licitacion_data)
             except InvalidTicketError as e:
                 print(f"\nERROR: {e}")
                 sys.exit(1)
@@ -374,7 +374,10 @@ def main() -> None:
                 continue
 
             if not archivos_data:
-                print("\nEsta licitación no tiene documentos asociados.")
+                print("\n⚠ No se encontraron documentos descargables vía API.")
+                print("  Los documentos (bases, anexos, etc.) pueden estar disponibles")
+                print(f"  en la página web de Mercado Público:")
+                print(f"  https://www.mercadopublico.cl/Procurement/Modules/RFB/Details.aspx?q={codigo}")
                 # Guardar metadata igual
                 download_dir = Path(DEFAULT_DOWNLOAD_DIR) / sanitize_filename(codigo)
                 download_dir.mkdir(parents=True, exist_ok=True)
