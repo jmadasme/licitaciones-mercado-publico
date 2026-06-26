@@ -67,6 +67,27 @@ def fetch_licitacion(
 
     try:
         data = api_client.get_json(LICITACIONES_ENDPOINT, params=params)
+
+        # La API puede devolver HTTP 203 con error en el cuerpo JSON
+        # ej: {"Codigo": 203, "Mensaje": "Ticket no válido."}
+        # Detectamos estos errores mirando el contenido del JSON.
+        if isinstance(data, dict) and "Mensaje" in data and "Codigo" in data:
+            error_msg = data["Mensaje"]
+            error_code = data["Codigo"]
+            if "ticket" in error_msg.lower():
+                raise InvalidTicketError(
+                    f"Ticket inválido (código {error_code}): {error_msg}\n"
+                    "Verifica tu MERCADO_PUBLICO_TICKET en el archivo .env"
+                )
+            elif "no encontrad" in error_msg.lower() or "not found" in error_msg.lower():
+                raise LicitacionNotFoundError(
+                    f"Licitación no encontrada (código {error_code}): {codigo}"
+                )
+            else:
+                raise APIError(
+                    f"Error de API (código {error_code}): {error_msg}"
+                )
+
         return data
     except requests.exceptions.HTTPError as e:
         status_code = e.response.status_code if e.response is not None else None
@@ -111,6 +132,22 @@ def fetch_archivos(
 
     try:
         data = api_client.get_json(endpoint, params=params)
+
+        # Verificar si la API devolvió un error en el cuerpo JSON
+        if isinstance(data, dict) and "Mensaje" in data and "Codigo" in data:
+            error_msg = data["Mensaje"]
+            error_code = data["Codigo"]
+            if "ticket" in error_msg.lower():
+                raise InvalidTicketError(
+                    f"Ticket inválido (código {error_code}): {error_msg}\n"
+                    "Verifica tu MERCADO_PUBLICO_TICKET en el archivo .env"
+                )
+            else:
+                logger.warning(
+                    "Error de API al consultar archivos (código %d): %s",
+                    error_code, error_msg,
+                )
+                return []
 
         # La respuesta puede tener diferentes formas.
         # Intentamos extraer la lista de archivos de forma flexible.
