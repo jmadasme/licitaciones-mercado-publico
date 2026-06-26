@@ -357,23 +357,39 @@ def main() -> None:
                 # ── BUSCAR POR PALABRAS CLAVE ─────────────────────────
                 print()
                 print("─" * 60)
-                print("  Búsqueda por palabras clave")
-                print("  Ingresa términos separados por comas (ej: telemetria, iot, monitoreo)")
-                print("  Deja vacío para listar TODAS las licitaciones vigentes")
+                print("  BÚSQUEDA POR PALABRAS CLAVE")
                 print("─" * 60)
-                entrada = input("  Términos: ").strip()
+                print("  Ingresa términos separados por comas")
+                print("  Ej: telemetria, iot, monitoreo, medicion, sensor")
+                print()
+                print("  NOTA: La API solo permite buscar entre las ~188")
+                print("  licitaciones más recientes, sin incluir descripciones.")
+                print("  Si no hay resultados, prueba términos más generales.")
+                print("─" * 60)
+                entrada = input("  Términos (vacío = todas las vigentes): ").strip()
 
                 terminos = None
                 if entrada:
                     terminos = [t.strip() for t in entrada.split(",") if t.strip()]
 
-                print(f"\n  Buscando licitaciones vigentes...")
+                # Preguntar si solo vigentes o todos
+                solo_vigentes = True
+                if terminos:
+                    resp = input("  ¿Solo licitaciones vigentes? [S/n]: ").strip().lower()
+                    if resp in ("n", "no"):
+                        solo_vigentes = False
+                        print("  Buscando en TODOS los estados...")
+                    else:
+                        print("  Buscando solo licitaciones vigentes (Publicadas)...")
+                else:
+                    print("  Listando todas las licitaciones vigentes...")
+
                 if terminos:
                     print(f"  Términos: {', '.join(terminos)}")
 
                 try:
                     resultados = buscar_licitaciones(
-                        api_client, ticket, terminos=terminos, solo_vigentes=True
+                        api_client, ticket, terminos=terminos, solo_vigentes=solo_vigentes
                     )
                 except APIError as e:
                     print(f"\nERROR: {e}")
@@ -384,7 +400,15 @@ def main() -> None:
                     continue
 
                 if not resultados:
-                    print("\n  No se encontraron licitaciones vigentes con esos términos.")
+                    tipo = "vigentes" if solo_vigentes else "disponibles"
+                    print(f"\n  ⚠ No se encontraron licitaciones {tipo}")
+                    print(f"     con los términos: {', '.join(terminos) if terminos else '(todos)'}")
+                    print()
+                    print("  Posibles causas:")
+                    print("  • La API solo expone las ~188 licitaciones más recientes")
+                    print("  • El listado no incluye descripciones, solo nombres")
+                    print("  • Prueba con términos más cortos o generales")
+                    print("    (ej: agua, digital, sistema, equipo, red, obra)")
                     continue
 
                 print(f"\n  Se encontraron {len(resultados)} licitación(es):")
