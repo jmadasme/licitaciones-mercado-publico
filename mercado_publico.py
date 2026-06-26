@@ -22,6 +22,22 @@ BASE_URL = "https://api.mercadopublico.cl/servicios/v1/publico"
 LICITACIONES_ENDPOINT = "/licitaciones.json"
 ARCHIVOS_ENDPOINT = "/licitaciones/{codigo}/Archivos.json"
 
+# Mapeo de códigos de estado a texto legible
+ESTADOS_LICITACION: dict[int, str] = {
+    1: "Publicada",
+    2: "Cerrada",
+    3: "Desierta",
+    4: "Adjudicada",
+    5: "Publicada",
+    6: "Cerrada",
+    7: "Desierta",
+    8: "Adjudicada",
+    9: "Revocada",
+    10: "Suspendida",
+    11: "Publicada",
+    15: "Suspendida",
+}
+
 
 # ---------------------------------------------------------------------------
 # Excepciones específicas
@@ -114,6 +130,79 @@ def fetch_licitacion(
             raise APIError(
                 f"Error HTTP {status_code} al consultar la licitación: {e}"
             ) from e
+
+
+# ---------------------------------------------------------------------------
+# Búsqueda de licitaciones por palabras clave
+# ---------------------------------------------------------------------------
+def buscar_licitaciones(
+    api_client: APIClient,
+    ticket: str,
+    terminos: Optional[list[str]] = None,
+    solo_vigentes: bool = True,
+) -> list[dict[str, Any]]:
+    """
+    Busca licitaciones por palabras clave.
+
+    La API v1 no filtra por texto, así que obtenemos el listado completo
+    y filtramos localmente por Nombre y Descripcion.
+
+    Args:
+        api_client: Instancia de APIClient.
+        ticket: Ticket de autenticación.
+        terminos: Lista de palabras clave a buscar (ej: ["telemetria", "iot"]).
+                  Si es None, retorna todas las licitaciones disponibles.
+        solo_vigentes: Si True, solo incluye licitaciones Publicadas (Estado 5).
+
+    Returns:
+        list[dict]: Lista de licitaciones que coinciden con los criterios.
+    """
+    params: dict[str, str] = {
+        "ticket": ticket,
+    }
+
+    try:
+        data = api_client.get_json(LICITACIONES_ENDPOINT, params=params)
+    except Exception as e:
+        raise APIError(f"Error al obtener listado de licitaciones: {e}") from e
+
+    # Validar respuesta
+    if isinstance(data, dict) and "Mensaje" in data and "Codigo" in data:
+        raise APIError(f"Error de API: {data['Mensaje']} (código {data['Codigo']})")
+
+    listado = data.get("Listado", []) if isinstance(data, dict) else []
+    if not isinstance(listado, list):
+        return []
+
+    resultados: list[dict[str, Any]] = []
+
+    for item in listado:
+        if not isinstance(item, dict):
+            continue
+
+        # Filtrar por estado (solo vigentes = Publicada, código 5)
+        if solo_vigentes:
+            codigo_estado = item.get("CodigoEstado")
+            if codigo_estado != 5:
+                continue
+
+        # Si no hay términos de búsqueda, incluir todas
+        if not terminos:
+            resultados.append(item)
+            continue
+
+        # Buscar en Nombre y Descripcion
+        nombre = (item.get("Nombre") or "").lower()
+        descripcion = (item.get("Descripcion") or "").lower()
+        texto_completo = f"{nombre} {descripcion}"
+
+        # Verificar si al menos UN término coincide
+        for termino in terminos:
+            if termino.lower() in texto_completo:
+                resultados.append(item)
+                break  # No duplicar si varios términos coinciden
+
+    return resultados
 
 
 def fetch_archivos(
