@@ -91,6 +91,17 @@ def display_licitacion_summary(data: dict[str, Any]) -> None:
     Args:
         data: Dict con datos de la licitación.
     """
+    # Helper para extraer campos anidados (ej: "Comprador.NombreOrganismo")
+    def _get_nested(d: dict, dotted_key: str, default: Any = None) -> Any:
+        parts = dotted_key.split(".")
+        current = d
+        for part in parts:
+            if isinstance(current, dict):
+                current = current.get(part)
+            else:
+                return default
+        return current if current is not None else default
+
     # Extraer campos de forma flexible
     codigo = (
         data.get("CodigoExterno")
@@ -104,18 +115,19 @@ def display_licitacion_summary(data: dict[str, Any]) -> None:
         or data.get("nombre")
         or "Sin nombre"
     )
+    # Organismo está anidado en Comprador.NombreOrganismo
     organismo = (
-        data.get("Organismo")
+        _get_nested(data, "Comprador.NombreOrganismo")
+        or _get_nested(data, "comprador.nombreOrganismo")
+        or data.get("Organismo")
         or data.get("NombreOrganismo")
-        or data.get("organismo")
-        or data.get("nombreOrganismo")
         or "N/A"
     )
+    # Estado: primero el texto, luego el código numérico
     estado = (
-        data.get("CodigoEstado")
-        or data.get("codigoEstado")
-        or data.get("Estado")
+        data.get("Estado")
         or data.get("estado")
+        or str(data.get("CodigoEstado", ""))
         or "N/A"
     )
     tipo = (
@@ -123,14 +135,18 @@ def display_licitacion_summary(data: dict[str, Any]) -> None:
         or data.get("tipo")
         or "N/A"
     )
+    # Fechas están dentro del sub-dict "Fechas"
+    fechas = data.get("Fechas") or {}
     fecha_pub = (
-        data.get("FechaPublicacion")
-        or data.get("fechaPublicacion")
+        fechas.get("FechaPublicacion")
+        or fechas.get("fechaPublicacion")
+        or data.get("FechaPublicacion")
         or "N/A"
     )
     fecha_cierre = (
-        data.get("FechaCierre")
-        or data.get("fechaCierre")
+        fechas.get("FechaCierre")
+        or fechas.get("fechaCierre")
+        or data.get("FechaCierre")
         or "N/A"
     )
     monto = (
@@ -140,6 +156,9 @@ def display_licitacion_summary(data: dict[str, Any]) -> None:
         or data.get("monto")
         or "No especificado"
     )
+    # Formatear monto como CLP si es numérico
+    if isinstance(monto, (int, float)) and monto > 0:
+        monto = f"$ {monto:,.0f}"
     descripcion = (
         data.get("Descripcion")
         or data.get("descripcion")

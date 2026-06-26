@@ -88,6 +88,17 @@ def fetch_licitacion(
                     f"Error de API (código {error_code}): {error_msg}"
                 )
 
+        # La API devuelve los datos dentro de Listado[0]
+        # Estructura: {"Cantidad": 1, "Listado": [ { ... datos licitación ... } ]}
+        if isinstance(data, dict) and "Listado" in data:
+            listado = data["Listado"]
+            if isinstance(listado, list) and len(listado) > 0:
+                return listado[0]  # extraer la licitación del listado
+            elif isinstance(listado, list) and len(listado) == 0:
+                raise LicitacionNotFoundError(
+                    f"Licitación no encontrada (Listado vacío): {codigo}"
+                )
+
         return data
     except requests.exceptions.HTTPError as e:
         status_code = e.response.status_code if e.response is not None else None
