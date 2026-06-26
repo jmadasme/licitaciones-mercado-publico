@@ -649,6 +649,10 @@ def ejecutar_monitoreo(api_client: APIClient, ticket: str) -> None:
     else:
         terminos = TERMINOS_FIJOS
 
+    print("─" * 60)
+    resp = input("  Solo licitaciones vigentes? [S/n]: ").strip().lower()
+    solo_vigentes_mon = resp not in ("n", "no")
+
     print(f"\n  Monitoreando: {', '.join(terminos)}")
     print(f"  Cada {INTERVALO_MINUTOS} min. Ctrl+C para salir.")
     print()
@@ -673,7 +677,7 @@ def ejecutar_monitoreo(api_client: APIClient, ticket: str) -> None:
             resultados = buscar_licitaciones(
                 api_client, ticket,
                 terminos=terminos,
-                solo_vigentes=False,
+                solo_vigentes=solo_vigentes_mon,
             )
         except Exception as e:
             logger.error("Error en ciclo de monitoreo: %s", e)
@@ -691,7 +695,8 @@ def ejecutar_monitoreo(api_client: APIClient, ticket: str) -> None:
 
                 lineas: list[str] = []
                 lineas.append(f"Reporte de Monitoreo - {timestamp}")
-                lineas.append(f"Terminos: {', '.join(terminos)}")
+                tipo_busq = "solo vigentes" if solo_vigentes_mon else "todos los estados"
+                lineas.append(f"Terminos: {', '.join(terminos)} ({tipo_busq})")
                 lineas.append(f"Licitaciones encontradas: {len(nuevas)}")
                 lineas.append("=" * 70)
 
