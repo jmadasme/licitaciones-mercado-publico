@@ -316,7 +316,7 @@ def main() -> None:
             print("═" * 60)
             print("  1. Buscar licitación por código")
             print("  2. Buscar licitaciones por palabras clave")
-            print("  3. Modo monitoreo (busca NUEVAS cada 30 min)")
+            print("  3. Modo monitoreo cada 30 min (terminos fijos)")
             print("  0. Salir")
             print("─" * 60)
 
@@ -623,26 +623,31 @@ def ejecutar_monitoreo(api_client: APIClient, ticket: str) -> None:
     INTERVALO_MINUTOS = 30
 
     # ── 1. Pedir términos ─────────────────────────────────────────
+    # Terminos fijos de busqueda
+    TERMINOS_FIJOS = [
+        "telemetria", "monitor", "monitoreo", "medicion", "sensores",
+        "riego", "software", "alerta", "reporte", "iot", "domotica",
+        "notificacion", "temperatura", "humedad", "presion", "frio",
+    ]
+
     print()
     print("─" * 60)
     print("  MODO MONITOREO")
     print("─" * 60)
-    print("  Cada 30 minutos revisa NUEVAS licitaciones")
-    print("  y te muestra los códigos de las que coincidan.")
+    print("  Terminos fijos:")
+    print(f"  {', '.join(TERMINOS_FIJOS)}")
     print()
-    print("  Ingresa los términos separados por comas:")
-    print("  Ej: sensor, software, telemetria, monitoreo, digital")
+    print("  Presiona Enter para aceptarlos,")
+    print("  o ingresa otros separados por comas.")
     print("─" * 60)
-    entrada = input("  Terminos: ").strip()
+    entrada = input("  Terminos (Enter = fijos): ").strip()
 
-    if not entrada:
-        print("  Debes ingresar al menos un termino.")
-        return
-
-    terminos = [t.strip().lower() for t in entrada.split(",") if t.strip()]
-    if not terminos:
-        print("  Debes ingresar al menos un termino.")
-        return
+    if entrada:
+        terminos = [t.strip().lower() for t in entrada.split(",") if t.strip()]
+        if not terminos:
+            terminos = TERMINOS_FIJOS
+    else:
+        terminos = TERMINOS_FIJOS
 
     print(f"\n  Monitoreando: {', '.join(terminos)}")
     print(f"  Cada {INTERVALO_MINUTOS} min. Ctrl+C para salir.")
