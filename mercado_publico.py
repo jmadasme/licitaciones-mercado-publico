@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 # Constantes de endpoints
 # ---------------------------------------------------------------------------
-BASE_URL = "http://api.mercadopublico.cl/servicios/v1/publico"
+BASE_URL = "https://api.mercadopublico.cl/servicios/v1/publico"
 LICITACIONES_ENDPOINT = "/licitaciones.json"
 ARCHIVOS_ENDPOINT = "/licitaciones/{codigo}/Archivos.json"
 
