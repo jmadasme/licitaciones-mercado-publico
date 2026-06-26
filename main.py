@@ -669,9 +669,11 @@ def ejecutar_monitoreo(api_client: APIClient, ticket: str) -> None:
 
     # ── 3. Bucle de monitoreo ────────────────────────────────────
     ciclo = 0
+    print("  Iniciando... (esto puede tomar unos segundos)")
     while True:
         ciclo += 1
         ahora = datetime.now().strftime("%H:%M:%S")
+        print(f"[{ahora}] Ciclo {ciclo} consultando API...")
 
         try:
             resultados = buscar_licitaciones(
@@ -745,7 +747,7 @@ def ejecutar_monitoreo(api_client: APIClient, ticket: str) -> None:
                     logger.warning("Error al guardar reporte: %s", e)
             else:
                 # Solo mostrar punto en la misma linea
-                print(f"[{ahora}] Sin novedades.", end=" \n" if ciclo % 4 == 0 else " ")
+                print(f"[{ahora}] Sin novedades.")
 
             # Guardar registro
             try:
