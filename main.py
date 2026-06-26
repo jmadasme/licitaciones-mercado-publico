@@ -316,6 +316,7 @@ def main() -> None:
             print("═" * 60)
             print("  1. Buscar licitación por código")
             print("  2. Buscar licitaciones por palabras clave")
+            print("  3. Modo monitoreo (busca NUEVAS cada 30 min)")
             print("  0. Salir")
             print("─" * 60)
 
@@ -455,8 +456,12 @@ def main() -> None:
                     print(f"\nERROR: {e}")
                     continue
 
+            elif opcion == "3":
+                # ── MODO MONITOREO ────────────────────────────────────
+                ejecutar_monitoreo(api_client, ticket)
+
             else:
-                print("  Opción inválida. Intenta 1, 2 o 0.")
+                print("  Opción inválida. Intenta 1, 2, 3 o 0.")
 
     except KeyboardInterrupt:
         print("\n\nOperación interrumpida por el usuario.")
@@ -597,6 +602,115 @@ def procesar_licitacion(
     if results:
         print(f"  Ruta: {download_dir.resolve()}/")
     print()
+
+
+# ---------------------------------------------------------------------------
+# Modo monitoreo
+# ---------------------------------------------------------------------------
+def ejecutar_monitoreo(api_client: APIClient, ticket: str) -> None:
+    """
+    Modo monitoreo: cada 30 minutos consulta la API y avisa si aparecen
+    NUEVAS licitaciones que coincidan con las palabras clave del usuario.
+
+    Args:
+        api_client: Cliente API.
+        ticket: Ticket de autenticación.
+    """
+    import json
+    from datetime import datetime
+
+    MONITOR_FILE = Path(DEFAULT_DOWNLOAD_DIR) / "monitoreo_vistos.json"
+    INTERVALO_MINUTOS = 30
+
+    # ── 1. Pedir términos ─────────────────────────────────────────
+    print()
+    print("─" * 60)
+    print("  🕵️  MODO MONITOREO")
+    print("─" * 60)
+    print("  Cada 30 minutos revisaré si hay NUEVAS licitaciones")
+    print("  que coincidan con tus términos de interés.")
+    print()
+    print("  Ingresa los términos separados por comas:")
+    print("  Ej: telemetria, iot, monitoreo, sensor, medicion")
+    print("─" * 60)
+    entrada = input("  Términos: ").strip()
+
+    if not entrada:
+        print("  Debes ingresar al menos un término.")
+        return
+
+    terminos = [t.strip().lower() for t in entrada.split(",") if t.strip()]
+    if not terminos:
+        print("  Debes ingresar al menos un término.")
+        return
+
+    print(f"\n  Monitoreando por: {', '.join(terminos)}")
+    print(f"  Intervalo: cada {INTERVALO_MINUTOS} minutos")
+    print("  Presiona Ctrl+C para detener.")
+    print()
+
+    # ── 2. Cargar registro de ya vistos ───────────────────────────
+    MONITOR_FILE.parent.mkdir(parents=True, exist_ok=True)
+    vistos: set[str] = set()
+    if MONITOR_FILE.exists():
+        try:
+            data_vistos = json.loads(MONITOR_FILE.read_text())
+            vistos = set(data_vistos.get("vistos", []))
+            print(f"  📋 Licitaciones ya registradas: {len(vistos)}")
+        except (json.JSONDecodeError, KeyError):
+            vistos = set()
+
+    # ── 3. Bucle de monitoreo ────────────────────────────────────
+    ciclo = 0
+    while True:
+        ciclo += 1
+        ahora = datetime.now().strftime("%H:%M:%S")
+        print(f"\n[{ahora}] Ciclo {ciclo} — Consultando API...")
+
+        try:
+            resultados = buscar_licitaciones(
+                api_client, ticket,
+                terminos=terminos,
+                solo_vigentes=False,  # Todos los estados
+            )
+        except Exception as e:
+            logger.error("Error en ciclo de monitoreo: %s", e)
+            print(f"  ❌ Error: {e}")
+        else:
+            # Identificar nuevas
+            nuevas = [r for r in resultados
+                      if r.get("CodigoExterno") not in vistos]
+
+            if nuevas:
+                print(f"\n  🆕 {len(nuevas)} NUEVA(S) LICITACIÓN(ES):")
+                print("─" * 60)
+                for item in nuevas:
+                    cod = item.get("CodigoExterno", "?")
+                    nom = item.get("Nombre", "Sin nombre")[:70]
+                    est = item.get("CodigoEstado", "?")
+                    print(f"  ✅ [{cod}] (Estado:{est}) {nom}")
+                    vistos.add(cod)
+                print("─" * 60)
+            else:
+                print(f"  Sin novedades. {len(resultados)} coincidencias conocidas.")
+
+            # Guardar registro actualizado
+            try:
+                MONITOR_FILE.write_text(json.dumps({
+                    "ultima_actualizacion": datetime.now().isoformat(),
+                    "terminos": terminos,
+                    "vistos": list(vistos),
+                }, indent=2, ensure_ascii=False))
+            except Exception as e:
+                logger.warning("Error al guardar registro: %s", e)
+
+        # Esperar hasta el próximo ciclo
+        print(f"\n  ⏳ Próxima revisión en {INTERVALO_MINUTOS} minutos...")
+        try:
+            time.sleep(INTERVALO_MINUTOS * 60)
+        except KeyboardInterrupt:
+            print("\n\n  Monitoreo detenido por el usuario.")
+            break
 
 
 if __name__ == "__main__":
