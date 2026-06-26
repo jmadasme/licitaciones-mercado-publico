@@ -483,9 +483,10 @@ def procesar_licitacion(
         codigo: Código de la licitación.
         ticket: Ticket de autenticación.
     """
-    from downloader import download_all_files, display_download_summary
+    from downloader import download_all_files
     from metadata import save_metadata
     from utils import sanitize_filename
+    # display_download_summary está definida en este mismo archivo
 
     # ── 1. Confirmar descarga ────────────────────────────────────
     if not ask_yes_no("¿Descargar documentos?", default=True):
