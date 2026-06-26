@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Entornos virtuales
+venv/
+env/
+.venv/
+
+# Variables de entorno (contiene el ticket, nunca commitear)
+.env
+
+# Archivos de descarga
+descargas/
+
+# Logs
+*.log
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Archivos de planificación y auditoría (internos del equipo de desarrollo)
+PLAN.md
+AUDIT_REPORT.md
+
+# Distribución
+dist/
+build/
+*.egg-info/
