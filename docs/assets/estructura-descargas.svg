@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Estructura de descargas y metadatos</title>
+  <desc id="desc">Árbol de archivos generado por el programa y explicación de metadata.json, reglas de nombres y archivos de monitoreo.</desc>
+  <defs>
+    <linearGradient id="barra" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2A9D8F"/>
+      <stop offset="55%" stop-color="#457B9D"/>
+      <stop offset="100%" stop-color="#5B7C99"/>
+    </linearGradient>
+    <style>
+      .subtitulo { font-family: "Inter","Segoe UI",system-ui,sans-serif; font-size: 13px; fill: #8fa9b5; letter-spacing: 2.6px; }
+      .titulo { font-family: "Inter","Segoe UI",system-ui,sans-serif; font-size: 30px; font-weight: 700; fill: #e8f1f4; }
+      .bajada { font-family: "Inter","Segoe UI",system-ui,sans-serif; font-size: 13px; fill: #7d97a3; }
+      .term { font-family: "JetBrains Mono","SFMono-Regular",Consolas,monospace; font-size: 13px; fill: #c9dbe2; }
+      .dir { font-family: "JetBrains Mono","SFMono-Regular",Consolas,monospace; font-size: 13px; fill: #2A9D8F; font-weight: 700; }
+      .json { font-family: "JetBrains Mono","SFMono-Regular",Consolas,monospace; font-size: 13px; fill: #6FA8C4; }
+      .log { font-family: "JetBrains Mono","SFMono-Regular",Consolas,monospace; font-size: 13px; fill: #8FA6BF; }
+      .guia { font-family: "JetBrains Mono","SFMono-Regular",Consolas,monospace; font-size: 13px; fill: #365e69; }
+      .h { font-family: "Inter","Segoe UI",system-ui,sans-serif; font-size: 15px; font-weight: 700; fill: #e8f1f4; }
+      .p { font-family: "Inter","Segoe UI",system-ui,sans-serif; font-size: 12px; fill: #8fa9b5; }
+      .mini { font-family: "Inter","Segoe UI",system-ui,sans-serif; font-size: 10.5px; fill: #6f8b97; letter-spacing: 1.1px; }
+      .card { fill: #0a1d25; stroke: #24505c; stroke-width: 1.2; }
+      .tag { font-family: "JetBrains Mono",monospace; font-size: 10px; fill: #06141b; font-weight: 700; }
+      .b1 { fill: #2A9D8F; }
+      .b2 { fill: #457B9D; }
+      .b3 { fill: #5B7C99; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="720" fill="#06141b"/>
+  <rect width="1200" height="6" fill="url(#barra)"/>
+
+  <text x="50" y="58" class="subtitulo">SALIDA EN DISCO</text>
+  <text x="50" y="98" class="titulo">Qué queda después de cada ejecución</text>
+  <text x="50" y="123" class="bajada">Una carpeta por licitación, un JSON por operación y un registro que sobrevive entre ciclos.</text>
+  <line x1="50" y1="146" x2="1150" y2="146" stroke="#1b3a45" stroke-width="1"/>
+
+  <!-- Terminal -->
+  <rect x="50" y="172" width="560" height="482" rx="10" class="card"/>
+  <rect x="50" y="172" width="560" height="34" rx="10" fill="#0e2a33"/>
+  <rect x="50" y="196" width="560" height="10" fill="#0e2a33"/>
+  <circle cx="72" cy="189" r="4" fill="#457B9D"/>
+  <circle cx="88" cy="189" r="4" fill="#5B7C99"/>
+  <circle cx="104" cy="189" r="4" fill="#2A9D8F"/>
+  <text x="122" y="193" class="mini">DESCARGAS / ÁRBOL GENERADO</text>
+
+  <text x="74" y="240" class="dir">descargas/</text>
+  <text x="74" y="268" class="guia">├──</text>
+  <text x="122" y="268" class="dir">1234567-8-LP24/</text>
+  <text x="74" y="296" class="guia">│   ├──</text>
+  <text x="122" y="296" class="term">Bases Administrativas.pdf</text>
+  <text x="74" y="324" class="guia">│   ├──</text>
+  <text x="122" y="324" class="term">Bases Tecnicas.pdf</text>
+  <text x="74" y="352" class="guia">│   ├──</text>
+  <text x="122" y="352" class="term">Anexo N1 - Planos.zip</text>
+  <text x="74" y="380" class="guia">│   └──</text>
+  <text x="122" y="380" class="json">metadata.json</text>
+  <text x="74" y="408" class="guia">├──</text>
+  <text x="122" y="408" class="dir">monitoreo/</text>
+  <text x="74" y="436" class="guia">│   └──</text>
+  <text x="122" y="436" class="log">20260701_120025.txt</text>
+  <text x="74" y="464" class="guia">├──</text>
+  <text x="122" y="464" class="json">monitoreo_vistos.json</text>
+  <text x="74" y="492" class="guia">└──</text>
+  <text x="122" y="492" class="log">downloader.log</text>
+
+  <line x1="74" y1="520" x2="586" y2="520" stroke="#1b3a45" stroke-width="1"/>
+  <text x="74" y="544" class="mini">NOMBRES SANITIZADOS</text>
+  <text x="74" y="566" class="p">Los caracteres / \ : * ? " &lt; &gt; | se reemplazan por _.</text>
+  <text x="74" y="584" class="p">Si el archivo ya existe: nombre_1.ext, nombre_2.ext, etc.</text>
+  <text x="74" y="602" class="p">Durante la descarga se usa nombre.ext.part y luego se renombra.</text>
+  <text x="74" y="620" class="p">La carpeta se deriva del código, también sanitizado.</text>
+
+  <rect x="74" y="632" width="512" height="0.8" fill="#1b3a45"/>
+
+  <!-- Card metadata -->
+  <rect x="640" y="172" width="510" height="196" rx="10" class="card"/>
+  <rect x="640" y="172" width="4" height="196" fill="#457B9D"/>
+  <text x="664" y="202" class="h">metadata.json</text>
+  <text x="664" y="221" class="p">Trazabilidad completa de la operación, sin secretos en claro.</text>
+
+  <rect x="664" y="236" width="72" height="18" rx="3" class="b2"/>
+  <text x="672" y="249" class="tag">licitacion</text>
+  <rect x="742" y="236" width="82" height="18" rx="3" class="b2"/>
+  <text x="750" y="249" class="tag">archivos[]</text>
+  <rect x="830" y="236" width="88" height="18" rx="3" class="b2"/>
+  <text x="838" y="249" class="tag">descargas[]</text>
+
+  <text x="664" y="278" class="p">• Respuesta íntegra de la API, sin recortes</text>
+  <text x="664" y="298" class="p">• Estado por archivo: descargado, saltado, tamaño, error</text>
+  <text x="664" y="318" class="p">• fecha_descarga en ISO 8601 UTC</text>
+  <text x="664" y="338" class="p">• ticket_hash: SHA-256, nunca el ticket</text>
+  <text x="664" y="358" class="p">• Ideal para auditar qué se bajó y cuándo</text>
+
+  <!-- Card monitoreo -->
+  <rect x="640" y="388" width="510" height="160" rx="10" class="card"/>
+  <rect x="640" y="388" width="4" height="160" fill="#2A9D8F"/>
+  <text x="664" y="418" class="h">Monitoreo</text>
+  <text x="664" y="438" class="p">Dos archivos con propósitos distintos:</text>
+  <text x="664" y="464" class="json">monitoreo_vistos.json</text>
+  <text x="842" y="464" class="p">memoria persistente</text>
+  <text x="664" y="488" class="log">monitoreo/AAAAMMDD_HHMMSS.txt</text>
+  <text x="664" y="510" class="p">El reporte se escribe con fecha y hora; la memoria evita repetir avisos.</text>
+  <text x="664" y="528" class="p">Si se borra la memoria, el siguiente ciclo reporta todo de nuevo.</text>
+
+  <!-- Card límites -->
+  <rect x="640" y="560" width="510" height="94" rx="10" class="card"/>
+  <rect x="640" y="560" width="4" height="94" fill="#5B7C99"/>
+  <text x="664" y="590" class="h">Buenas prácticas</text>
+  <text x="664" y="610" class="p">Rotar reportes antiguos · respaldar vistos.json · no compartir .env</text>
+  <text x="664" y="630" class="p">Revisar metadata.json antes de publicarlo o enviarlo.</text>
+
+  <text x="50" y="690" class="p">Todo el estado es inspeccionable: no hay base de datos ni formato binario propietario.</text>
+  <text x="50" y="708" class="p">Los archivos descargados son de terceros: revisar sus condiciones antes de redistribuirlos.</text>
+</svg>

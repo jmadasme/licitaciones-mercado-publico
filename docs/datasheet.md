@@ -15,6 +15,12 @@ licitaciones del Mercado Publico de Chile.
 5. [Estructura de la salida](#estructura-de-la-salida)
 6. [Archivos del modo monitoreo](#archivos-del-modo-monitoreo)
 7. [Solucion de problemas comunes](#solucion-de-problemas-comunes)
+8. [Referencia rapida de la API](#referencia-rapida-de-la-api)
+9. [Limites operativos](#limites-operativos)
+10. [Seguridad y privacidad](#seguridad-y-privacidad)
+11. [Preguntas frecuentes](#preguntas-frecuentes)
+12. [Glosario](#glosario)
+13. [Mantenimiento](#mantenimiento)
 
 ---
 
@@ -74,7 +80,7 @@ Abre `.env` con un editor de texto y reemplaza `tu_ticket_aqui` por el ticket
 que obtuviste de Mercado Publico:
 
 ```
-MERCADO_PUBLICO_TICKET=F21A2B3C4D5E6F7G8H9I0J...
+MERCADO_PUBLICO_TICKET=TU_TICKET_AQUI
 ```
 
 Guarda el archivo. Verifica que `.env` esta listado en `.gitignore` para no
@@ -546,11 +552,13 @@ actualizados.
 **Solucion**:
 1. En Linux, actualiza los certificados: `sudo apt update && sudo apt install ca-certificates` (Debian/Ubuntu) o equivalente en tu distribucion.
 2. En Windows, asegurate de que tu Python tenga los certificados correctos.
-3. Si estas detras de un proxy corporativo, puede ser necesario configurar las
-   variables de entorno `HTTP_PROXY` y `HTTPS_PROXY`.
-4. Como ultimo recurso (no recomendado para produccion), puedes modificar
-   `mercado_publico.py` y cambiar `https://` por `http://` en `BASE_URL`, pero
-   ten en cuenta que los datos viajaran sin cifrado.
+4. Si estas detras de un proxy corporativo, puede ser necesario configurar las
+   variables de entorno `HTTP_PROXY` y `HTTPS_PROXY`, o indicar el certificado
+   de la empresa mediante `REQUESTS_CA_BUNDLE`.
+5. No desactives la verificacion TLS ni cambies `https://` por `http://`: eso
+   expondria tu ticket y los datos descargados. Si el problema persiste,
+   corrige la cadena de confianza del sistema o consulta a tu administrador de
+   red.
 
 ### El archivo monitoreo_vistos.json crece demasiado
 
@@ -562,3 +570,343 @@ evitar mostrar licitaciones repetidas.
    programa creara uno nuevo en el siguiente ciclo de monitoreo.
 2. Si solo quieres limpiar entradas antiguas, puedes editar manualmente el
    archivo (es un JSON simple) y eliminar codigos que ya no te interesen.
+
+---
+
+## Referencia rapida de la API
+
+Esta seccion resume el contrato de la API v1 que el programa consume. No
+reemplaza la documentacion oficial incluida en el repositorio
+(`Documentacion-API-Mercado-Publico-Licitaciones.pdf`), pero sirve para
+entender que se puede esperar de cada consulta.
+
+### Endpoints
+
+URL base: `https://api.mercadopublico.cl/servicios/v1/publico`
+
+| Operacion | Metodo | Ruta | Parametros | Respuesta |
+|-----------|--------|------|------------|-----------|
+| Detalle por codigo | GET | `/licitaciones.json` | `codigo`, `ticket` | `Listado` con 0 o 1 elemento |
+| Listado general | GET | `/licitaciones.json` | `ticket` | `Listado` con las licitaciones recientes |
+| Archivos | GET | `/licitaciones/{codigo}/Archivos.json` | `ticket` | Lista de documentos o error 404 |
+| Acta | GET | URL entregada en `Adjudicacion.UrlActa` | segun URL | Documento PDF |
+
+La API tambien acepta los formatos `.xml` y `.jsonp`, y parametros como
+`fecha=DDMMAAAA` y `estado=...`. Esta implementacion usa exclusivamente JSON y
+los parametros listados; el resto queda disponible para extensiones.
+
+### Envoltura de respuesta
+
+```json
+{
+  "Cantidad": 1,
+  "FechaCreacion": "2026-06-26T12:00:00",
+  "Version": "v1",
+  "Listado": [ { "CodigoExterno": "...", "Nombre": "..." } ]
+}
+```
+
+Cuando ocurre un error, la API puede responder con HTTP 200 o 203 y un cuerpo:
+
+```json
+{ "Codigo": 203, "Mensaje": "Ticket no valido." }
+```
+
+El programa revisa el cuerpo ademas del codigo HTTP. Un `200 OK` no garantiza
+que la consulta haya sido exitosa.
+
+### Campos disponibles
+
+| Campo | Tipo | Descripcion |
+|-------|------|-------------|
+| `CodigoExterno` | texto (100) | Codigo publico de la licitacion |
+| `Nombre` | texto (255) | Nombre del proceso |
+| `Descripcion` | texto | Objeto de la contratacion |
+| `CodigoEstado` | entero | Codigo numerico del estado |
+| `Estado` | texto (510) | Descripcion textual del estado |
+| `Comprador.CodigoOrganismo` | texto (100) | Codigo del organismo |
+| `Comprador.NombreOrganismo` | texto (510) | Nombre del organismo |
+| `Comprador.RutUnidad` | texto (100) | RUT de la unidad compradora |
+| `Comprador.NombreUnidad` | texto (510) | Nombre de la unidad |
+| `Comprador.ComunaUnidad` | texto (510) | Comuna de la unidad |
+| `Comprador.RegionUnidad` | texto (510) | Region de la unidad |
+| `Fechas.FechaCreacion` | datetime | Creacion del proceso |
+| `Fechas.FechaPublicacion` | datetime | Publicacion |
+| `Fechas.FechaCierre` | datetime | Cierre de recepcion de ofertas |
+| `Fechas.FechaAdjudicacion` | datetime | Adjudicacion |
+| `MontoEstimado` | float | Monto estimado |
+| `Moneda` | texto | CLP, CLF, USD, UTM o EUR |
+| `Tipo` | texto | Codigo de tipo (L1, LE, LP, ...) |
+| `Adjudicacion.UrlActa` | texto | URL del acta |
+| `Items.Listado[]` | lista | Productos o servicios licitados |
+
+### Estados
+
+| Codigo | Nombre | Vigente |
+|--------|--------|---------|
+| 1 | Publicada | No para el filtro |
+| 2 | Cerrada | No |
+| 3 | Desierta | No |
+| 4 | Adjudicada | No |
+| 5 | Publicada | Si |
+| 6 | Cerrada | No |
+| 7 | Desierta | No |
+| 8 | Adjudicada | No |
+| 9 | Revocada | No |
+| 10 | Suspendida | No |
+| 11 | Publicada | No para el filtro |
+| 15 | Suspendida | No |
+
+### Tipos de licitacion
+
+| Codigo | Tramo |
+|--------|-------|
+| L1 | Publica menor a 100 UTM |
+| LE | Publica de 100 a 1.000 UTM |
+| LP | Publica de 1.000 a 2.000 UTM |
+| LQ | Publica de 2.000 a 5.000 UTM |
+| LR | Publica de 5.000 UTM o mas |
+| LS | Publica de servicios personales especializados |
+| E2 | Privada menor a 100 UTM |
+| CO | Privada de 100 a 1.000 UTM |
+| B2 | Privada de 1.000 a 2.000 UTM |
+| H2 | Privada de 2.000 a 5.000 UTM |
+| I2 | Privada de mas de 5.000 UTM |
+
+### Monedas
+
+| Codigo | Moneda |
+|--------|--------|
+| CLP | Peso chileno |
+| CLF | Unidad de Fomento |
+| USD | Dolar estadounidense |
+| UTM | Unidad Tributaria Mensual |
+| EUR | Euro |
+
+### Modalidades de pago
+
+| Codigo | Modalidad |
+|--------|-----------|
+| 1 | Pago a 30 dias |
+| 2 | Pago a 30, 60 y 90 dias |
+| 3 | Pago al dia |
+| 4 | Pago anual |
+| 5 | Pago bimensual |
+| 6 | Pago contra entrega conforme |
+| 7 | Pagos mensuales |
+| 8 | Pago por estado de avance |
+| 9 | Pago trimestral |
+| 10 | Pago a 60 dias |
+
+---
+
+## Limites operativos
+
+| Recurso | Valor | Como cambiarlo |
+|---------|-------|----------------|
+| Ventana de licitaciones | ~188 a 200 recientes | No configurable: limite de la API |
+| Timeout de conexion | 10 s | `HTTP_TIMEOUT_CONNECT` en `api_client.py` |
+| Timeout de lectura | 30 s | Parametro `timeout` de `APIClient` |
+| Reintentos por peticion | 4 | Parametro `max_retries` |
+| Pausa entre peticiones | 1 a 2 s | `RATE_LIMIT_MIN_WAIT` y `MAX_WAIT` |
+| Pausa entre archivos | 1 a 2 s | Parametros `min_pause` y `max_pause` |
+| Ciclo de monitoreo | 30 min | `INTERVALO_MINUTOS` en `main.py` |
+| Intentos de codigo | 3 | `MAX_CODE_INPUT_RETRIES` |
+| Tamano de bloque | 8 KB | `chunk_size` en `downloader.py` |
+
+### Que hacer cuando la API no coopera
+
+1. **HTTP 429**: el programa espera 5 segundos y reintenta. Si persiste,
+   suspender la ejecucion durante una hora y bajar la frecuencia.
+2. **HTTP 5xx**: reintenta con backoff. Si los cuatro intentos fallan, esperar
+   y volver a probar; no reiniciar en bucle.
+3. **Respuestas lentas**: el timeout de lectura es de 30 segundos. Para redes
+   muy congestionadas se puede aumentar, pero no mas de 120 segundos.
+4. **Listado vacio**: puede ser un problema temporal de la API o un filtro
+   demasiado estricto. Probar sin terminos y sin filtro de estado.
+5. **Cambio de esquema**: si faltan campos, revisar la documentacion oficial y
+   comparar con el JSON guardado en `metadata.json`.
+
+---
+
+## Seguridad y privacidad
+
+### Donde vive el ticket
+
+| Momento | Ubicacion | Proteccion |
+|---------|-----------|------------|
+| Configuracion | `.env` o variable de entorno | `.env` ignorado por Git |
+| Uso | Memoria del proceso | No se imprime |
+| Logs | `descargas/downloader.log` | Parametro enmascarado como `***` |
+| Metadatos | `metadata.json` | Solo `ticket_hash` (SHA-256) |
+| URLs de descarga | Memoria | Se construyen al momento de descargar |
+
+### Recomendaciones
+
+1. Ejecutar `chmod 600 .env` en equipos multiusuario.
+2. Revisar `git status` antes de cada commit para confirmar que `.env` no esta
+   incluido.
+3. No compartir capturas de pantalla donde se vea el ticket ni el historial del
+   shell.
+4. Si se sospecha una filtracion, solicitar un ticket nuevo y eliminar el
+   anterior.
+5. No publicar `metadata.json` sin revisar el campo `url_origen`.
+6. Mantener actualizados `requests` y los certificados del sistema.
+7. No ejecutar el programa con `sudo` ni como root: no lo necesita y amplifica
+   el impacto de cualquier error.
+
+### Alcance
+
+El programa no envia informacion a ningun servicio distinto de
+`api.mercadopublico.cl`. No tiene telemetria, analitica ni actualizaciones
+automaticas. Todo el estado queda en el directorio de trabajo.
+
+---
+
+## Preguntas frecuentes
+
+### ¿Se puede usar sin ticket?
+
+No. La API exige un ticket personal para todas las consultas. El programa
+termina con un mensaje explicativo si no lo encuentra.
+
+### ¿Se puede buscar en todo el historial de licitaciones?
+
+No con la API v1. El listado general expone solo las licitaciones recientes.
+Para acumular historia hay que ejecutar el programa periodicamente y conservar
+los `metadata.json`.
+
+### ¿Por que un termino que aparece en la ficha no se encuentra en el modo 2?
+
+Porque el filtro se aplica sobre el listado, que puede no incluir la
+descripcion completa. El detalle individual si la trae, pero solo se consulta
+despues de seleccionar una licitacion. Usar terminos mas generales o buscar por
+codigo.
+
+### ¿Puedo dejar el monitoreo toda la noche?
+
+Si, con la computadora encendida y la terminal activa. Para sesiones largas
+conviene `tmux`, `screen` o `nohup`. El programa no se reconecta solo si se
+corta la red; el siguiente ciclo reintenta.
+
+### ¿Cuanto espacio en disco necesita?
+
+Depende de los documentos. Un proceso tipico ocupa entre 1 MB y 100 MB. El
+`metadata.json` ronda las decenas de KB. El log crece lentamente, pero conviene
+rotarlo si se ejecuta durante meses.
+
+### ¿Puedo cambiar la carpeta de descargas?
+
+Si, modificando `DEFAULT_DOWNLOAD_DIR` en `main.py`. Como alternativa, ejecutar
+el programa desde otro directorio de trabajo: `descargas/` se crea relativo al
+directorio actual.
+
+### ¿Funciona en Windows?
+
+Si. La sanitizacion de nombres contempla caracteres invalidos de Windows y el
+codigo no usa rutas POSIX. Para acentos y simbolos, usar Windows Terminal con
+UTF-8 (`chcp 65001`).
+
+### ¿Como distingo un ticket vencido de un error de red?
+
+Un ticket invalido produce HTTP 400 o un JSON con `Codigo` y un mensaje que
+contiene "ticket". Un error de red produce excepciones de conexion o timeout,
+sin respuesta JSON.
+
+### ¿Descarga todos los documentos de la licitacion?
+
+Solo los que la API expone: el acta de adjudicacion y lo que devuelva
+`Archivos.json`. Si el endpoint no existe, el programa muestra el enlace a la
+ficha web para descargarlos manualmente.
+
+### ¿Puedo exportar los resultados a Excel?
+
+El programa no genera Excel, pero un script de pocas lineas puede escribir CSV
+(ver `README.md`, seccion de ejemplos) y abrirlo con cualquier planilla.
+
+### ¿Puedo correr dos instancias a la vez?
+
+No es recomendable. Duplica el consumo de cuota, puede provocar HTTP 429 y
+genera condiciones de carrera sobre `monitoreo_vistos.json`.
+
+### ¿Cada cuanto conviene actualizar las dependencias?
+
+Cada tres o seis meses, o cuando haya una actualizacion de seguridad. Despues
+de actualizar, probar los tres modos y revisar que el formato de la API no haya
+cambiado.
+
+---
+
+## Glosario
+
+| Termino | Definicion |
+|---------|------------|
+| API | Interfaz programatica que expone datos y operaciones de un servicio |
+| Backoff | Espera creciente entre reintentos |
+| Bases | Documentos con reglas administrativas y tecnicas de un proceso |
+| Codigo externo | Identificador publico de la licitacion (ej. `1234-5-LP26`) |
+| Endpoint | Ruta concreta de la API que devuelve un recurso |
+| Estado | Situacion del proceso: publicada, cerrada, adjudicada, etc. |
+| Hash SHA-256 | Huella criptografica unidireccional usada para no guardar el ticket |
+| Jitter | Variacion aleatoria de una espera para evitar patrones fijos |
+| JSON | Formato de texto estructurado usado por la API y los metadatos |
+| Licitacion | Procedimiento de compra publica convocado por un organismo |
+| Metadata | Datos que describen la operacion y sus archivos |
+| Organismo comprador | Institucion publica que convoca el proceso |
+| Rate limit | Limite de peticiones permitidas en un periodo |
+| Reintento | Nueva tentativa automatica tras un fallo transitorio |
+| Scraping | Extraccion de datos desde HTML; este proyecto no lo usa |
+| Ticket | Credencial personal para autenticarse en la API |
+| UTM | Unidad Tributaria Mensual usada para clasificar tramos |
+| UNSPSC | Estandar de codificacion de productos y servicios |
+
+---
+
+## Mantenimiento
+
+### Rutina mensual
+
+1. Verificar que el monitoreo sigue generando ciclos en el log.
+2. Revisar el espacio ocupado por `descargas/`.
+3. Archivar reportes antiguos de `descargas/monitoreo/`.
+4. Confirmar que `metadata.json` recientes contienen datos completos.
+
+### Rutina trimestral
+
+1. Actualizar dependencias dentro del entorno virtual.
+2. Ejecutar los tres modos con una licitacion de prueba.
+3. Revisar la documentacion oficial por cambios de endpoints o campos.
+4. Respaldar `monitoreo_vistos.json` si se usa en produccion.
+
+### Rotacion de logs
+
+Ejemplo de configuracion con `logrotate`:
+
+```
+/home/usuario/licitaciones/descargas/downloader.log {
+    weekly
+    rotate 8
+    compress
+    missingok
+    notifempty
+}
+```
+
+### Migracion a otro equipo
+
+1. Copiar el proyecto sin `venv/` ni `descargas/`.
+2. Crear un entorno virtual nuevo e instalar `requirements.txt`.
+3. Copiar `.env` por un canal seguro o volver a exportar el ticket.
+4. Copiar `descargas/monitoreo_vistos.json` si se quiere conservar la memoria.
+5. Ejecutar una consulta de prueba.
+
+### Senales de que algo cambio en la API
+
+- Respuestas con campos faltantes o renombrados.
+- Aumento repentino de errores 400 o 404 con tickets que antes funcionaban.
+- Listados vacios de forma consistente.
+- Documentos que ya no se listan.
+
+Ante cualquiera de estas senales, comparar el JSON recibido con el ejemplo de
+`metadata.json`, revisar `docs/REFERENCES.md` y consultar la documentacion
+oficial antes de modificar el codigo.

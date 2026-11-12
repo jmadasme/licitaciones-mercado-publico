@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2A9D8F"/><stop offset="1" stop-color="#457B9D"/></linearGradient></defs>
+<rect width="1200" height="630" fill="#06141b"/>
+<circle cx="1050" cy="80" r="260" fill="#2A9D8F" opacity=".10"/>
+<circle cx="120" cy="560" r="220" fill="#457B9D" opacity=".10"/>
+<g stroke="rgba(148, 190, 200, .16)" stroke-width="1">
+<path d="M0 120H1200M0 240H1200M0 360H1200M0 480H1200"/>
+<path d="M120 0V630M240 0V630M360 0V630M480 0V630M600 0V630M720 0V630M840 0V630M960 0V630M1080 0V630"/>
+</g>
+<text x="72" y="96" fill="#2A9D8F" font-family="monospace" font-size="20" letter-spacing="5">SOFTWARE</text>
+<text x="72" y="250" fill="#e6f0f3" font-family="sans-serif" font-size="76" font-weight="700">Licitaciones Mercado Público</text>
+<text x="72" y="328" fill="#9db4bd" font-family="sans-serif" font-size="30">Tres modos para encontrar licitaciones: por código, por palabras clave o cada 30 minutos.</text>
+<rect x="72" y="420" width="480" height="4" fill="url(#g)"/>
+<text x="72" y="520" fill="#9db4bd" font-family="monospace" font-size="22">github.com/jmadasme</text>
+</svg>

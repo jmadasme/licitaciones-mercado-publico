@@ -1,36 +1,45 @@
 # Python
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
-
-# Entornos virtuales
+*.py[cod]
+.venv/
 venv/
 env/
-.venv/
 
-# Variables de entorno (contiene el ticket, nunca commitear)
+# Secretos y configuración local
 .env
+.env.*
+!.env.example
+*.key
+*.pem
+secrets.h
+google-services.json
+local.properties
 
-# Archivos de descarga
-descargas/
-
-# Logs
+# Artefactos y datos de ejecución
 *.log
+*.db
+*.sqlite
+*.sqlite3
+build/
+dist/
+node_modules/
+.next/
+.gradle/
+.kotlin/
+bin/
+obj/
+.vs/
+packages/
+*.exe
+*.dll
+*.apk
+*.aab
 
-# Sistema operativo
-.DS_Store
-Thumbs.db
-
-# IDE
-.vscode/
-.idea/
-
-# Archivos de planificación y auditoría (internos del equipo de desarrollo)
+# Pipeline
 PLAN.md
 AUDIT_REPORT.md
 
-# Distribución
-dist/
-build/
-*.egg-info/
+# Sistema
+.DS_Store
+.idea/
+.vscode/

@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Flujo de los tres modos</title>
+  <desc id="desc">Tres columnas: búsqueda por código, búsqueda por palabras clave y monitoreo cada 30 minutos, con sus pasos y salidas.</desc>
+  <defs>
+    <linearGradient id="barra" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2A9D8F"/>
+      <stop offset="55%" stop-color="#457B9D"/>
+      <stop offset="100%" stop-color="#5B7C99"/>
+    </linearGradient>
+    <style>
+      .subtitulo { font-family: "Inter","Segoe UI",system-ui,sans-serif; font-size: 13px; fill: #8fa9b5; letter-spacing: 2.6px; }
+      .titulo { font-family: "Inter","Segoe UI",system-ui,sans-serif; font-size: 30px; font-weight: 700; fill: #e8f1f4; }
+      .bajada { font-family: "Inter","Segoe UI",system-ui,sans-serif; font-size: 13px; fill: #7d97a3; }
+      .num { font-family: "JetBrains Mono","SFMono-Regular",Consolas,monospace; font-size: 34px; font-weight: 700; fill: #123039; }
+      .modo { font-family: "Inter","Segoe UI",system-ui,sans-serif; font-size: 20px; font-weight: 700; fill: #e8f1f4; }
+      .modosub { font-family: "Inter","Segoe UI",system-ui,sans-serif; font-size: 12px; fill: #8fa9b5; }
+      .paso { font-family: "Inter","Segoe UI",system-ui,sans-serif; font-size: 14px; font-weight: 600; fill: #d7e5ea; }
+      .pasosub { font-family: "Inter","Segoe UI",system-ui,sans-serif; font-size: 11.5px; fill: #7d97a3; }
+      .pie { font-family: "Inter","Segoe UI",system-ui,sans-serif; font-size: 12px; fill: #6f8b97; }
+      .card { fill: #0a1d25; stroke: #24505c; stroke-width: 1.2; }
+      .linea { stroke: #1b3a45; stroke-width: 1; }
+      .conector { stroke: #2A6B72; stroke-width: 1.4; stroke-dasharray: 3 4; }
+      .c1 { fill: #2A9D8F; }
+      .c2 { fill: #457B9D; }
+      .c3 { fill: #5B7C99; }
+      .t1 { fill: #2A9D8F; }
+      .t2 { fill: #6FA8C4; }
+      .t3 { fill: #8FA6BF; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="820" fill="#06141b"/>
+  <rect width="1200" height="6" fill="url(#barra)"/>
+
+  <text x="50" y="58" class="subtitulo">FLUJO DE OPERACIÓN</text>
+  <text x="50" y="98" class="titulo">Tres formas de llegar a la misma licitación</text>
+  <text x="50" y="123" class="bajada">Del código conocido a la vigilancia continua: cada modo reutiliza la misma capa de API, descarga y metadatos.</text>
+  <line x1="50" y1="146" x2="1150" y2="146" stroke="#1b3a45" stroke-width="1"/>
+
+  <!-- MODO 1 -->
+  <rect x="40" y="176" width="350" height="556" rx="10" class="card"/>
+  <rect x="40" y="176" width="350" height="6" rx="3" class="c1"/>
+  <text x="66" y="228" class="num">01</text>
+  <text x="66" y="258" class="modo">Por código</text>
+  <text x="66" y="278" class="modosub">Cuando el identificador ya se conoce</text>
+  <text x="66" y="296" class="t1" font-family="Inter,sans-serif" font-size="11" letter-spacing="1.4">CONSULTA PUNTUAL</text>
+
+  <circle cx="78" cy="334" r="11" fill="#123039" stroke="#2A9D8F" stroke-width="1.4"/>
+  <text x="73" y="338" class="paso t1" font-size="11">1</text>
+  <text x="100" y="332" class="paso">Código externo</text>
+  <text x="100" y="348" class="pasosub">normalización y validación de ruta</text>
+
+  <circle cx="78" cy="404" r="11" fill="#123039" stroke="#2A9D8F" stroke-width="1.4"/>
+  <text x="73" y="408" class="paso t1" font-size="11">2</text>
+  <text x="100" y="402" class="paso">GET /licitaciones.json</text>
+  <text x="100" y="418" class="pasosub">parámetros codigo y ticket</text>
+
+  <circle cx="78" cy="474" r="11" fill="#123039" stroke="#2A9D8F" stroke-width="1.4"/>
+  <text x="73" y="478" class="paso t1" font-size="11">3</text>
+  <text x="100" y="472" class="paso">Resumen en consola</text>
+  <text x="100" y="488" class="pasosub">organismo, estado, fechas, monto</text>
+
+  <circle cx="78" cy="544" r="11" fill="#123039" stroke="#2A9D8F" stroke-width="1.4"/>
+  <text x="73" y="548" class="paso t1" font-size="11">4</text>
+  <text x="100" y="542" class="paso">Documentos</text>
+  <text x="100" y="558" class="pasosub">acta de adjudicación y Archivos.json</text>
+
+  <circle cx="78" cy="614" r="11" fill="#123039" stroke="#2A9D8F" stroke-width="1.4"/>
+  <text x="73" y="618" class="paso t1" font-size="11">5</text>
+  <text x="100" y="612" class="paso">metadata.json</text>
+  <text x="100" y="628" class="pasosub">descarga atómica y trazable</text>
+
+  <rect x="66" y="668" width="298" height="40" rx="6" fill="#0e2a33" stroke="#1f4b55"/>
+  <text x="80" y="693" class="pasosub">Salida: carpeta por código + JSON</text>
+
+  <!-- MODO 2 -->
+  <rect x="425" y="176" width="350" height="556" rx="10" class="card"/>
+  <rect x="425" y="176" width="350" height="6" rx="3" class="c2"/>
+  <text x="451" y="228" class="num">02</text>
+  <text x="451" y="258" class="modo">Por palabras clave</text>
+  <text x="451" y="278" class="modosub">Cuando se busca qué hay disponible</text>
+  <text x="451" y="296" class="t2" font-family="Inter,sans-serif" font-size="11" letter-spacing="1.4">EXPLORACIÓN</text>
+
+  <circle cx="463" cy="334" r="11" fill="#123039" stroke="#457B9D" stroke-width="1.4"/>
+  <text x="458" y="338" class="paso t2" font-size="11">1</text>
+  <text x="485" y="332" class="paso">Palabras clave</text>
+  <text x="485" y="348" class="pasosub">separadas por comas</text>
+
+  <circle cx="463" cy="404" r="11" fill="#123039" stroke="#457B9D" stroke-width="1.4"/>
+  <text x="458" y="408" class="paso t2" font-size="11">2</text>
+  <text x="485" y="402" class="paso">Listado reciente</text>
+  <text x="485" y="418" class="pasosub">ventana de ~188 licitaciones</text>
+
+  <circle cx="463" cy="474" r="11" fill="#123039" stroke="#457B9D" stroke-width="1.4"/>
+  <text x="458" y="478" class="paso t2" font-size="11">3</text>
+  <text x="485" y="472" class="paso">Filtro local</text>
+  <text x="485" y="488" class="pasosub">nombre y descripción, sin q= en la API</text>
+
+  <circle cx="463" cy="544" r="11" fill="#123039" stroke="#457B9D" stroke-width="1.4"/>
+  <text x="458" y="548" class="paso t2" font-size="11">4</text>
+  <text x="485" y="542" class="paso">Selección numerada</text>
+  <text x="485" y="558" class="pasosub">detalle completo de la elegida</text>
+
+  <circle cx="463" cy="614" r="11" fill="#123039" stroke="#457B9D" stroke-width="1.4"/>
+  <text x="458" y="618" class="paso t2" font-size="11">5</text>
+  <text x="485" y="612" class="paso">Descarga y metadata</text>
+  <text x="485" y="628" class="pasosub">mismo flujo que el modo 01</text>
+
+  <rect x="451" y="668" width="298" height="40" rx="6" fill="#0e2a33" stroke="#1f4b55"/>
+  <text x="465" y="693" class="pasosub">Salida: selección + carpeta por código</text>
+
+  <line x1="390" y1="454" x2="425" y2="454" class="conector"/>
+  <line x1="775" y1="454" x2="810" y2="454" class="conector"/>
+
+  <!-- MODO 3 -->
+  <rect x="810" y="176" width="350" height="556" rx="10" class="card"/>
+  <rect x="810" y="176" width="350" height="6" rx="3" class="c3"/>
+  <text x="836" y="228" class="num">03</text>
+  <text x="836" y="258" class="modo">Monitoreo</text>
+  <text x="836" y="278" class="modosub">Cuando no se puede mirar a cada rato</text>
+  <text x="836" y="296" class="t3" font-family="Inter,sans-serif" font-size="11" letter-spacing="1.4">VIGILANCIA CONTINUA</text>
+
+  <circle cx="848" cy="330" r="11" fill="#123039" stroke="#5B7C99" stroke-width="1.4"/>
+  <text x="843" y="334" class="paso t3" font-size="11">1</text>
+  <text x="870" y="328" class="paso">Términos fijos</text>
+  <text x="870" y="344" class="pasosub">16 palabras editables al inicio</text>
+
+  <circle cx="848" cy="390" r="11" fill="#123039" stroke="#5B7C99" stroke-width="1.4"/>
+  <text x="843" y="394" class="paso t3" font-size="11">2</text>
+  <text x="870" y="388" class="paso">Ciclo de 30 minutos</text>
+  <text x="870" y="404" class="pasosub">sondeo periódico, no tiempo real</text>
+
+  <circle cx="848" cy="450" r="11" fill="#123039" stroke="#5B7C99" stroke-width="1.4"/>
+  <text x="843" y="454" class="paso t3" font-size="11">3</text>
+  <text x="870" y="448" class="paso">Listado filtrado</text>
+  <text x="870" y="464" class="pasosub">vigentes o todos los estados</text>
+
+  <circle cx="848" cy="510" r="11" fill="#123039" stroke="#5B7C99" stroke-width="1.4"/>
+  <text x="843" y="514" class="paso t3" font-size="11">4</text>
+  <text x="870" y="508" class="paso">¿Código nuevo?</text>
+  <text x="870" y="524" class="pasosub">comparación con monitoreo_vistos.json</text>
+
+  <circle cx="848" cy="570" r="11" fill="#123039" stroke="#5B7C99" stroke-width="1.4"/>
+  <text x="843" y="574" class="paso t3" font-size="11">5</text>
+  <text x="870" y="568" class="paso">Reporte .txt</text>
+  <text x="870" y="584" class="pasosub">detalle con fecha y hora</text>
+
+  <circle cx="848" cy="630" r="11" fill="#123039" stroke="#5B7C99" stroke-width="1.4"/>
+  <text x="843" y="634" class="paso t3" font-size="11">6</text>
+  <text x="870" y="628" class="paso">Registro actualizado</text>
+  <text x="870" y="644" class="pasosub">memoria persistente entre ciclos</text>
+
+  <rect x="836" y="668" width="298" height="40" rx="6" fill="#0e2a33" stroke="#1f4b55"/>
+  <text x="850" y="693" class="pasosub">Salida: reportes + vistos.json</text>
+
+  <text x="50" y="772" class="pie">Los modos 01 y 02 terminan y vuelven al menú. El modo 03 permanece activo hasta Ctrl+C o hasta cerrar la terminal.</text>
+  <text x="50" y="794" class="pie">Los tres comparten rate limiting, reintentos y la misma estructura de carpetas en descargas/.</text>
+</svg>

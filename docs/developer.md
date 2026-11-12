@@ -12,6 +12,13 @@ programa.
 5. [Guia de modificacion y extension](#guia-de-modificacion-y-extension)
 6. [API de funciones principales](#api-de-funciones-principales)
 7. [Pruebas](#pruebas)
+8. [Taxonomia de errores](#taxonomia-de-errores)
+9. [Modelo de datos](#modelo-de-datos)
+10. [Convenciones de codigo](#convenciones-de-codigo)
+11. [Recetas de extension](#recetas-de-extension)
+12. [Empaquetado y despliegue](#empaquetado-y-despliegue)
+13. [Deuda tecnica y roadmap](#deuda-tecnica-y-roadmap)
+14. [Checklist de revision](#checklist-de-revision)
 
 ---
 
@@ -647,9 +654,463 @@ funcionales y unitarias.
 
 ---
 
+## Taxonomia de errores
+
+El programa usa excepciones propias para separar los fallos recuperables de los
+que obligan a detener la ejecucion. Entender esa cadena es clave para extender
+el codigo sin romper el manejo de errores de `main.py`.
+
+| Excepcion | Modulo | Causa | Manejo actual |
+|-----------|--------|-------|----------------|
+| `TicketNotFoundError` | `config` | No hay variable ni `.env` | Mensaje y `sys.exit(1)` |
+| `InvalidTicketError` | `mercado_publico` | HTTP 400 o mensaje con "ticket" | Mensaje y `sys.exit(1)` |
+| `LicitacionNotFoundError` | `mercado_publico` | HTTP 404 o `Listado` vacio | Aviso y vuelta al menu |
+| `APIError` | `api_client` | Error HTTP/red/JSON no clasificado | Mensaje y continuar |
+| `DownloadError` | `api_client` | Fallo de descarga tras reintentos | Se registra por archivo |
+| `requests.ConnectionError` | `requests` | Red inaccesible, DNS, proxy | Reintento y luego `APIError` |
+| `requests.Timeout` | `requests` | Sin respuesta en 10/30 s | Reintento y luego `APIError` |
+| `requests.HTTPError` | `requests` | 4xx/5xx no reintentable | Se traduce a excepcion propia |
+| `OSError` | `downloader` | Disco lleno, permisos | Detiene descargas restantes |
+| `json.JSONDecodeError` | `main` (monitoreo) | Registro de vistos corrupto | Se reinicia el registro |
+
+### Propagacion
+
+```
+requests.exceptions.*
+        |
+        v
+APIClient._request  ->  APIError / HTTPError
+        |
+        v
+mercado_publico     ->  InvalidTicketError / LicitacionNotFoundError / APIError
+        |
+        v
+main.procesar_*     ->  mensaje al usuario, continue o sys.exit(1)
+```
+
+Reglas de diseno:
+
+1. **No capturar `Exception` sin registrar.** En `main.py` se usa
+   `logger.exception(...)` para conservar la traza en el log.
+2. **Los errores de autenticacion son fatales.** No tiene sentido seguir
+   consultando con un ticket invalido.
+3. **Los errores de una licitacion no son fatales.** El monitoreo debe seguir
+   con las demas.
+4. **Los errores de un archivo no abortan la licitacion.** Se anotan en
+   `DownloadResult` y se continua.
+5. **Los errores de E/S si abortan.** Un disco lleno afectaria a todos los
+   archivos siguientes.
+
+### Mensajes al usuario
+
+Los mensajes deben explicar la causa y la accion:
+
+- Mal: `Error 400`.
+- Bien: `Ticket invalido (HTTP 400). Verifica tu MERCADO_PUBLICO_TICKET.`
+
+Mantener ese criterio al agregar nuevas validaciones.
+
+---
+
+## Modelo de datos
+
+### Licitacion
+
+`fetch_licitacion()` devuelve el **item** interno, no la envoltura:
+
+```
+{
+  "CodigoExterno": str,
+  "Nombre": str,
+  "Descripcion": str,
+  "CodigoEstado": int,
+  "Estado": str,
+  "Comprador": {"NombreOrganismo": str, "RutUnidad": str, ...},
+  "Fechas": {"FechaPublicacion": str, "FechaCierre": str, ...},
+  "MontoEstimado": float | None,
+  "Moneda": str,
+  "Tipo": str,
+  "Adjudicacion": {"UrlActa": str, ...},
+  "Items": {"Cantidad": int, "Listado": [...]}
+}
+```
+
+Los campos pueden faltar. El codigo de presentacion usa `or` en cascada y
+`_get_nested()` para tolerar ausencias y variantes de mayusculas.
+
+### Archivo
+
+`fetch_archivos()` devuelve una lista de diccionarios heterogeneos. Las claves
+se buscan en este orden:
+
+| Dato | Claves aceptadas |
+|------|------------------|
+| Nombre | `Nombre`, `nombre`, `name` |
+| URL | `URL`, `Enlace`, `Href`, `url`, `enlace` |
+| Tipo | `Tipo`, `Extension`, `tipo` |
+| Tamano | `Tamaño`, `Size`, `tamaño` |
+
+No asumir una forma unica: la API y el endpoint de archivos no siempre
+coinciden. Al agregar un nuevo origen de documentos, devolver el mismo contrato
+minimo (`Nombre` + `URL`).
+
+### DownloadResult
+
+```python
+@dataclass
+class DownloadResult:
+    filename: str
+    success: bool
+    path: Optional[str] = None
+    error_message: Optional[str] = None
+    size_bytes: Optional[int] = None
+    skipped: bool = False
+```
+
+Es inmutable en la practica: se crea y se agrega a la lista de resultados. Si
+se agregan campos, actualizar `metadata.save_metadata()` y el resumen de
+`main.display_download_summary()`.
+
+### metadata.json
+
+```json
+{
+  "licitacion": {},
+  "archivos_count": 0,
+  "archivos": [],
+  "descargas": [
+    {
+      "nombre": "",
+      "url_origen": "",
+      "archivo_local": null,
+      "descargado": false,
+      "tamano_bytes": null,
+      "error": null,
+      "saltado": false
+    }
+  ],
+  "fecha_descarga": "ISO-8601",
+  "codigo_licitacion": "",
+  "ticket_hash": "sha256:..."
+}
+```
+
+`save_metadata()` empareja `archivos_data` con `download_results` por indice.
+Si la descarga se interrumpe antes de generar resultados, rellena las entradas
+faltantes con `"No se proceso (error antes de descargar)"`.
+
+### Estado del monitoreo
+
+```json
+{
+  "ultima_actualizacion": "ISO-8601 local",
+  "terminos": ["..."],
+  "vistos": ["CODIGO-1", "CODIGO-2"]
+}
+```
+
+Se escribe completo en cada ciclo. No hay escritura atomica: si el proceso
+muere a mitad de escritura, el siguiente ciclo detecta el JSON invalido y
+reinicia el registro.
+
+---
+
+## Convenciones de codigo
+
+- **Python 3.9+**: se usan genericos `list[...]` y `dict[...]`, no `|` en
+  anotaciones.
+- **Docstrings** en todas las funciones publicas, con Args/Returns/Raises.
+- **Logging** mediante `logging.getLogger(__name__)`, nunca `print()` fuera de
+  `main.py`.
+- **Mensajes de usuario** en espanol; nombres de funciones y variables en
+  espanol cuando el dominio lo justifica (`buscar_licitaciones`,
+  `procesar_licitacion`).
+- **Constantes** en mayusculas al inicio del modulo.
+- **Una responsabilidad por modulo**; si una funcion necesita tres capas,
+  probablemente pertenece a otro archivo.
+- **Errores explicitos**: preferir excepciones propias a devolver `None` ante
+  fallos.
+- **Sin dependencias nuevas** salvo justificacion fuerte. El proyecto se
+  mantiene deliberadamente pequeno.
+
+### Estilo de funciones
+
+```python
+def nombre_claro(parametro: str, opcional: int = 10) -> dict[str, Any]:
+    """
+    Una linea que explica que hace.
+
+    Args:
+        parametro: Que representa.
+        opcional: Valor por defecto y unidad.
+
+    Returns:
+        Que devuelve y en que forma.
+
+    Raises:
+        ErrorPropio: Cuando ocurre la condicion.
+    """
+```
+
+---
+
+## Recetas de extension
+
+### 1. Filtrar por fecha en la API
+
+La API acepta `fecha=DDMMAAAA`, pero el cliente actual no lo envia. Cambio
+minimo en `mercado_publico.buscar_licitaciones()`:
+
+```python
+def buscar_licitaciones(api_client, ticket, terminos=None,
+                        solo_vigentes=True, fecha=None):
+    params = {"ticket": ticket}
+    if fecha:
+        params["fecha"] = fecha          # "26062026"
+    data = api_client.get_json(LICITACIONES_ENDPOINT, params=params)
+    ...
+```
+
+Y en `main.py`, agregar la pregunta o un argumento de linea de comandos. No
+cambiar la firma de `fetch_licitacion()`: el detalle por codigo no usa fecha.
+
+### 2. Ampliar el criterio de vigencia
+
+Hoy el filtro es `CodigoEstado == 5`. Para incluir los otros codigos de
+"Publicada" (1 y 11):
+
+```python
+ESTADOS_VIGENTES = {1, 5, 11}
+
+if solo_vigentes and item.get("CodigoEstado") not in ESTADOS_VIGENTES:
+    continue
+```
+
+Conviene definir la constante junto a `ESTADOS_LICITACION` y documentar el
+cambio, porque altera que procesos se consideran disponibles.
+
+### 3. Salida no interactiva
+
+El mayor limite operativo es que `main.py` siempre pide entrada. Un punto de
+entrada alternativo puede usar `argparse`:
+
+```python
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--codigo")
+parser.add_argument("--terminos")
+parser.add_argument("--json", action="store_true")
+args = parser.parse_args()
+
+if args.codigo:
+    data = fetch_licitacion(client, args.codigo, ticket)
+    if args.json:
+        print(json.dumps(data, ensure_ascii=False, indent=2))
+    else:
+        print(data.get("Nombre"))
+```
+
+No es necesario tocar `main.py`: se puede crear `cli.py` y reutilizar los
+modulos. Si se quiere reemplazar el menu, mantener `main()` como envoltorio
+para no romper la invocacion documentada.
+
+### 4. Exportar a CSV o JSON
+
+Ver el ejemplo del README. Para uso recurrente, crear `exportar.py` con una
+funcion `exportar(resultados, destino)` y llamarla desde un ciclo programado.
+Mantener `utf-8` y `csv.writer` con `newline=""` para evitar filas dobles en
+Windows.
+
+### 5. Notificaciones
+
+No hay envio de correo incluido. Un agregado simple con `smtplib`:
+
+```python
+import smtplib
+from email.message import EmailMessage
+
+def notificar(asunto: str, cuerpo: str) -> None:
+    msg = EmailMessage()
+    msg["Subject"] = asunto
+    msg["From"] = "monitor@ejemplo.cl"
+    msg["To"] = "tu-correo@ejemplo.cl"
+    msg.set_content(cuerpo)
+    with smtplib.SMTP("smtp.ejemplo.cl", 587) as s:
+        s.starttls()
+        s.login("usuario", "password")
+        s.send_message(msg)
+```
+
+Las credenciales deben venir de variables de entorno, nunca del codigo. Para
+produccion, preferir un servicio transaccional con API y registrar los fallos
+de envio.
+
+### 6. Ajustar tiempos
+
+| Que cambiar | Donde | Efecto |
+|-------------|-------|--------|
+| Reintentos | `MAX_RETRIES` o `APIClient(max_retries=...)` | Menos/mas tolerancia a fallos |
+| Timeout de lectura | `APIClient(timeout=...)` | Espera maxima por respuesta |
+| Pausa entre peticiones | `RATE_LIMIT_MIN_WAIT` / `MAX_WAIT` | Menor riesgo de 429 |
+| Pausa entre archivos | `min_pause` / `max_pause` | Menor carga al servidor |
+| Intervalo de monitoreo | `INTERVALO_MINUTOS` | Frecuencia de sondeo |
+
+No bajar las pausas por debajo de 0,5 segundos. El beneficio es marginal y el
+riesgo de bloqueo, real.
+
+### 7. Agregar un endpoint nuevo
+
+Patron:
+
+1. Definir la constante de ruta en `mercado_publico.py`.
+2. Crear una funcion que reciba `api_client`, `ticket` y parametros.
+3. Llamar `api_client.get_json(...)`.
+4. Detectar el sobre `{Codigo, Mensaje}` antes de parsear.
+5. Devolver una estructura estable y documentada.
+6. Agregar una prueba manual y una entrada en este documento.
+
+No agregar logica de presentacion en `mercado_publico.py`.
+
+### 8. Pruebas con pytest
+
+El proyecto no incluye pruebas automatizadas. Para empezar:
+
+```python
+# tests/test_utils.py
+from utils import sanitize_filename, resolve_filename_collision
+from pathlib import Path
+
+def test_sanitiza_barras():
+    assert sanitize_filename("a/b:c.pdf") == "a_b_c.pdf"
+
+def test_colision(tmp_path: Path):
+    (tmp_path / "a.pdf").write_text("x")
+    assert resolve_filename_collision(tmp_path, "a.pdf") == "a_1.pdf"
+```
+
+Para la capa HTTP, `responses` o `requests-mock` permiten simular la API sin
+red. No es necesario agregarlas al `requirements.txt` de produccion: van en
+`requirements-dev.txt`.
+
+---
+
+## Empaquetado y despliegue
+
+### Estructura de dependencias
+
+`requirements.txt` contiene solo las tres librerias de ejecucion. Si se agregan
+pruebas, crear `requirements-dev.txt`:
+
+```text
+-r requirements.txt
+pytest>=8.0
+responses>=0.25
+```
+
+### Instalacion reproducible
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+pip freeze > requirements.lock.txt
+```
+
+El `lock` no se versiona necesariamente, pero sirve para reproducir un entorno
+exacto en un servidor.
+
+### Servicio systemd
+
+Ver el ejemplo del README. Puntos criticos:
+
+- `WorkingDirectory` debe ser la raiz del proyecto para que `.env` y
+  `descargas/` se resuelvan igual que en la ejecucion manual.
+- `EnvironmentFile` apunta al `.env`; el servicio no hereda el entorno del
+  shell.
+- `Restart=on-failure` evita que un fallo transitorio deje el monitoreo muerto.
+- El entrypoint debe ser no interactivo. `main.py` no lo es.
+
+### Contenedor (opcional)
+
+No se incluye Dockerfile. Un esquema minimo:
+
+```dockerfile
+FROM python:3.12-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+CMD ["python", "ciclo_monitoreo.py"]
+```
+
+Montar `descargas/` como volumen y pasar `MERCADO_PUBLICO_TICKET` como variable
+de entorno. No copiar `.env` dentro de la imagen.
+
+### Windows
+
+- Usar `venv\Scripts\activate`.
+- Programar con el Programador de tareas.
+- Evitar rutas con acentos si el equipo tiene una configuracion regional
+  antigua.
+- Verificar UTF-8 en la consola.
+
+---
+
+## Deuda tecnica y roadmap
+
+### Deuda conocida
+
+| Tema | Detalle | Impacto |
+|------|---------|---------|
+| Interfaz solo interactiva | No hay argumentos CLI ni modo batch | Dificulta cron/systemd |
+| Monitoreo dentro de `main.py` | Mezcla presentacion, persistencia y ciclo | Dificulta pruebas |
+| Filtro de vigencia fijo | Solo `CodigoEstado == 5` | Puede omitir estados 1 y 11 |
+| Sin pruebas automatizadas | Validacion manual | Regresiones silenciosas |
+| `ESTADOS_LICITACION` sin uso | Mapa definido pero no consultado | Deuda menor |
+| Imports duplicados | `procesar_licitacion` reimporta modulos | Ruido, sin efecto funcional |
+| Colision antes de "saltar" | El chequeo de existente casi no se alcanza | `saltado` rara vez verdadero |
+| Sin escritura atomica del registro | `monitoreo_vistos.json` se sobrescribe | Posible perdida ante corte |
+| Ventana historica limitada | Depende de la API v1 | No hay solucion local completa |
+
+### Roadmap sugerido
+
+1. **CLI con argumentos** (`--codigo`, `--terminos`, `--monitor`, `--json`).
+2. **Modulo `monitor.py`** separado de la interfaz.
+3. **Pruebas** de sanitizacion, filtros y metadata con `pytest`.
+4. **Exportacion** CSV/JSON integrada.
+5. **Filtro por fecha** usando el parametro de la API.
+6. **Notificaciones** por correo o webhook.
+7. **Empaquetado** como modulo instalable (`pyproject.toml`).
+8. **Soporte de ordenes de compra** si la API lo permite.
+
+Cada punto debe ir acompanado de documentacion y de una prueba manual de los
+tres modos.
+
+---
+
+## Checklist de revision
+
+Antes de dar por cerrado un cambio:
+
+- [ ] `python -m compileall .` sin errores.
+- [ ] Los tres modos se ejecutan sin excepciones no controladas.
+- [ ] El ticket no aparece en `metadata.json` ni en los logs.
+- [ ] `.env` sigue en `.gitignore`.
+- [ ] Los mensajes nuevos explican causa y accion.
+- [ ] Las funciones nuevas tienen docstring.
+- [ ] `README.md`, `docs/datasheet.md` y este documento reflejan el cambio.
+- [ ] No se agregaron dependencias sin justificacion.
+- [ ] No se rompio el formato de `metadata.json`.
+- [ ] No se modifico el comportamiento del monitoreo sin documentarlo.
+
+---
+
 ## Referencias
 
 - Documentacion oficial de la API: https://api.mercadopublico.cl/documentacion
 - Obtencion de ticket: https://api.mercadopublico.cl/documentacion/obtencion-de-ticket
 - Mercado Publico Chile: https://www.mercadopublico.cl
 - PDF de referencia (incluido en el proyecto): `Documentacion-API-Mercado-Publico-Licitaciones.pdf`
+- Fuentes ampliadas y glosario: `docs/REFERENCES.md`
+- Decisiones y lecciones: `docs/BITACORA.md`

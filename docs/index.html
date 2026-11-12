@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Licitaciones Mercado Público · jmadasme</title>
+<meta name="description" content="Automatización de consultas al Mercado Público chileno: búsqueda por código, búsqueda por palabras clave y monitoreo periódico con descarga de documentos.">
+<meta property="og:title" content="Licitaciones Mercado Público · jmadasme">
+<meta property="og:description" content="Automatización de consultas al Mercado Público chileno: búsqueda por código, búsqueda por palabras clave y monitoreo periódico con descarga de documentos.">
+<meta property="og:image" content="assets/og.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06141b;--bg2:#081b23;--panel:#0b222b;
+  --line:rgba(148, 190, 200, .16);--text:#e6f0f3;--muted:#9db4bd;
+  --accent:#2A9D8F;--accent2:#457B9D;--accent3:#5B7C99;
+  --warm:#D6A86A;
+  --font:'Space Grotesk','Inter',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scrollbar-width:none}
+::-webkit-scrollbar{width:0;height:0}
+body{margin:0;background:
+  radial-gradient(900px 500px at 85% -10%,rgba(42,157,143,.12),transparent 60%),
+  radial-gradient(700px 400px at 5% 20%,rgba(69,123,157,.10),transparent 60%),
+  var(--bg);color:var(--text);font-family:var(--font);line-height:1.6;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(148,190,200,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(148,190,200,.035) 1px,transparent 1px);
+  background-size:72px 72px;mask-image:linear-gradient(to bottom,#000 0%,transparent 70%)}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(1160px,calc(100% - 40px));margin:0 auto;position:relative;z-index:1}
+.nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(16px);background:rgba(6,20,27,.78);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 0}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.02em}
+.brand-mark{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#04141a}
+.nav-links{display:flex;align-items:center;gap:22px;font-size:13.5px;color:var(--muted)}
+.nav-links a:hover{color:var(--text)}
+.btn{display:inline-flex;align-items:center;gap:9px;border-radius:999px;padding:11px 18px;font-weight:650;font-size:13.5px;border:1px solid var(--line);transition:.18s}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#04141a;border-color:transparent;box-shadow:0 12px 30px -16px rgba(42,157,143,.7)}
+.btn-primary:hover{filter:brightness(1.07);transform:translateY(-1px)}
+.btn-ghost:hover{border-color:rgba(148,190,200,.4);background:rgba(148,190,200,.06)}
+.hero{padding:clamp(64px,9vw,116px) 0 48px}
+.hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:42px;align-items:center}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.eyebrow::before{content:"";width:30px;height:1px;background:var(--accent);opacity:.8}
+h1{font-size:clamp(42px,6.2vw,76px);line-height:.98;letter-spacing:-.055em;margin:0 0 22px;font-weight:700}
+.grad{background:linear-gradient(100deg,var(--accent),var(--accent2) 55%,var(--accent3));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:clamp(17px,2vw,20px);color:#c3d4da;max-width:58ch;margin:0 0 26px;line-height:1.55}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.badges{display:flex;gap:8px;flex-wrap:wrap}
+.badge{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);background:rgba(11,34,43,.55)}
+.visual-frame{border:1px solid var(--line);border-radius:20px;padding:12px;background:linear-gradient(180deg,rgba(11,34,43,.9),rgba(6,20,27,.8));box-shadow:0 30px 80px -50px rgba(0,0,0,.9)}
+.visual-frame img{width:100%;display:block;border-radius:12px}
+.visual-caption{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin:10px 4px 0;letter-spacing:.03em}
+.float-chip{display:inline-flex;align-items:center;gap:8px;margin:14px 0 0 12px;font-family:var(--mono);font-size:10.5px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:7px 11px;background:rgba(6,20,27,.8)}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(42,157,143,.12)}
+.stats{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(8,27,35,.45)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.stat{padding:26px 22px;border-right:1px solid var(--line)}
+.stat:last-child{border-right:0}
+.stat-num{font-size:clamp(26px,3vw,36px);font-weight:700;letter-spacing:-.04em;line-height:1}
+.stat-label{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-top:8px}
+.section{padding:clamp(52px,7vw,86px) 0;border-bottom:1px solid var(--line)}
+.section.tight{padding:clamp(42px,5vw,66px) 0}
+.section-head{max-width:760px;margin-bottom:30px}
+.kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+h2{font-size:clamp(30px,4vw,46px);line-height:1.05;letter-spacing:-.04em;margin:0 0 12px}
+.section-sub{color:var(--muted);font-size:16px;margin:0;max-width:70ch}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{border:1px solid var(--line);border-radius:16px;padding:22px;background:linear-gradient(180deg,rgba(11,34,43,.72),rgba(6,20,27,.6))}
+.card h3{margin:0 0 8px;font-size:17px;letter-spacing:-.02em}
+.card p{margin:0;color:var(--muted);font-size:14.5px}
+.card .tag{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:block}
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.step{border:1px solid var(--line);border-radius:14px;padding:18px;background:rgba(8,27,35,.55)}
+.step-n{font-family:var(--mono);font-size:10.5px;color:var(--accent);margin-bottom:10px}
+.step h4{margin:0 0 6px;font-size:14.5px}
+.step p{margin:0;color:var(--muted);font-size:13px}
+.versions{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.version{border:1px solid var(--line);border-radius:16px;padding:20px;background:linear-gradient(180deg,rgba(11,34,43,.7),rgba(6,20,27,.55));position:relative;overflow:hidden}
+.version::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--accent),var(--accent2));opacity:.8}
+.version-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.version h3{margin:0;font-size:18px;letter-spacing:-.02em}
+.version .count{font-family:var(--mono);font-size:10px;color:var(--muted);border:1px solid var(--line);padding:4px 8px;border-radius:999px}
+.version p{margin:0 0 14px;color:var(--muted);font-size:13.5px}
+.version a{font-family:var(--mono);font-size:11px;color:var(--accent);display:inline-flex;align-items:center;gap:6px}
+.version a:hover{color:var(--text)}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.feature{border:1px solid var(--line);border-radius:14px;padding:18px;background:rgba(8,27,35,.45)}
+.feature h4{margin:0 0 6px;font-size:14.5px}
+.feature p{margin:0;color:var(--muted);font-size:13px}
+.stack-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.chip{font-family:var(--mono);font-size:10.5px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);background:rgba(11,34,43,.55)}
+.note{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:13px;color:var(--muted);font-size:12.5px;background:rgba(11,34,43,.35)}
+.note svg{flex:0 0 auto;color:var(--accent);margin-top:1px}
+.terminal{border:1px solid var(--line);border-radius:14px;background:#041016;overflow:hidden}
+.terminal-bar{display:flex;align-items:center;gap:6px;padding:10px 12px;border-bottom:1px solid var(--line);background:rgba(11,34,43,.7)}
+.dot{width:8px;height:8px;border-radius:50%;background:#36515c}
+.dot:first-child{background:#9b5b5b}.dot:nth-child(2){background:#9b8a5b}.dot:nth-child(3){background:#4f8f78}
+.terminal pre{margin:0;padding:16px;overflow:auto;font-family:var(--mono);font-size:12px;line-height:1.75;color:#c9dde2}
+.docs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.doc{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-radius:14px;padding:17px;background:rgba(8,27,35,.45);transition:.18s}
+.doc:hover{border-color:rgba(42,157,143,.45);transform:translateY(-2px)}
+.doc .tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:var(--accent);text-transform:uppercase}
+.doc h4{margin:0;font-size:14.5px}
+.doc p{margin:0;color:var(--muted);font-size:12.5px}
+.cta{padding:clamp(54px,7vw,88px) 0;text-align:center}
+.cta-box{border:1px solid var(--line);border-radius:22px;padding:clamp(30px,5vw,56px);background:
+  radial-gradient(600px 260px at 50% 0%,rgba(42,157,143,.16),transparent 70%),
+  linear-gradient(180deg,rgba(11,34,43,.8),rgba(6,20,27,.65))}
+.cta h2{max-width:22ch;margin:0 auto 14px}
+.cta p{color:var(--muted);max-width:64ch;margin:0 auto 24px}
+.footer{border-top:1px solid var(--line);padding:34px 0 46px;color:var(--muted);font-size:12.5px}
+.footer-grid{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer a{color:var(--muted)}.footer a:hover{color:var(--text)}
+.reveal{opacity:1;transform:none}
+@media(max-width:900px){
+  .hero-grid,.stack-grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .stat:nth-child(2){border-right:0}
+  .timeline,.features,.docs{grid-template-columns:1fr 1fr}
+  .versions{grid-template-columns:1fr}
+}
+@media(max-width:620px){
+  .nav-links a:not(.btn){display:none}
+  .two,.timeline,.features,.docs{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:1fr}
+  .stat{border-right:0;border-bottom:1px solid var(--line)}
+  h1{font-size:42px}
+}
+</style>
+<link rel="stylesheet" href="assets/community.css?v=1">
+</head>
+<body>
+<header class="nav"><div class="wrap nav-in">
+  <a class="brand" href="/"><span class="brand-mark"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 9 5-9 5-9-5 9-5z"/><path d="m3 12 9 5 9-5M3 17l9 5 9-5"/></svg></span><span>jmadasme<span style="color:var(--accent)">.</span>portfolio</span></a>
+  <nav class="nav-links">
+    <a href="#proyecto">Proyecto</a>
+    <a href="#versiones">Versiones</a>
+    <a href="#stack">Stack</a>
+    <a href="#docs">Docs</a>
+    <a href="#comunidad">Comunidad</a>
+    <a class="btn btn-ghost" style="padding:9px 15px" href="/software/">← Software</a>
+  </nav>
+</div></header>
+<main id="top">
+<section class="hero"><div class="wrap hero-grid">
+  <div class="hero-copy">
+    <div class="eyebrow">Python · API · Automatización</div>
+    <h1>El mercado público.<br><span class='grad'>Monitoreado.</span></h1>
+    <p class="lead">Tres modos para encontrar licitaciones: por código, por palabras clave o cada 30 minutos.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="https://github.com/jmadasme/licitaciones-mercado-publico" target="_blank" rel="noopener">Ver el repositorio <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a class="btn btn-ghost" href="#versiones">Explorar versiones</a>
+    </div>
+    <div class="badges"><span class="badge">MIT</span><span class="badge">Software &amp; IA</span><span class="badge">1 versión</span><span class="badge">GitHub Pages</span></div>
+  </div>
+  <div class="hero-visual">
+    <div class="visual-frame"><img src="assets/architecture.svg" alt="Arquitectura de Licitaciones Mercado Público"></div>
+    <div class="visual-caption">Arquitectura · Licitaciones Mercado Público</div>
+    <div class="float-chip"><span class="live-dot"></span>1 versión preservada</div>
+  </div>
+</div></section>
+
+<section class="stats"><div class="wrap stats-grid"><div class="stat"><div class="stat-num">3</div><div class="stat-label">modos</div></div><div class="stat"><div class="stat-num">30 min</div><div class="stat-label">monitoreo</div></div><div class="stat"><div class="stat-num">Python</div><div class="stat-label">stack</div></div><div class="stat"><div class="stat-num">1</div><div class="stat-label">versión</div></div></div></section>
+
+<section class="section" id="proyecto"><div class="wrap">
+  <div class="section-head reveal"><div class="kicker">01 — El proyecto</div><h2>Qué resuelve</h2><p class="section-sub">Automatización de consultas al Mercado Público chileno: búsqueda por código, búsqueda por palabras clave y monitoreo periódico con descarga de documentos.</p></div>
+  <div class="two">
+    <div class="card reveal"><span class="tag">Problema</span><h3>El punto de partida</h3><p>Revisar el Mercado Público a mano todos los días no escala y deja pasar oportunidades.</p></div>
+    <div class="card reveal"><span class="tag">Solución</span><h3>La propuesta</h3><p>Un script configurable que consulta la API, filtra y descarga la documentación relevante.</p></div>
+  </div>
+</div></section>
+
+<section class="section" id="versiones"><div class="wrap">
+  <div class="section-head reveal"><div class="kicker">02 — Versiones</div><h2>La historia, completa.</h2><p class="section-sub">Cada carpeta conserva una etapa del proyecto. No se borraron las anteriores: se pusieron en contexto.</p></div>
+  <div class="versions"><article class="version reveal">
+  <div class="version-top"><h3>licitaciones-mercado-publico</h3><span class="count">raíz del repo</span></div>
+  <p>Versión única conservada: Python + requests + dotenv + tqdm, con tres modos de operación.</p>
+  <a href="https://github.com/jmadasme/licitaciones-mercado-publico" target="_blank" rel="noopener">Ver carpeta <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+</article></div>
+</div></section>
+
+<section class="section tight"><div class="wrap">
+  <div class="section-head reveal"><div class="kicker">03 — Cómo se usa</div><h2>De la carpeta a la práctica.</h2></div>
+  <div class="timeline"><div class="step reveal"><div class="step-n">01</div><h4>Configurá la API</h4><p>Completá las variables de entorno y el ticket.</p></div><div class="step reveal"><div class="step-n">02</div><h4>Elegí un modo</h4><p>Código, palabras clave o monitoreo.</p></div><div class="step reveal"><div class="step-n">03</div><h4>Ejecutá</h4><p>Corré el script y revisá la salida.</p></div><div class="step reveal"><div class="step-n">04</div><h4>Programá</h4><p>Dejá el modo monitoreo cada 30 minutos.</p></div></div>
+</div></section>
+
+<section class="section tight"><div class="wrap">
+  <div class="section-head reveal"><div class="kicker">04 — Decisiones</div><h2>Lo que lo hace distinto</h2></div>
+  <div class="features"><div class="feature reveal"><h4>Tres modos</h4><p>Código, palabras clave y monitoreo.</p></div><div class="feature reveal"><h4>Descarga</h4><p>Baja documentos y metadata.</p></div><div class="feature reveal"><h4>Filtros</h4><p>Palabras clave configurables.</p></div><div class="feature reveal"><h4>Consola clara</h4><p>Progreso con tqdm.</p></div><div class="feature reveal"><h4>Variables de entorno</h4><p>Sin credenciales en el código.</p></div><div class="feature reveal"><h4>Documentación</h4><p>Datasheet, developer y referencias.</p></div></div>
+</div></section>
+
+<section class="section tight" id="stack"><div class="wrap">
+  <div class="section-head reveal"><div class="kicker">05 — Stack y arranque</div><h2>Con qué está construido</h2></div>
+  <div class="stack-grid">
+    <div class="reveal"><div class="chips"><span class="chip">Python</span><span class="chip">requests</span><span class="chip">python-dotenv</span><span class="chip">tqdm</span><span class="chip">API Mercado Público</span></div><div class="note"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z"/></svg><span>Necesitás un ticket válido de la API. El monitoreo cada 30 minutos es una decisión operativa, no un cron incluido.</span></div></div>
+    <div class="terminal reveal"><div class="terminal-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div><pre>git clone https://github.com/jmadasme/licitaciones-mercado-publico.git
+cd licitaciones-mercado-publico
+python3 -m venv venv &amp;&amp; source venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+python main.py</pre></div>
+  </div>
+</div></section>
+
+<section class="section tight" id="docs"><div class="wrap">
+  <div class="section-head reveal"><div class="kicker">06 — Documentación</div><h2>Para usar y para entender.</h2><p class="section-sub">Cada documento está en el repositorio, versionado junto al código.</p></div>
+  <div class="docs"><a class="doc reveal" href="https://github.com/jmadasme/licitaciones-mercado-publico/blob/main/docs/datasheet.md" target="_blank" rel="noopener"><span class="tag">DATASHEET</span><h4>Manual de operación</h4><p>Instalación, uso, configuración y troubleshooting.</p></a><a class="doc reveal" href="https://github.com/jmadasme/licitaciones-mercado-publico/blob/main/docs/developer.md" target="_blank" rel="noopener"><span class="tag">DEVELOPER</span><h4>Guía de código</h4><p>Arquitectura, módulos, contratos y extensión.</p></a><a class="doc reveal" href="https://github.com/jmadasme/licitaciones-mercado-publico/blob/main/docs/REFERENCES.md" target="_blank" rel="noopener"><span class="tag">REFERENCES</span><h4>Referencias</h4><p>Fuentes oficiales y documentación de las tecnologías.</p></a><a class="doc reveal" href="https://github.com/jmadasme/licitaciones-mercado-publico/blob/main/docs/BITACORA.md" target="_blank" rel="noopener"><span class="tag">BITÁCORA</span><h4>Bitácora</h4><p>Decisiones, problemas y lecciones del proyecto.</p></a></div>
+</div></section>
+
+<section class="cta"><div class="wrap"><div class="cta-box reveal">
+  <div class="kicker">Siguiente paso</div><h2>¿Te animás?</h2>
+  <p>Usá esto como base y referencia para licitaciones mercado público. Este proyecto es la prueba de que se puede hacer con componentes reales.</p>
+  <div class="hero-actions" style="justify-content:center"><a class="btn btn-primary" href="https://github.com/jmadasme/licitaciones-mercado-publico" target="_blank" rel="noopener">Abrir el repositorio <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="btn btn-ghost" href="/software/">Ver más de Software</a></div>
+</div></div></section>
+</main>
+<footer class="footer"><div class="wrap footer-grid">
+  <div><strong style="color:var(--text)">jmadasme.portfolio</strong> · 9 proyectos, 18 versiones, 3 secciones.<br>Documentación y sitios publicados con GitHub Pages.</div>
+  <div><a href="/arduino-unoq/">Arduino UNO Q</a> · <a href="/iot/">IoT & Hardware</a> · <a href="/software/">Software & IA</a> · <a href="https://github.com/jmadasme" target="_blank" rel="noopener">GitHub</a></div>
+</div></footer>
+<script>window.PORTFOLIO_COMMUNITY={account:"jmadasme",repo:"licitaciones-mercado-publico",coinNamespace:"jmadasme-licitaciones-mercado-publico-coins-v1",faqs:[{"q": "¿Necesito una API key?", "a": "Sí, un ticket de la API de Mercado Público. Se configura por variable de entorno."}, {"q": "¿Qué diferencia hay entre los modos?", "a": "Código busca una licitación exacta; palabras clave filtra por términos; monitoreo repite la consulta cada 30 minutos."}, {"q": "¿Descarga los documentos?", "a": "Sí, el downloader baja los archivos asociados y la metadata cuando están disponibles."}, {"q": "¿Puedo dejarlo corriendo solo?", "a": "Sí, con el modo monitoreo o un cron/servicio. El repositorio no incluye un daemon."}, {"q": "¿Es oficial?", "a": "No. Es una herramienta de automatización sobre la API pública; no reemplaza los canales oficiales."}]};</script>
+<script src="assets/community.js?v=1" defer></script>
+
+</body>
+</html>
