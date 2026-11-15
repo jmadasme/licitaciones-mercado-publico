@@ -982,3 +982,54 @@ Se permite usar, copiar, modificar, fusionar, publicar, distribuir, sublicenciar
 <p align="center">
   <sub>Hecho para revisar licitaciones sin abrir cien pestañas. Datos oficiales de Mercado Público, ChileCompra.</sub>
 </p>
+
+## Ficha de evaluación
+
+**Madurez global: 4.3/5**
+
+| Criterio | Nota | Evidencia |
+|---|---:|---|
+| Madurez | 4/5 | CLI completa con reintentos, descargas atómicas, metadatos y monitoreo probado. |
+| Reproducibilidad | 4/5 | requirements.txt y .env documentados; solo requiere una clave de la API. |
+| Documentación | 5/5 | README y guía de API explican modos, límites, errores y estructura de salida. |
+| Honestidad de límites | 5/5 | Declara ventana de la API, filtro conservador y necesidad de envoltorio para cron. |
+| Valor demostrativo | 4/5 | Resuelve un caso real de seguimiento de compras públicas con bajo costo. |
+| Facilidad de despliegue | 4/5 | Python 3.9, pip y una variable de entorno; sin servicios externos obligatorios. |
+
+CLI madura y bien documentada para una API limitada; su utilidad real depende de asumir la ventana corta de la API y el filtro de estados conservador.
+
+## Lo que no funcionó
+
+### Versión única — La API no busca por texto
+
+La API v1 solo entrega un listado reciente de unas doscientas licitaciones y no admite búsqueda por palabras clave ni paginación histórica. La herramienta descarga esa ventana y filtra localmente, por lo que una coincidencia antigua puede quedar fuera. El README lo advierte y no presenta el resultado como una búsqueda exhaustiva.
+
+### Versión única — Filtro de vigencia conservador
+
+El modo 'solo vigentes' compara estrictamente CodigoEstado con 5, aunque la API puede publicar procesos vigentes con códigos 1 u 11. Esa decisión evita falsos positivos, pero excluye licitaciones abiertas. El README documenta el criterio y aconseja revisar el estado en el sitio oficial antes de confiar en el filtro.
+
+### Versión única — Modo interactivo incompatible con cron
+
+main.py funciona como menú interactivo y espera entrada por terminal; sin TTY, un cron o un servicio lo dejan bloqueado o fallan al leer. El README recomienda envolver las funciones en un script no interactivo, pero no incluye ese envoltorio, de modo que la automatización queda a cargo del usuario.
+
+### Versión única — Errores con HTTP 200
+
+La API puede responder con estado 200 o 203 y un cuerpo que contiene Codigo y Mensaje de error, de modo que confiar solo en el código HTTP daría por válida una consulta fallida. El cliente inspecciona el JSON antes de continuar; el README explica ese comportamiento como una defensa necesaria, no como una peculiaridad opcional.
+
+## Preguntas típicas
+
+**¿Qué es este proyecto?**
+
+Una CLI en Python que consulta la API v1 de Mercado Público para buscar licitaciones por código o palabras clave, monitorear cada 30 minutos y descargar documentos adjuntos.
+
+**¿Permite búsquedas históricas?**
+
+No. La API solo entrega una ventana reciente de unas 200 licitaciones, sin búsqueda textual ni paginación histórica; la herramienta filtra esa ventana localmente.
+
+**¿Cómo se ejecuta?**
+
+Con Python 3.9 o superior, las dependencias de requirements.txt y una clave de API en .env. main.py es interactivo, así que para cron hace falta un envoltorio no interactivo.
+
+**¿Qué se puede reutilizar?**
+
+El cliente HTTP con validación de cuerpo, reintentos y backoff, la descarga atómica con .part y SHA-256, y la sanitización de nombres; el filtro de vigencia y el modo de uso deben adaptarse.

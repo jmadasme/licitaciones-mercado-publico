@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="titulo desc">
+  <title id="titulo">Arquitectura de Licitaciones Mercado Público</title>
+  <desc id="desc">Diagrama de módulos: main orquesta config, mercado_publico, downloader, api_client, metadata y utils; la API externa y el disco local cierran el flujo.</desc>
+  <defs>
+    <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#457B9D"/>
+    </marker>
+    <marker id="flecha-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2A9D8F"/>
+    </marker>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0c222b"/>
+      <stop offset="100%" stop-color="#081a21"/>
+    </linearGradient>
+    <linearGradient id="barra" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2A9D8F"/>
+      <stop offset="55%" stop-color="#457B9D"/>
+      <stop offset="100%" stop-color="#5B7C99"/>
+    </linearGradient>
+    <style>
+      .titulo { font-family: "Inter","Segoe UI",system-ui,sans-serif; font-size: 30px; font-weight: 700; fill: #e8f1f4; letter-spacing: 0.4px; }
+      .subtitulo { font-family: "Inter","Segoe UI",system-ui,sans-serif; font-size: 14px; fill: #8fa9b5; letter-spacing: 2.6px; }
+      .mod { font-family: "JetBrains Mono","SFMono-Regular",Consolas,monospace; font-size: 17px; font-weight: 700; fill: #e8f1f4; }
+      .rol { font-family: "Inter","Segoe UI",system-ui,sans-serif; font-size: 12.5px; fill: #9db6c1; }
+      .nota { font-family: "Inter","Segoe UI",system-ui,sans-serif; font-size: 12px; fill: #7d97a3; }
+      .etiqueta { font-family: "Inter","Segoe UI",system-ui,sans-serif; font-size: 11px; fill: #6f8b97; letter-spacing: 1.2px; }
+      .arista { stroke: #457B9D; stroke-width: 1.6; fill: none; opacity: 0.85; }
+      .arista-teal { stroke: #2A9D8F; stroke-width: 1.6; fill: none; opacity: 0.9; }
+      .caja { fill: url(#panel); stroke: #24505c; stroke-width: 1.2; }
+      .caja-destacada { fill: #0e2a33; stroke: #2A9D8F; stroke-width: 1.4; }
+      .columna { font-family: "Inter","Segoe UI",system-ui,sans-serif; font-size: 11px; fill: #5B7C99; letter-spacing: 2px; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="800" fill="#06141b"/>
+  <rect x="0" y="0" width="1200" height="6" fill="url(#barra)"/>
+
+  <text x="60" y="62" class="subtitulo">LICITACIONES · MERCADO PÚBLICO · CHILE</text>
+  <text x="60" y="102" class="titulo">Arquitectura del sistema</text>
+  <text x="60" y="128" class="nota">CLI modular sin base de datos: el estado vive en el sistema de archivos</text>
+  <line x1="60" y1="150" x2="1140" y2="150" stroke="#1b3a45" stroke-width="1"/>
+
+  <text x="60" y="184" class="columna">ENTRADA</text>
+
+  <rect x="330" y="170" width="540" height="82" rx="8" class="caja-destacada"/>
+  <text x="356" y="202" class="mod">main.py</text>
+  <text x="356" y="224" class="rol">CLI interactiva · menú · orquestación del flujo</text>
+  <text x="356" y="241" class="nota">tres modos: código · palabras clave · monitoreo</text>
+  <circle cx="836" cy="190" r="5" fill="#2A9D8F"/>
+
+  <text x="60" y="300" class="columna">SERVICIOS</text>
+
+  <rect x="70" y="286" width="330" height="86" rx="8" class="caja"/>
+  <text x="94" y="316" class="mod">config.py</text>
+  <text x="94" y="338" class="rol">ticket desde .env o entorno</text>
+  <text x="94" y="356" class="nota">validación · hash SHA-256</text>
+
+  <rect x="435" y="286" width="330" height="86" rx="8" class="caja"/>
+  <text x="459" y="316" class="mod">mercado_publico.py</text>
+  <text x="459" y="338" class="rol">endpoints · filtros por texto y estado</text>
+  <text x="459" y="356" class="nota">resolución de documentos y actas</text>
+
+  <rect x="800" y="286" width="330" height="86" rx="8" class="caja"/>
+  <text x="824" y="316" class="mod">downloader.py</text>
+  <text x="824" y="338" class="rol">streaming 8 KB · barra tqdm</text>
+  <text x="824" y="356" class="nota">.part · renombrado atómico</text>
+
+  <text x="60" y="432" class="columna">TRANSPORTE Y PERSISTENCIA</text>
+
+  <rect x="185" y="418" width="390" height="84" rx="8" class="caja"/>
+  <text x="209" y="448" class="mod">api_client.py</text>
+  <text x="209" y="470" class="rol">sesión HTTP persistente</text>
+  <text x="209" y="488" class="nota">4 intentos · backoff 1/2/4 s · rate limit 1–2 s</text>
+
+  <rect x="625" y="418" width="390" height="84" rx="8" class="caja"/>
+  <text x="649" y="448" class="mod">metadata.py</text>
+  <text x="649" y="470" class="rol">serialización JSON trazable</text>
+  <text x="649" y="488" class="nota">licitación · archivos · descargas · ticket_hash</text>
+
+  <text x="60" y="562" class="columna">SOPORTE TRANSVERSAL</text>
+
+  <rect x="330" y="548" width="540" height="70" rx="8" class="caja"/>
+  <text x="354" y="576" class="mod">utils.py</text>
+  <text x="354" y="598" class="rol">sanitización de nombres · colisiones · logging</text>
+
+  <text x="60" y="690" class="columna">SISTEMAS EXTERNOS</text>
+
+  <rect x="120" y="676" width="420" height="80" rx="8" fill="#0a1d25" stroke="#457B9D" stroke-width="1.3"/>
+  <text x="144" y="706" class="mod">API Mercado Público v1</text>
+  <text x="144" y="728" class="rol">api.mercadopublico.cl · HTTPS · JSON</text>
+  <text x="144" y="745" class="nota">requiere ticket personal e intransferible</text>
+
+  <rect x="660" y="676" width="420" height="80" rx="8" fill="#0a1d25" stroke="#5B7C99" stroke-width="1.3"/>
+  <text x="684" y="706" class="mod">Disco local · descargas/</text>
+  <text x="684" y="728" class="rol">documentos + metadata.json + reportes</text>
+  <text x="684" y="745" class="nota">sin base de datos · inspeccionable con jq</text>
+
+  <line x1="600" y1="252" x2="600" y2="286" class="arista-teal" marker-end="url(#flecha-teal)"/>
+  <line x1="510" y1="252" x2="235" y2="286" class="arista" marker-end="url(#flecha)"/>
+  <line x1="690" y1="252" x2="965" y2="286" class="arista" marker-end="url(#flecha)"/>
+
+  <line x1="235" y1="372" x2="310" y2="418" class="arista" marker-end="url(#flecha)"/>
+  <line x1="540" y1="372" x2="540" y2="418" class="arista" marker-end="url(#flecha)"/>
+  <line x1="965" y1="372" x2="890" y2="418" class="arista" marker-end="url(#flecha)"/>
+
+  <line x1="380" y1="502" x2="380" y2="548" class="arista" marker-end="url(#flecha)"/>
+  <line x1="820" y1="502" x2="820" y2="548" class="arista" marker-end="url(#flecha)"/>
+
+  <line x1="870" y1="618" x2="870" y2="676" class="arista" marker-end="url(#flecha)"/>
+
+  <text x="620" y="276" class="etiqueta">ORQUESTA</text>
+  <text x="552" y="404" class="etiqueta">HTTP</text>
+  <text x="1000" y="410" class="etiqueta" text-anchor="end">RESULTADOS</text>
+  <text x="392" y="536" class="etiqueta">SOPORTE</text>
+
+  <text x="60" y="786" class="nota">Las flechas indican dependencia de código y flujo de datos. La API y el disco son los únicos límites del sistema.</text>
+</svg>

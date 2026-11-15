@@ -134,6 +134,75 @@ h2{font-size:clamp(30px,4vw,46px);line-height:1.05;letter-spacing:-.04em;margin:
   .stat{border-right:0;border-bottom:1px solid var(--line)}
   h1{font-size:42px}
 }
+
+/* ── Contenido heredado del proyecto original, en clave sobria ── */
+.rich{max-width:78ch}
+.rich p{margin:0 0 14px;color:#c3d4da}
+.rich h3{margin:26px 0 10px;font-size:19px;letter-spacing:-.02em}
+.rich h4{margin:22px 0 8px;font-size:15px;letter-spacing:-.01em}
+.rich ul,.rich ol{margin:0 0 16px;padding-left:22px;color:#c3d4da}
+.rich li{margin:0 0 6px}
+.rich figure{margin:22px 0;border:1px solid var(--line);border-radius:16px;padding:10px;background:rgba(11,34,43,.5)}
+.rich figure img{width:100%;display:block;border-radius:10px}
+.rich figcaption{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:9px;line-height:1.5}
+.rich .table-wrap{overflow-x:auto;margin:18px 0;border:1px solid var(--line);border-radius:12px}
+.rich table{border-collapse:collapse;width:100%;font-size:13.5px}
+.rich th,.rich td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.rich th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:rgba(11,34,43,.6)}
+.rich tr:last-child td{border-bottom:0}
+.rich pre{margin:18px 0;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:#04141a;overflow-x:auto;font-family:var(--mono);font-size:12px;line-height:1.6;color:#cfe3e8}
+.rich code{font-family:var(--mono);font-size:.92em}
+.rich .note{margin:18px 0;padding:13px 16px;border-left:2px solid var(--accent);background:rgba(42,157,143,.07);color:#c3d4da;font-size:14px}
+.rich .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0}
+.rich .card-grid .card{margin:0}
+
+
+.rich h3{margin:26px 0 8px}
+.rich p{margin:0 0 14px;color:var(--muted);line-height:1.7}
+.fail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:6px}
+.fail{background:rgba(11,34,43,.55);border:1px solid var(--line);border-radius:14px;padding:18px}
+.fail .v{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--warm,#D6A86A)}
+.fail h3{font-size:16px;margin:8px 0 6px}
+.fail p{font-size:14px;margin:0;color:var(--muted)}
+.rating-head{display:flex;align-items:center;gap:20px;margin:6px 0 18px;padding:18px 20px;border:1px solid var(--line);border-radius:16px;background:rgba(11,34,43,.55)}
+.rating-avg{font-family:var(--mono);font-size:40px;line-height:1;color:var(--accent)}
+.rating-avg small{font-size:14px;color:var(--muted)}
+.rating-head p{margin:4px 0 0;font-size:14px;color:var(--muted);max-width:70ch}
+.rating{display:grid;gap:2px}
+.rating-row{display:grid;grid-template-columns:165px minmax(90px,1fr) 48px;gap:14px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}
+.rating-row:last-child{border-bottom:0}
+.rating-name{font-size:13.5px;font-weight:600}
+.rating-bar{height:6px;border-radius:99px;background:rgba(148,190,200,.14);overflow:hidden}
+.rating-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.rating-score{font-family:var(--mono);font-size:12.5px;color:var(--accent);text-align:right}
+.rating-note{grid-column:2/-1;font-size:12.5px;color:var(--muted);margin-top:-4px}
+.faq{display:grid;gap:0;margin-top:4px}
+.faq details{border-bottom:1px solid var(--line);padding:14px 0}
+.faq summary{cursor:pointer;font-weight:600;font-size:15px;list-style:none}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:"+";display:inline-block;width:18px;color:var(--accent);font-family:var(--mono)}
+.faq details[open] summary::before{content:"–"}
+.faq p{margin:10px 0 0 18px;font-size:14px;color:var(--muted)}
+@media(max-width:720px){
+  .fail-grid{grid-template-columns:1fr}
+  .rating-head{flex-direction:column;align-items:flex-start}
+  .rating-row{grid-template-columns:120px 1fr 44px}
+}
+
+
+.detail h2{margin:34px 0 10px;font-size:24px;letter-spacing:-.02em}
+.detail h3{margin:24px 0 8px;font-size:17px}
+.detail p{margin:0 0 14px;color:var(--muted);line-height:1.75}
+.detail ul,.detail ol{margin:0 0 16px 20px;color:var(--muted)}
+.detail li{margin:6px 0}
+.detail table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px}
+.detail th,.detail td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}
+.detail th{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--accent)}
+.detail pre{background:rgba(6,20,27,.75);border:1px solid var(--line);border-radius:12px;padding:14px;overflow:auto;font-size:13px}
+.detail code{font-family:var(--mono);font-size:.92em}
+.detail img{max-width:100%;border-radius:12px;border:1px solid var(--line)}
+.detail blockquote{border-left:2px solid var(--accent);margin:14px 0;padding:2px 0 2px 16px;color:var(--muted)}
+
 </style>
 <link rel="stylesheet" href="assets/community.css?v=1">
 </head>
@@ -168,53 +237,1334 @@ h2{font-size:clamp(30px,4vw,46px);line-height:1.05;letter-spacing:-.04em;margin:
   </div>
 </div></section>
 
-<section class="stats"><div class="wrap stats-grid"><div class="stat"><div class="stat-num">3</div><div class="stat-label">modos</div></div><div class="stat"><div class="stat-num">30 min</div><div class="stat-label">monitoreo</div></div><div class="stat"><div class="stat-num">Python</div><div class="stat-label">stack</div></div><div class="stat"><div class="stat-num">1</div><div class="stat-label">versión</div></div></div></section>
+<section class="stats"><div class="wrap stats-grid"><div class="stat"><div class="stat-num">3</div><div class="stat-label">modos</div></div><div class="stat"><div class="stat-num">30 min</div><div class="stat-label">monitoreo</div></div><div class="stat"><div class="stat-num">Python</div><div class="stat-label">stack</div></div><div class="stat"><div class="stat-num">1</div><div class="stat-label">versión</div></div></div></section><section class="section tight"><div class="wrap"><div class="section-head reveal"><div class="kicker">El concepto</div><h2>Qué es y por qué existe</h2></div><div class="rich reveal"><p>Herramienta de línea de comandos para consultar y monitorear licitaciones del Mercado Público chileno mediante su API oficial. Permite buscar por código, filtrar por palabras clave y ejecutar un monitoreo periódico que recuerda los procesos ya vistos. Descarga los documentos adjuntos con reintentos, nombres saneados y metadatos que incluyen el hash del ticket.</p><p>Está pensada para pymes, consultoras y analistas que siguen oportunidades sin pagar un servicio de alertas. Su aporte es el manejo cuidadoso de una API restrictiva: valida el cuerpo además del código HTTP, respeta el rate limit y escribe los archivos de forma atómica. El README expone con claridad las limitaciones de la versión 1 de la API, en especial la ausencia de búsqueda textual y de paginación histórica.</p></div></div></section><section class="section tight"><div class="wrap"><div class="section-head reveal"><div class="kicker">El proyecto en detalle</div><h2>Documentación preservada</h2><p class="section-sub">El README original, completo y en su contexto.</p></div><div class="detail rich reveal">
+<p><img alt="Python" src="https://img.shields.io/badge/Python-3.9%2B-457B9D?style=flat-square"/>
+<img alt="Dependencias" src="https://img.shields.io/badge/deps-requests%20%7C%20dotenv%20%7C%20tqdm-2A9D8F?style=flat-square"/>
+<img alt="API" src="https://img.shields.io/badge/API-Mercado%20P%C3%BAblico%20v1-5B7C99?style=flat-square"/>
+<img alt="Licencia" src="https://img.shields.io/badge/licencia-MIT-06141b?style=flat-square"/></p>
+<p>Herramienta de línea de comandos para <strong>buscar, descargar y monitorear licitaciones del Mercado Público de Chile</strong> mediante la API oficial (<code>api.mercadopublico.cl</code>). Automatiza tres flujos que normalmente se hacen a mano en el portal: consulta por código, búsqueda por palabras clave y vigilancia periódica cada 30 minutos.</p>
+<p>Todo lo descargado se organiza por código de licitación y se acompaña de un <code>metadata.json</code> con la respuesta completa de la API, el estado de cada archivo y la trazabilidad del proceso.</p>
+<hr/>
+<h2 id="tabla-de-contenidos">Tabla de contenidos</h2>
+<ul>
+<li><a href="#1-el-problema">1. El problema</a></li>
+<li><a href="#2-qué-hace-este-programa">2. Qué hace este programa</a></li>
+<li><a href="#3-los-tres-modos">3. Los tres modos</a></li>
+<li><a href="#31-búsqueda-por-código">3.1 Búsqueda por código</a></li>
+<li><a href="#32-búsqueda-por-palabras-clave">3.2 Búsqueda por palabras clave</a></li>
+<li><a href="#33-monitoreo-cada-30-minutos">3.3 Monitoreo cada 30 minutos</a></li>
+<li><a href="#34-comparativa">3.4 Comparativa</a></li>
+<li><a href="#4-arquitectura">4. Arquitectura</a></li>
+<li><a href="#5-la-api-de-mercado-público">5. La API de Mercado Público</a></li>
+<li><a href="#51-autenticación">5.1 Autenticación</a></li>
+<li><a href="#52-endpoints">5.2 Endpoints</a></li>
+<li><a href="#53-respuesta">5.3 Respuesta</a></li>
+<li><a href="#54-campos-principales">5.4 Campos principales</a></li>
+<li><a href="#55-estados">5.5 Estados</a></li>
+<li><a href="#56-tipos-de-licitación">5.6 Tipos de licitación</a></li>
+<li><a href="#57-límites-de-la-api-v1">5.7 Límites de la API v1</a></li>
+<li><a href="#6-requisitos-e-instalación">6. Requisitos e instalación</a></li>
+<li><a href="#7-configuración-del-ticket">7. Configuración del ticket</a></li>
+<li><a href="#8-uso">8. Uso</a></li>
+<li><a href="#9-ejemplos-de-uso">9. Ejemplos de uso</a></li>
+<li><a href="#10-programación-de-ejecuciones">10. Programación de ejecuciones</a></li>
+<li><a href="#11-estructura-del-proyecto">11. Estructura del proyecto</a></li>
+<li><a href="#12-salida-y-metadatajson">12. Salida y metadata.json</a></li>
+<li><a href="#13-funcionamiento-interno">13. Funcionamiento interno</a></li>
+<li><a href="#14-límites-y-riesgos">14. Límites y riesgos</a></li>
+<li><a href="#15-solución-de-problemas">15. Solución de problemas</a></li>
+<li><a href="#16-seguridad">16. Seguridad</a></li>
+<li><a href="#17-advertencias">17. Advertencias</a></li>
+<li><a href="#18-documentación-adicional">18. Documentación adicional</a></li>
+<li><a href="#19-contribuir">19. Contribuir</a></li>
+<li><a href="#20-licencia">20. Licencia</a></li>
+</ul>
+<hr/>
+<h2 id="1-el-problema">1. El problema</h2>
+<p>El Mercado Público chileno publica miles de procesos de compra al año. Revisarlos manualmente implica abrir ficha por ficha, comparar nombres y descripciones, descargar bases y anexos, y repetir el ciclo cada día. Los problemas concretos:</p>
+<ul>
+<li><strong>Volumen</strong>: las oportunidades relevantes se pierden entre cientos de procesos de otras categorías.</li>
+<li><strong>Oportunidad</strong>: una licitación puede pasar de Publicada a Cerrada en pocos días; enterarse tarde equivale a perderla.</li>
+<li><strong>Documentación dispersa</strong>: bases, anexos y actas viven en enlaces distintos dentro de cada ficha.</li>
+<li><strong>Trabajo repetitivo</strong>: descargar, renombrar y archivar PDFs es manual y propenso a errores.</li>
+<li><strong>Sin historial local</strong>: el portal no está pensado para que un tercero acumule y compare oportunidades.</li>
+</ul>
+<p>Este proyecto ataca esos puntos con una interfaz de terminal: consulta la API oficial, filtra localmente, descarga documentos y deja un registro estructurado. No usa navegador, no hace scraping del HTML y no guarda credenciales en claro. Es una herramienta de <strong>vigilancia de oportunidades</strong>, no de participación automática: la decisión de ofertar sigue siendo humana.</p>
+<hr/>
+<h2 id="2-que-hace-este-programa">2. Qué hace este programa</h2>
+<table>
+<thead>
+<tr>
+<th>Capacidad</th>
+<th>Detalle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Consulta individual</td>
+<td>Metadatos completos de una licitación por su código externo</td>
+</tr>
+<tr>
+<td>Búsqueda local</td>
+<td>Filtra el listado reciente por coincidencia en nombre y descripción</td>
+</tr>
+<tr>
+<td>Filtro por estado</td>
+<td>Solo vigentes (<code>CodigoEstado == 5</code>) o todos los estados</td>
+</tr>
+<tr>
+<td>Documentos</td>
+<td>Resuelve el acta de adjudicación y el endpoint de archivos si existe</td>
+</tr>
+<tr>
+<td>Descarga con progreso</td>
+<td>Streaming en bloques de 8 KB con barra <code>tqdm</code></td>
+</tr>
+<tr>
+<td>Descarga atómica</td>
+<td>Escribe <code>.part</code> y renombra al finalizar</td>
+</tr>
+<tr>
+<td>Reintentos</td>
+<td>Backoff exponencial y espera especial ante HTTP 429</td>
+</tr>
+<tr>
+<td>Control de tasa</td>
+<td>Pausas de 1 a 2 segundos con jitter entre peticiones</td>
+</tr>
+<tr>
+<td>Nombres seguros</td>
+<td>Sanitización multiplataforma y resolución de colisiones</td>
+</tr>
+<tr>
+<td>Metadatos</td>
+<td><code>metadata.json</code> con la API completa y el estado de cada descarga</td>
+</tr>
+<tr>
+<td>Monitoreo</td>
+<td>Ciclos de 30 minutos con memoria de códigos vistos</td>
+</tr>
+<tr>
+<td>Privacidad</td>
+<td>Solo se persiste un hash SHA-256 del ticket</td>
+</tr>
+</tbody>
+</table>
+<p>Lo que <strong>no</strong> hace: no firma documentos, no envía ofertas, no automatiza la participación, no evade autenticación y no accede a datos que la API no exponga con un ticket válido.</p>
+<hr/>
+<h2 id="3-los-tres-modos">3. Los tres modos</h2>
+<p>Al ejecutar <code>python main.py</code> aparece el menú:</p>
+<pre><code>══════════════════════════════════════════════════════════
+  MENÚ PRINCIPAL
+══════════════════════════════════════════════════════════
+  1. Buscar licitación por código
+  2. Buscar licitaciones por palabras clave
+  3. Modo monitoreo cada 30 min (terminos fijos)
+  0. Salir
+──────────────────────────────────────────────────────────
+  Opción:
+</code></pre>
+<h3 id="31-busqueda-por-codigo">3.1 Búsqueda por código</h3>
+<p>Flujo directo cuando se conoce el código externo (por ejemplo <code>1234567-8-LP24</code>):</p>
+<ol>
+<li>Pide el código y normaliza la entrada: quita espacios, convierte guiones tipográficos (<code>—</code>, <code>–</code>, <code>−</code>) en <code>-</code> y colapsa guiones repetidos.</li>
+<li>Rechaza códigos con <code>/</code>, <code>\</code> o <code>..</code> para evitar rutas maliciosas.</li>
+<li>Consulta <code>GET /licitaciones.json?codigo=...&amp;ticket=...</code>.</li>
+<li>Extrae <code>Listado[0]</code> y muestra código, nombre, organismo, estado, tipo, fechas, monto y descripción.</li>
+<li>Pregunta si se descargan los documentos.</li>
+<li>Consulta el acta de adjudicación (si existe) y <code>/licitaciones/{codigo}/Archivos.json</code>.</li>
+<li>Descarga con barra de progreso, guarda <code>metadata.json</code> y resume el resultado.</li>
+</ol>
+<pre><code>────────────────────────────────────────────────────────────
+  Código          : 1234567-8-LP24
+  Nombre          : Construcción Centro Comunitario
+  Organismo       : Municipalidad de Providencia
+  Estado          : Publicada
+  Tipo            : LP
+  Publicación     : 2026-05-01T10:00:00
+  Cierre          : 2026-06-30T15:00:00
+  Monto estimado  : $ 150,000,000
+────────────────────────────────────────────────────────────
+</code></pre>
+<p>Ventaja: es el camino más rápido ante un código conocido. Limitación: no sirve para descubrir oportunidades.</p>
+<h3 id="32-busqueda-por-palabras-clave">3.2 Búsqueda por palabras clave</h3>
+<p>La API v1 no ofrece búsqueda por texto, así que el programa descarga el listado reciente y <strong>filtra localmente</strong>:</p>
+<ol>
+<li>Pide términos separados por comas (<code>telemetria, iot, monitoreo, sensores</code>).</li>
+<li>Pregunta si se limita a vigentes o incluye todos los estados.</li>
+<li>Obtiene <code>GET /licitaciones.json?ticket=...</code>.</li>
+<li>Descarta lo que no tenga <code>CodigoEstado == 5</code> si se eligió "solo vigentes".</li>
+<li>Compara cada término en minúsculas contra <code>Nombre</code> y <code>Descripcion</code>.</li>
+<li>Muestra resultados numerados; al elegir uno, consulta el detalle y ofrece descargar.</li>
+</ol>
+<pre><code>  Términos (vacío = todas las vigentes): telemetria, iot, sensor
+  ¿Solo licitaciones vigentes? [S/n]: s
 
-<section class="section" id="proyecto"><div class="wrap">
-  <div class="section-head reveal"><div class="kicker">01 — El proyecto</div><h2>Qué resuelve</h2><p class="section-sub">Automatización de consultas al Mercado Público chileno: búsqueda por código, búsqueda por palabras clave y monitoreo periódico con descarga de documentos.</p></div>
-  <div class="two">
-    <div class="card reveal"><span class="tag">Problema</span><h3>El punto de partida</h3><p>Revisar el Mercado Público a mano todos los días no escala y deja pasar oportunidades.</p></div>
-    <div class="card reveal"><span class="tag">Solución</span><h3>La propuesta</h3><p>Un script configurable que consulta la API, filtra y descarga la documentación relevante.</p></div>
-  </div>
-</div></section>
+  Se encontraron 3 licitación(es):
+────────────────────────────────────────────────────────────
+    1. [1234-5-LP26] Adquisición de sensores de temperatura y humedad
+    2. [5678-9-LQ26] Sistema de monitoreo IoT para cuencas hídricas
+    3. [9012-3-LP26] Plataforma de telemetría para redes de riego
+────────────────────────────────────────────────────────────
+  Selecciona una licitación (1-3): 2
+</code></pre>
+<p>Buenos términos son sustantivos genéricos (<code>sensor</code>, <code>medicion</code>, <code>red</code>), tecnología (<code>iot</code>, <code>telemetria</code>, <code>software</code>), dominio (<code>riego</code>, <code>agua</code>, <code>energia</code>) o acciones (<code>monitoreo</code>, <code>reporte</code>, <code>alerta</code>). Las siglas raras reducen demasiado el universo. Como el listado puede no incluir la descripción completa, conviene usar términos amplios y revisar los resultados.</p>
+<h3 id="33-monitoreo-cada-30-minutos">3.3 Monitoreo cada 30 minutos</h3>
+<p>Vigilancia continua pensada para dejarla corriendo en una terminal, <code>tmux</code>/<code>screen</code> o un servicio.</p>
+<p>Términos fijos por defecto:</p>
+<pre><code>telemetria, monitor, monitoreo, medicion, sensores, riego, software,
+alerta, reporte, iot, domotica, notificacion, temperatura, humedad,
+presion, frio
+</code></pre>
+<p>Ciclo:</p>
+<ol>
+<li>Consulta el listado y filtra por términos y estado.</li>
+<li>Compara los códigos contra <code>descargas/monitoreo_vistos.json</code>.</li>
+<li>Para cada código nuevo obtiene el detalle (pausas de 1 a 1,5 s).</li>
+<li>Muestra código, nombre, descripción, cierre, estado y monto.</li>
+<li>Escribe <code>descargas/monitoreo/YYYYMMDD_HHMMSS.txt</code>.</li>
+<li>Actualiza el registro de vistos y espera 30 minutos. <code>Ctrl+C</code> detiene limpiamente.</li>
+</ol>
+<pre><code>[11:00:25] Ciclo 1 consultando API...
+[11:00:25] Sin novedades.
+[12:00:25] Ciclo 3 consultando API...
+[12:00:25] NUEVAS LICITACIONES ENCONTRADAS:
 
-<section class="section" id="versiones"><div class="wrap">
-  <div class="section-head reveal"><div class="kicker">02 — Versiones</div><h2>La historia, completa.</h2><p class="section-sub">Cada carpeta conserva una etapa del proyecto. No se borraron las anteriores: se pusieron en contexto.</p></div>
-  <div class="versions"><article class="version reveal">
-  <div class="version-top"><h3>licitaciones-mercado-publico</h3><span class="count">raíz del repo</span></div>
-  <p>Versión única conservada: Python + requests + dotenv + tqdm, con tres modos de operación.</p>
-  <a href="https://github.com/jmadasme/licitaciones-mercado-publico" target="_blank" rel="noopener">Ver carpeta <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-</article></div>
-</div></section>
+  Codigo     : 1234-56-LP26
+  Nombre     : Sistema de Telemetría para redes hídricas
+  Descripcion: Implementación de plataforma IoT con sensores...
+  Cierre     : 2026-07-25T15:00:00
+  Estado     : 5
+  Monto      : $ 45,000,000
 
-<section class="section tight"><div class="wrap">
-  <div class="section-head reveal"><div class="kicker">03 — Cómo se usa</div><h2>De la carpeta a la práctica.</h2></div>
-  <div class="timeline"><div class="step reveal"><div class="step-n">01</div><h4>Configurá la API</h4><p>Completá las variables de entorno y el ticket.</p></div><div class="step reveal"><div class="step-n">02</div><h4>Elegí un modo</h4><p>Código, palabras clave o monitoreo.</p></div><div class="step reveal"><div class="step-n">03</div><h4>Ejecutá</h4><p>Corré el script y revisá la salida.</p></div><div class="step reveal"><div class="step-n">04</div><h4>Programá</h4><p>Dejá el modo monitoreo cada 30 minutos.</p></div></div>
-</div></section>
-
-<section class="section tight"><div class="wrap">
-  <div class="section-head reveal"><div class="kicker">04 — Decisiones</div><h2>Lo que lo hace distinto</h2></div>
-  <div class="features"><div class="feature reveal"><h4>Tres modos</h4><p>Código, palabras clave y monitoreo.</p></div><div class="feature reveal"><h4>Descarga</h4><p>Baja documentos y metadata.</p></div><div class="feature reveal"><h4>Filtros</h4><p>Palabras clave configurables.</p></div><div class="feature reveal"><h4>Consola clara</h4><p>Progreso con tqdm.</p></div><div class="feature reveal"><h4>Variables de entorno</h4><p>Sin credenciales en el código.</p></div><div class="feature reveal"><h4>Documentación</h4><p>Datasheet, developer y referencias.</p></div></div>
-</div></section>
-
-<section class="section tight" id="stack"><div class="wrap">
-  <div class="section-head reveal"><div class="kicker">05 — Stack y arranque</div><h2>Con qué está construido</h2></div>
-  <div class="stack-grid">
-    <div class="reveal"><div class="chips"><span class="chip">Python</span><span class="chip">requests</span><span class="chip">python-dotenv</span><span class="chip">tqdm</span><span class="chip">API Mercado Público</span></div><div class="note"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z"/></svg><span>Necesitás un ticket válido de la API. El monitoreo cada 30 minutos es una decisión operativa, no un cron incluido.</span></div></div>
-    <div class="terminal reveal"><div class="terminal-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div><pre>git clone https://github.com/jmadasme/licitaciones-mercado-publico.git
-cd licitaciones-mercado-publico
-python3 -m venv venv &amp;&amp; source venv/bin/activate
+  Reporte guardado: descargas/monitoreo/20260701_120025.txt
+</code></pre>
+<p>La memoria de vistos es un <code>set</code> persistido como JSON: crece un código por licitación vista. Si se borra el archivo, el siguiente ciclo considera nuevas a todas las coincidencias actuales. El monitoreo <strong>no es tiempo real</strong>: la API entrega un listado reciente, no eventos; una licitación puede aparecer y desaparecer entre ciclos.</p>
+<h3 id="34-comparativa">3.4 Comparativa</h3>
+<table>
+<thead>
+<tr>
+<th>Criterio</th>
+<th>Código</th>
+<th>Palabras clave</th>
+<th>Monitoreo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Requiere código</td>
+<td>Sí</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Descubre oportunidades</td>
+<td>No</td>
+<td>Sí</td>
+<td>Sí</td>
+</tr>
+<tr>
+<td>Intervención humana</td>
+<td>Alta</td>
+<td>Media</td>
+<td>Baja</td>
+</tr>
+<tr>
+<td>Duración</td>
+<td>Segundos</td>
+<td>Segundos</td>
+<td>Indefinida</td>
+</tr>
+<tr>
+<td>Descarga documentos</td>
+<td>Sí</td>
+<td>Sí</td>
+<td>No (solo reporta)</td>
+</tr>
+<tr>
+<td>Persistencia</td>
+<td><code>metadata.json</code></td>
+<td><code>metadata.json</code></td>
+<td>Reportes y registro</td>
+</tr>
+<tr>
+<td>Uso típico</td>
+<td>Consulta puntual</td>
+<td>Exploración</td>
+<td>Vigilancia</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="4-arquitectura">4. Arquitectura</h2>
+<h3 id="41-vista-general">4.1 Vista general</h3>
+<p><img alt="Arquitectura" loading="lazy" src="rich/arquitectura.svg"/></p>
+<p>Aplicación de consola monolítica con módulos de responsabilidad única. Sin base de datos, servidor web ni cola de tareas: el estado vive en <code>descargas/</code>.</p>
+<pre><code>             ┌──────────────────────────────┐
+             │          main.py             │
+             │  menú, flujo, presentación   │
+             └──────────────┬───────────────┘
+                            │
+        ┌───────────────────┼───────────────────┐
+        │                   │                   │
+ ┌──────▼──────┐   ┌────────▼────────┐  ┌───────▼────────┐
+ │  config.py  │   │ mercado_publico │  │  downloader.py │
+ │   ticket    │   │  endpoints y    │  │ streaming tqdm │
+ └─────────────┘   │  filtros        │  └───────┬────────┘
+                   └────────┬────────┘          │
+                            │                   │
+                   ┌────────▼────────┐  ┌───────▼────────┐
+                   │  api_client.py  │  │   metadata.py  │
+                   │ retry + límite  │  │   JSON + hash  │
+                   └────────┬────────┘  └───────┬────────┘
+                            │                   │
+                   ┌────────▼───────────────────▼────────┐
+                   │              utils.py               │
+                   │  sanitización, logging, colisiones  │
+                   └─────────────────┬───────────────────┘
+                                     │
+                          ┌──────────▼───────────┐
+                          │  API Mercado Público │
+                          │   + disco local      │
+                          └──────────────────────┘
+</code></pre>
+<h3 id="42-responsabilidad-de-cada-modulo">4.2 Responsabilidad de cada módulo</h3>
+<table>
+<thead>
+<tr>
+<th>Módulo</th>
+<th>Responsabilidad</th>
+<th>Depende de</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>main.py</code></td>
+<td>Interfaz, menú, orquestación, formato de salida</td>
+<td>todos</td>
+</tr>
+<tr>
+<td><code>config.py</code></td>
+<td>Cargar y validar el ticket, generar hash</td>
+<td><code>python-dotenv</code></td>
+</tr>
+<tr>
+<td><code>api_client.py</code></td>
+<td>Sesión HTTP, reintentos, backoff, rate limiting, JSON</td>
+<td><code>requests</code></td>
+</tr>
+<tr>
+<td><code>mercado_publico.py</code></td>
+<td>Endpoints, filtros, resolución de documentos</td>
+<td><code>api_client</code></td>
+</tr>
+<tr>
+<td><code>downloader.py</code></td>
+<td>Streaming, <code>.part</code>, colisiones, barra de progreso</td>
+<td><code>requests</code>, <code>tqdm</code></td>
+</tr>
+<tr>
+<td><code>metadata.py</code></td>
+<td>Serialización de licitación, archivos y resultados</td>
+<td><code>config</code>, <code>downloader</code></td>
+</tr>
+<tr>
+<td><code>utils.py</code></td>
+<td>Sanitización, logging, colisiones</td>
+<td>biblioteca estándar</td>
+</tr>
+</tbody>
+</table>
+<p>La dependencia es unidireccional: <code>main</code> conoce a todos; la infraestructura no conoce a <code>main</code>. Eso permite reutilizar la API y la descarga desde scripts propios sin arrastrar la interfaz.</p>
+<h3 id="43-flujo-de-una-consulta">4.3 Flujo de una consulta</h3>
+<pre><code>1. load_ticket()            → .env u os.environ (prioridad)
+2. APIClient(timeout=30, max_retries=4)
+3. fetch_licitacion()       → GET /licitaciones.json?codigo=...&amp;ticket=...
+                              detecta JSON de error y extrae Listado[0]
+4. display_licitacion_summary()
+5. fetch_archivos()         → Adjudicacion.UrlActa + /Archivos.json
+6. download_all_files()     → sanitiza, resuelve colisión, streaming .part,
+                              renombra atómicamente
+7. save_metadata()          → licitación + archivos + descargas + sha256(ticket)
+</code></pre>
+<h3 id="44-decisiones-de-diseno">4.4 Decisiones de diseño</h3>
+<ul>
+<li><strong>Sin framework CLI</strong>: <code>input()</code> y <code>print()</code>; menos dependencias y una experiencia legible en cualquier terminal.</li>
+<li><strong>Sin base de datos</strong>: JSON y texto plano, inspeccionables con <code>cat</code>, <code>jq</code> o un editor.</li>
+<li><strong>Sin scraping HTML</strong>: solo API oficial; si un documento no está, se informa y se sugiere la ficha web.</li>
+<li><strong>Tolerancia a errores</strong>: un archivo fallido no aborta la licitación; una licitación fallida no aborta el monitoreo.</li>
+<li><strong>Seguridad por defecto</strong>: ticket enmascarado en logs y hasheado en metadatos.</li>
+</ul>
+<hr/>
+<h2 id="5-la-api-de-mercado-publico">5. La API de Mercado Público</h2>
+<h3 id="51-autenticacion">5.1 Autenticación</h3>
+<p>Toda petición requiere un <strong>ticket</strong> personal enviado como query string:</p>
+<pre><code>https://api.mercadopublico.cl/servicios/v1/publico/licitaciones.json?ticket=TU_TICKET
+</code></pre>
+<p>Se obtiene gratis en <a href="https://api.mercadopublico.cl/documentacion/obtencion-de-ticket">https://api.mercadopublico.cl/documentacion/obtencion-de-ticket</a>. Es personal e intransferible. El programa lo carga desde <code>MERCADO_PUBLICO_TICKET</code> o desde <code>.env</code>, en ese orden.</p>
+<h3 id="52-endpoints">5.2 Endpoints</h3>
+<p>URL base: <code>https://api.mercadopublico.cl/servicios/v1/publico</code></p>
+<table>
+<thead>
+<tr>
+<th>Uso</th>
+<th>Endpoint</th>
+<th>Parámetros</th>
+<th>Observación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Detalle por código</td>
+<td><code>/licitaciones.json</code></td>
+<td><code>codigo</code>, <code>ticket</code></td>
+<td>Devuelve <code>Listado[0]</code></td>
+</tr>
+<tr>
+<td>Listado general</td>
+<td><code>/licitaciones.json</code></td>
+<td><code>ticket</code></td>
+<td>Base de la búsqueda local</td>
+</tr>
+<tr>
+<td>Documentos</td>
+<td><code>/licitaciones/{codigo}/Archivos.json</code></td>
+<td><code>ticket</code></td>
+<td>Puede no existir (404 tolerado)</td>
+</tr>
+<tr>
+<td>Acta</td>
+<td><code>Adjudicacion.UrlActa</code></td>
+<td>según URL</td>
+<td>Solo si está adjudicada</td>
+</tr>
+</tbody>
+</table>
+<p>La v1 también ofrece <code>.xml</code>, <code>.jsonp</code> y parámetros como <code>fecha=DDMMAAAA</code> y <code>estado=...</code> según su documentación. <strong>Esta implementación usa solo JSON y los parámetros indicados</strong>; las variantes quedan como vía de extensión.</p>
+<h3 id="53-respuesta">5.3 Respuesta</h3>
+<p>Las respuestas exitosas vienen envueltas:</p>
+<pre><code class="language-json">{
+  "Cantidad": 1,
+  "FechaCreacion": "2026-06-26T12:00:00",
+  "Version": "v1",
+  "Listado": [
+    {
+      "CodigoExterno": "1234567-8-LP24",
+      "Nombre": "Construcción Centro Comunitario",
+      "CodigoEstado": 5,
+      "Estado": "Publicada",
+      "Descripcion": "Construcción de centro comunitario...",
+      "Comprador": {
+        "NombreOrganismo": "Municipalidad de Providencia",
+        "RutUnidad": "69.123.456-7"
+      },
+      "Fechas": {
+        "FechaPublicacion": "2026-05-01T10:00:00",
+        "FechaCierre": "2026-06-30T15:00:00"
+      },
+      "MontoEstimado": 150000000,
+      "Moneda": "CLP",
+      "Adjudicacion": { "UrlActa": "https://www.mercadopublico.cl/..." }
+    }
+  ]
+}
+</code></pre>
+<p>Los errores también pueden llegar con HTTP 200/203 y cuerpo <code>{"Codigo": 203, "Mensaje": "Ticket no válido."}</code>. Por eso el programa <strong>inspecciona el JSON además del código HTTP</strong>: un <code>200 OK</code> no garantiza una respuesta útil.</p>
+<h3 id="54-campos-principales">5.4 Campos principales</h3>
+<p>La documentación oficial (incluida como PDF en el repositorio) define más de 90 campos. Los que se consumen o muestran:</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Uso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CodigoExterno</code></td>
+<td>texto (100)</td>
+<td>Identificador y carpeta</td>
+</tr>
+<tr>
+<td><code>Nombre</code></td>
+<td>texto (255)</td>
+<td>Resumen y filtro</td>
+</tr>
+<tr>
+<td><code>Descripcion</code></td>
+<td>texto</td>
+<td>Resumen y filtro</td>
+</tr>
+<tr>
+<td><code>CodigoEstado</code></td>
+<td>entero</td>
+<td>Filtro de vigentes (<code>5</code>)</td>
+</tr>
+<tr>
+<td><code>Estado</code></td>
+<td>texto</td>
+<td>Texto mostrado</td>
+</tr>
+<tr>
+<td><code>Comprador.NombreOrganismo</code></td>
+<td>texto</td>
+<td>Organismo</td>
+</tr>
+<tr>
+<td><code>Fechas.FechaPublicacion</code></td>
+<td>datetime</td>
+<td>Resumen</td>
+</tr>
+<tr>
+<td><code>Fechas.FechaCierre</code></td>
+<td>datetime</td>
+<td>Resumen y reporte</td>
+</tr>
+<tr>
+<td><code>MontoEstimado</code></td>
+<td>float</td>
+<td>Monto en CLP</td>
+</tr>
+<tr>
+<td><code>Moneda</code></td>
+<td>texto</td>
+<td>Contexto del monto</td>
+</tr>
+<tr>
+<td><code>Tipo</code></td>
+<td>texto</td>
+<td>Tipo de licitación</td>
+</tr>
+<tr>
+<td><code>Adjudicacion.UrlActa</code></td>
+<td>texto</td>
+<td>Documento adicional</td>
+</tr>
+<tr>
+<td><code>Items.Listado[]</code></td>
+<td>lista</td>
+<td>Disponible en metadatos</td>
+</tr>
+</tbody>
+</table>
+<p>El programa tolera variantes de mayúsculas (<code>CodigoExterno</code>/<code>codigoExterno</code>) y campos anidados, porque la API no siempre es consistente entre endpoints.</p>
+<h3 id="55-estados">5.5 Estados</h3>
+<table>
+<thead>
+<tr>
+<th>Código</th>
+<th>Estado</th>
+<th>¿Vigente?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Publicada</td>
+<td>No</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Cerrada</td>
+<td>No</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Desierta</td>
+<td>No</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Adjudicada</td>
+<td>No</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Publicada</td>
+<td><strong>Sí</strong></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Cerrada</td>
+<td>No</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Desierta</td>
+<td>No</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Adjudicada</td>
+<td>No</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Revocada</td>
+<td>No</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Suspendida</td>
+<td>No</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Publicada</td>
+<td>No</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Suspendida</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>El modo "solo vigentes" usa estrictamente <code>CodigoEstado == 5</code>. Si la API publica procesos vigentes con códigos 1 u 11, el filtro los excluirá. Es una decisión conservadora y documentada; para ampliarla, ver <code>docs/developer.md</code>.</p>
+<h3 id="56-tipos-de-licitacion">5.6 Tipos de licitación</h3>
+<table>
+<thead>
+<tr>
+<th>Código</th>
+<th>Significado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>L1</code></td>
+<td>Pública menor a 100 UTM</td>
+</tr>
+<tr>
+<td><code>LE</code></td>
+<td>Pública entre 100 y 1.000 UTM</td>
+</tr>
+<tr>
+<td><code>LP</code></td>
+<td>Pública entre 1.000 y 2.000 UTM</td>
+</tr>
+<tr>
+<td><code>LQ</code></td>
+<td>Pública entre 2.000 y 5.000 UTM</td>
+</tr>
+<tr>
+<td><code>LR</code></td>
+<td>Pública de 5.000 UTM o más</td>
+</tr>
+<tr>
+<td><code>LS</code></td>
+<td>Pública de servicios personales especializados</td>
+</tr>
+<tr>
+<td><code>E2</code></td>
+<td>Privada menor a 100 UTM</td>
+</tr>
+<tr>
+<td><code>CO</code></td>
+<td>Privada entre 100 y 1.000 UTM</td>
+</tr>
+<tr>
+<td><code>B2</code></td>
+<td>Privada entre 1.000 y 2.000 UTM</td>
+</tr>
+<tr>
+<td><code>H2</code></td>
+<td>Privada entre 2.000 y 5.000 UTM</td>
+</tr>
+<tr>
+<td><code>I2</code></td>
+<td>Privada de más de 5.000 UTM</td>
+</tr>
+</tbody>
+</table>
+<p>El sufijo del código externo (<code>-LP24</code>) suele coincidir con tipo y año, pero <strong>no debe asumirse</strong>: el identificador se trata como texto opaco.</p>
+<h3 id="57-limites-de-la-api-v1">5.7 Límites de la API v1</h3>
+<ol>
+<li><strong>Ventana corta</strong>: el listado general expone solo las licitaciones más recientes (del orden de 188 a 200 según observación). No hay paginación histórica.</li>
+<li><strong>Sin búsqueda por texto</strong>: no existe <code>q=</code> ni equivalente; el filtro es local.</li>
+<li><strong>Descripciones incompletas</strong>: algunos ítems del listado traen <code>Descripcion</code> vacía o truncada.</li>
+<li><strong>Documentos no siempre disponibles</strong>: <code>Archivos.json</code> no existe para todos los procesos.</li>
+<li><strong>Estados numéricos</strong>: el listado puede no traer el texto de estado.</li>
+<li><strong>Sin cuota publicada</strong>: el programa aplica pausas de 1 a 2 s y respeta <code>429</code> con 5 s de espera.</li>
+<li><strong>Disponibilidad variable</strong>: puede responder lento o con 5xx en horas de demanda.</li>
+<li><strong>Dependencia externa</strong>: un cambio de contrato puede exigir adaptar el cliente; la versión está fijada en <code>/v1/</code>.</li>
+</ol>
+<p>Si se necesita más historia, la v1 no lo resuelve: hay que acumular localmente (lo que hace este proyecto), usar datos abiertos de ChileCompra o revisar si existen endpoints nuevos.</p>
+<hr/>
+<h2 id="6-requisitos-e-instalacion">6. Requisitos e instalación</h2>
+<p>Requisitos: <strong>Python 3.9+</strong> (probado en 3.14), conexión HTTPS, ticket válido y espacio en disco.</p>
+<p>Las dependencias están en <code>requirements.txt</code>:</p>
+<pre><code class="language-text">requests&gt;=2.28.0
+python-dotenv&gt;=1.0.0
+tqdm&gt;=4.65.0
+</code></pre>
+<p>Instalación con entorno virtual:</p>
+<pre><code class="language-bash">python3 -m venv venv
+source venv/bin/activate        # Linux / Mac
+venv\Scripts\activate           # Windows
 pip install -r requirements.txt
-cp .env.example .env
-python main.py</pre></div>
-  </div>
-</div></section>
+</code></pre>
+<p>Verificación:</p>
+<pre><code class="language-bash">python -c "import requests, dotenv, tqdm; print('dependencias OK')"
+</code></pre>
+<p>Instalar con <code>--user</code> es posible pero contamina el Python del sistema; para uso serio, usar <code>venv</code>. Para actualizar: <code>pip install --upgrade -r requirements.txt</code>.</p>
+<hr/>
+<h2 id="7-configuracion-del-ticket">7. Configuración del ticket</h2>
+<p>Orden de resolución:</p>
+<ol>
+<li>Variable de entorno <code>MERCADO_PUBLICO_TICKET</code>.</li>
+<li>Archivo <code>.env</code> en el directorio de trabajo (vía <code>python-dotenv</code>).</li>
+<li>Si no existe: error explicativo y salida con código 1.</li>
+</ol>
+<p><code>python-dotenv</code> no sobrescribe variables ya definidas, por lo que la variable de entorno siempre gana.</p>
+<p><strong>Opción A — <code>.env</code>:</strong></p>
+<pre><code class="language-bash">cp .env.example .env
+</code></pre>
+<pre><code class="language-dotenv">MERCADO_PUBLICO_TICKET=TU_TICKET_AQUI
+</code></pre>
+<p><code>.env</code> está en <code>.gitignore</code>. Nunca lo subas a un repositorio ni lo compartas.</p>
+<p><strong>Opción B — variable de entorno:</strong></p>
+<pre><code class="language-bash">export MERCADO_PUBLICO_TICKET="TU_TICKET_AQUI"     # Linux / macOS
+set MERCADO_PUBLICO_TICKET=TU_TICKET_AQUI          # Windows CMD
+$env:MERCADO_PUBLICO_TICKET="TU_TICKET_AQUI"       # PowerShell
+</code></pre>
+<p>El programa elimina espacios y comillas, distingue "no definido" de "vacío" y no valida contra la API al inicio: el primer error de autenticación aparece al consultar.</p>
+<hr/>
+<h2 id="8-uso">8. Uso</h2>
+<pre><code class="language-bash">python main.py
+</code></pre>
+<ol>
+<li>Se muestra el banner y el menú.</li>
+<li>Se elige <code>1</code>, <code>2</code>, <code>3</code> o <code>0</code>.</li>
+<li>Se sigue el flujo interactivo y se vuelve al menú.</li>
+<li><code>0</code>, <code>salir</code>, <code>exit</code> o <code>q</code> cierran el programa.</li>
+</ol>
+<p>Comportamiento:</p>
+<ul>
+<li><code>Ctrl+C</code> interrumpe la operación actual; en el menú, cierra.</li>
+<li>En preguntas sí/no, <code>Enter</code> acepta el valor por defecto (<code>[S/n]</code> o <code>[s/N]</code>).</li>
+<li>En el modo 2, <code>Enter</code> sin términos lista todas las vigentes; <code>0</code> vuelve al menú.</li>
+<li>En el modo 1, un código inválido consume uno de los 3 intentos.</li>
+</ul>
+<p>Se escribe <code>descargas/downloader.log</code> en nivel <code>DEBUG</code> (consola en <code>INFO</code>). El log no contiene el ticket: el cliente enmascara el parámetro <code>ticket</code> como <code>***</code>.</p>
+<hr/>
+<h2 id="9-ejemplos-de-uso">9. Ejemplos de uso</h2>
+<h3 id="91-sesion-completa-por-codigo">9.1 Sesión completa por código</h3>
+<pre><code>$ python main.py
+  Opción: 1
+Código de licitación: 1234567-8-LP24
 
-<section class="section tight" id="docs"><div class="wrap">
-  <div class="section-head reveal"><div class="kicker">06 — Documentación</div><h2>Para usar y para entender.</h2><p class="section-sub">Cada documento está en el repositorio, versionado junto al código.</p></div>
-  <div class="docs"><a class="doc reveal" href="https://github.com/jmadasme/licitaciones-mercado-publico/blob/main/docs/datasheet.md" target="_blank" rel="noopener"><span class="tag">DATASHEET</span><h4>Manual de operación</h4><p>Instalación, uso, configuración y troubleshooting.</p></a><a class="doc reveal" href="https://github.com/jmadasme/licitaciones-mercado-publico/blob/main/docs/developer.md" target="_blank" rel="noopener"><span class="tag">DEVELOPER</span><h4>Guía de código</h4><p>Arquitectura, módulos, contratos y extensión.</p></a><a class="doc reveal" href="https://github.com/jmadasme/licitaciones-mercado-publico/blob/main/docs/REFERENCES.md" target="_blank" rel="noopener"><span class="tag">REFERENCES</span><h4>Referencias</h4><p>Fuentes oficiales y documentación de las tecnologías.</p></a><a class="doc reveal" href="https://github.com/jmadasme/licitaciones-mercado-publico/blob/main/docs/BITACORA.md" target="_blank" rel="noopener"><span class="tag">BITÁCORA</span><h4>Bitácora</h4><p>Decisiones, problemas y lecciones del proyecto.</p></a></div>
-</div></section>
+Buscando licitación: 1234567-8-LP24 ...
+──────────────────────────────────────────────────────────
+  Código          : 1234567-8-LP24
+  Nombre          : Construcción Centro Comunitario
+  Organismo       : Municipalidad de Providencia
+  Estado          : Publicada
+  Monto estimado  : $ 150,000,000
+──────────────────────────────────────────────────────────
 
+¿Descargar documentos? [S/n]: s
+
+Se encontraron 3 documento(s):
+    1. Bases Administrativas.pdf  [pdf]
+    2. Bases Tecnicas.pdf  [pdf] (1250000 bytes)
+    3. Anexo N1 - Planos.zip  [zip]
+
+Bases Administrativas.pdf: 100%|██████| 1.25M/1.25M [00:02&lt;00:00, 512kB/s]
+Bases Tecnicas.pdf: 100%|██████| 890k/890k [00:01&lt;00:00, 445kB/s]
+Anexo N1 - Planos.zip: 100%|██████| 4.50M/4.50M [00:08&lt;00:00, 562kB/s]
+
+──────────────────────────────────────────────────────────
+  Archivos procesados : 3
+  Descargados         : 3
+  Saltados (existentes): 0
+  Fallidos            : 0
+──────────────────────────────────────────────────────────
+  Ruta: /home/usuario/licitaciones/descargas/1234567-8-LP24/
+</code></pre>
+<h3 id="92-busqueda-de-oportunidades-de-telemetria">9.2 Búsqueda de oportunidades de telemetría</h3>
+<pre><code>Opción: 2
+Términos: telemetria, iot, monitoreo, sensores, medicion
+¿Solo licitaciones vigentes? [S/n]: s
+
+  Se encontraron 5 licitación(es):
+──────────────────────────────────────────────────────────
+    1. [1234-5-LP26] Adquisición de sensores de temperatura y humedad
+    2. [5678-9-LQ26] Sistema de monitoreo IoT para cuencas hídricas
+    3. [9012-3-LP26] Plataforma de telemetría para redes de riego
+    4. [3456-7-LE26] Servicio de medición remota de consumo eléctrico
+    5. [7890-1-LS26] Monitoreo de variables ambientales en bodegas
+──────────────────────────────────────────────────────────
+  Selecciona una licitación (1-5): 3
+</code></pre>
+<h3 id="93-uso-programatico-desde-python">9.3 Uso programático desde Python</h3>
+<p>La capa de API y descarga se reutiliza sin pasar por el menú:</p>
+<pre><code class="language-python">"""Consulta una licitación y lista sus documentos sin interfaz interactiva."""
+from config import load_ticket
+from api_client import APIClient, APIError
+from mercado_publico import BASE_URL, fetch_licitacion, fetch_archivos
+
+ticket = load_ticket()
+client = APIClient(base_url=BASE_URL, timeout=30, max_retries=4)
+
+try:
+    data = fetch_licitacion(client, "1234567-8-LP24", ticket)
+    print("Nombre:", data.get("Nombre"))
+    print("Organismo:", data.get("Comprador", {}).get("NombreOrganismo"))
+    print("Cierre:", data.get("Fechas", {}).get("FechaCierre"))
+
+    archivos = fetch_archivos(client, "1234567-8-LP24", ticket, data)
+    for a in archivos:
+        print("-", a.get("Nombre"), "→", a.get("URL"))
+except APIError as exc:
+    print("Error de API:", exc)
+finally:
+    client.close()
+</code></pre>
+<h3 id="94-exportar-coincidencias-a-csv">9.4 Exportar coincidencias a CSV</h3>
+<p>Script independiente que usa el proyecto como biblioteca, sin modificar el código original:</p>
+<pre><code class="language-python">"""Exporta a CSV las licitaciones vigentes que coinciden con una lista de términos."""
+import csv
+from config import load_ticket
+from api_client import APIClient
+from mercado_publico import BASE_URL, buscar_licitaciones
+
+TERMINOS = ["telemetria", "iot", "sensores", "monitoreo", "riego"]
+
+ticket = load_ticket()
+client = APIClient(base_url=BASE_URL)
+try:
+    resultados = buscar_licitaciones(client, ticket, terminos=TERMINOS, solo_vigentes=True)
+    with open("oportunidades.csv", "w", newline="", encoding="utf-8") as fh:
+        writer = csv.writer(fh)
+        writer.writerow(["codigo", "nombre", "estado", "cierre", "organismo"])
+        for r in resultados:
+            writer.writerow([
+                r.get("CodigoExterno", ""),
+                r.get("Nombre", ""),
+                r.get("CodigoEstado", ""),
+                r.get("Fechas", {}).get("FechaCierre", ""),
+                r.get("Comprador", {}).get("NombreOrganismo", ""),
+            ])
+    print(f"{len(resultados)} oportunidades exportadas")
+finally:
+    client.close()
+</code></pre>
+<pre><code class="language-bash">python exportar_oportunidades.py
+head -5 oportunidades.csv
+</code></pre>
+<p><strong>Precaución:</strong> multiplicar peticiones y descargas puede acercarse a los límites no publicados de la API. Mantener los términos acotados y no ejecutar en paralelo con el monitoreo.</p>
+<hr/>
+<h2 id="10-programacion-de-ejecuciones">10. Programación de ejecuciones</h2>
+<p>El modo 3 incluye su propio bucle cada 30 minutos. Si se prefiere un proceso por ciclo (más robusto ante reinicios), se puede programar con el sistema operativo. <strong>Advertencia:</strong> <code>main.py</code> es interactivo; sin TTY el menú queda esperando y termina por EOF. Para automatizar de verdad hace falta un envoltorio no interactivo.</p>
+<h3 id="101-cron-linux-macos">10.1 Cron (Linux / macOS)</h3>
+<pre><code class="language-cron">*/30 * * * * cd /home/usuario/licitaciones &amp;&amp; venv/bin/python ciclo_monitoreo.py &gt;&gt; cron.log 2&gt;&amp;1
+</code></pre>
+<h3 id="102-systemd-linux">10.2 Systemd (Linux)</h3>
+<pre><code class="language-ini"># ~/.config/systemd/user/licitaciones-monitor.service
+[Unit]
+Description=Monitor de licitaciones Mercado Publico
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/licitaciones
+EnvironmentFile=%h/licitaciones/.env
+ExecStart=%h/licitaciones/venv/bin/python %h/licitaciones/ciclo_monitoreo.py
+Restart=on-failure
+RestartSec=60
+
+[Install]
+WantedBy=default.target
+</code></pre>
+<pre><code class="language-bash">systemctl --user daemon-reload
+systemctl --user enable --now licitaciones-monitor.service
+journalctl --user -u licitaciones-monitor.service -f
+</code></pre>
+<h3 id="103-windows">10.3 Windows</h3>
+<p>Programador de tareas → "Crear tarea básica" → desencadenador diario con repetición cada 30 minutos → acción <code>C:\ruta\venv\Scripts\python.exe</code> con argumento <code>ciclo_monitoreo.py</code> → iniciar en <code>C:\ruta\proyecto</code>.</p>
+<h3 id="104-envoltorio-no-interactivo">10.4 Envoltorio no interactivo</h3>
+<pre><code class="language-python">#!/usr/bin/env python3
+"""Un ciclo de monitoreo para cron/systemd. Sin entrada interactiva."""
+import json
+from datetime import datetime
+from pathlib import Path
+
+from config import load_ticket
+from api_client import APIClient
+from mercado_publico import BASE_URL, buscar_licitaciones
+
+TERMINOS = ["telemetria", "iot", "monitoreo", "sensores", "riego"]
+VISTOS = Path("descargas/monitoreo_vistos.json")
+SALIDA = Path("descargas/monitoreo")
+SALIDA.mkdir(parents=True, exist_ok=True)
+
+ticket = load_ticket()
+client = APIClient(base_url=BASE_URL)
+try:
+    vistos = set(json.loads(VISTOS.read_text()).get("vistos", [])) if VISTOS.exists() else set()
+    resultados = buscar_licitaciones(client, ticket, terminos=TERMINOS, solo_vigentes=True)
+    nuevas = [r for r in resultados if r.get("CodigoExterno") not in vistos]
+
+    if nuevas:
+        sello = datetime.now().strftime("%Y%m%d_%H%M%S")
+        lineas = [f"Reporte {datetime.now().isoformat()}", f"Nuevas: {len(nuevas)}", ""]
+        for r in nuevas:
+            codigo = r.get("CodigoExterno", "?")
+            lineas += [f"Codigo: {codigo}", f"Nombre: {r.get('Nombre', '')}",
+                       f"Cierre: {r.get('Fechas', {}).get('FechaCierre', '')}", "-" * 60]
+            vistos.add(codigo)
+        (SALIDA / f"{sello}.txt").write_text("\n".join(lineas), encoding="utf-8")
+
+    VISTOS.write_text(json.dumps({"vistos": sorted(vistos)}, indent=2), encoding="utf-8")
+    print(f"Ciclo completado: {len(nuevas)} nuevas")
+finally:
+    client.close()
+</code></pre>
+<h3 id="105-buenas-practicas">10.5 Buenas prácticas</h3>
+<ul>
+<li>No ejecutar dos instancias con el mismo ticket a la vez.</li>
+<li>Dejar ciclos de 30 minutos o más; la API cambia lento.</li>
+<li>Rotar o limpiar reportes antiguos de <code>descargas/monitoreo/</code>.</li>
+<li>Respaldar <code>monitoreo_vistos.json</code> si se conserva la memoria entre equipos.</li>
+<li>En servidores, preferir <code>systemd</code> con <code>Restart=on-failure</code> antes que <code>nohup</code>.</li>
+<li>Registrar hora y resultado de cada ciclo en un log propio.</li>
+</ul>
+<hr/>
+<h2 id="11-estructura-del-proyecto">11. Estructura del proyecto</h2>
+<pre><code>licitaciones-mercado-publico/
+├── main.py                     Punto de entrada y menú interactivo
+├── config.py                   Ticket y hash SHA-256
+├── api_client.py               Sesión HTTP, retry, rate limit
+├── mercado_publico.py          Endpoints, filtros y documentos
+├── downloader.py               Descarga streaming con tqdm
+├── metadata.py                 Serialización de metadata.json
+├── utils.py                    Sanitización, colisiones y logging
+├── requirements.txt            requests, python-dotenv, tqdm
+├── .env.example                Plantilla de configuración
+├── .gitignore                  Excluye .env, descargas y logs
+├── LICENSE                     MIT (2026 jmadasme)
+├── README.md                   Este documento
+├── Documentacion-API-Mercado-Publico-Licitaciones.pdf
+├── docs/
+│   ├── datasheet.md            Manual de usuario
+│   ├── developer.md            Guía técnica
+│   ├── REFERENCES.md           Fuentes y glosario
+│   ├── BITACORA.md             Decisiones y lecciones
+│   └── assets/                 Diagramas SVG
+└── descargas/                  Generado en ejecución (ignorado por Git)
+    ├── &lt;codigo&gt;/
+    │   ├── documentos...
+    │   └── metadata.json
+    ├── monitoreo/
+    │   └── YYYYMMDD_HHMMSS.txt
+    ├── monitoreo_vistos.json
+    └── downloader.log
+</code></pre>
+<p><strong>Nota sobre versiones:</strong> el repositorio conserva una <strong>versión única en la raíz</strong>, sin carpeta <code>versions/</code>. Los cambios se documentan en <code>docs/BITACORA.md</code> y en el historial de Git.</p>
+<hr/>
+<h2 id="12-salida-y-metadatajson">12. Salida y metadata.json</h2>
+<pre><code>descargas/&lt;codigo_sanitizado&gt;/
+├── &lt;documento 1&gt;
+├── &lt;documento 2&gt;
+└── metadata.json
+</code></pre>
+<pre><code class="language-json">{
+  "licitacion": { "...respuesta completa de la API..." },
+  "archivos_count": 3,
+  "archivos": [
+    { "Nombre": "Bases Administrativas.pdf", "URL": "https://...", "Tipo": "pdf" }
+  ],
+  "descargas": [
+    {
+      "nombre": "Bases Administrativas.pdf",
+      "url_origen": "https://...",
+      "archivo_local": "descargas/1234567-8-LP24/Bases Administrativas.pdf",
+      "descargado": true,
+      "tamano_bytes": 1250000,
+      "error": null,
+      "saltado": false
+    }
+  ],
+  "fecha_descarga": "2026-06-26T12:00:00+00:00",
+  "codigo_licitacion": "1234567-8-LP24",
+  "ticket_hash": "sha256:9f2c...e41a"
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Significado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>licitacion</code></td>
+<td>Respuesta íntegra de la API, sin recortes</td>
+</tr>
+<tr>
+<td><code>archivos_count</code></td>
+<td>Cantidad de documentos detectados</td>
+</tr>
+<tr>
+<td><code>archivos</code></td>
+<td>Metadatos originales de cada documento</td>
+</tr>
+<tr>
+<td><code>descargas</code></td>
+<td>Resultado individual de cada intento</td>
+</tr>
+<tr>
+<td><code>descargas[].descargado</code></td>
+<td>Éxito de la descarga</td>
+</tr>
+<tr>
+<td><code>descargas[].saltado</code></td>
+<td>Archivo preexistente no descargado</td>
+</tr>
+<tr>
+<td><code>fecha_descarga</code></td>
+<td>ISO 8601 UTC</td>
+</tr>
+<tr>
+<td><code>ticket_hash</code></td>
+<td>SHA-256 del ticket, nunca el ticket</td>
+</tr>
+</tbody>
+</table>
+<p>Consultas útiles:</p>
+<pre><code class="language-bash"># Descargas fallidas
+jq -r '.descargas[] | select(.descargado == false) | .nombre' descargas/*/metadata.json
+
+# Total descargado por licitación
+jq '[.descargas[].tamano_bytes // 0] | add' descargas/*/metadata.json
+
+# Verificar que no hay ticket en claro
+grep -r "ticket" descargas/*/metadata.json   # debe mostrar solo ticket_hash
+</code></pre>
+<p>Reporte de monitoreo (<code>descargas/monitoreo/20260701_120025.txt</code>):</p>
+<pre><code>Reporte de Monitoreo - 2026-07-01 12:00:25
+Terminos: telemetria, monitor, monitoreo (solo vigentes)
+Licitaciones encontradas: 1
+======================================================================
+
+  Codigo     : 1234-56-LP26
+  Nombre     : Sistema de Telemetría para redes hídricas
+  Descripcion: Implementación de plataforma IoT con sensores...
+  Cierre     : 2026-07-25T15:00:00
+  Estado     : 5
+  Monto      : $ 45,000,000
+----------------------------------------------------------------------
+</code></pre>
+<p>Registro de vistos:</p>
+<pre><code class="language-json">{
+  "ultima_actualizacion": "2026-07-01T12:00:25.123456",
+  "terminos": ["telemetria", "monitor", "monitoreo"],
+  "vistos": ["1234-56-LP26", "7890-12-LQ26"]
+}
+</code></pre>
+<hr/>
+<h2 id="13-funcionamiento-interno">13. Funcionamiento interno</h2>
+<p><strong>Rate limiting con jitter.</strong> Se espera entre 1 y 2 segundos desde la última llamada; la primera no espera. El jitter evita un patrón periódico que parezca tráfico automatizado agresivo. En reintentos se reinicia el limitador y se aplica backoff, para no sumar esperas.</p>
+<p><strong>Reintentos y backoff.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Intento</th>
+<th>Espera</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1 s</td>
+</tr>
+<tr>
+<td>3</td>
+<td>2 s</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4 s</td>
+</tr>
+</tbody>
+</table>
+<p>Se reintentan errores de conexión, timeouts, HTTP 5xx y HTTP 429 (con 5 s extra). No se reintentan HTTP 400 (ticket inválido) ni 404 (licitación inexistente), porque son deterministas.</p>
+<p><strong>Descarga atómica.</strong> Se escribe <code>&lt;nombre&gt;.part</code> y al completar se renombra al nombre final. Si el proceso muere, queda un <code>.part</code> que se limpia en el siguiente intento. Nunca se publica un archivo truncado con el nombre definitivo. El streaming usa bloques de 8 KB; el total sale de <code>Content-Length</code> y, si falta, la barra muestra bytes sin porcentaje.</p>
+<p><strong>Sanitización y colisiones.</strong> Se reemplazan <code>/ \ : * ? " &lt; &gt; |</code>, se colapsan espacios, se recortan espacios y puntos finales y, si el nombre queda vacío, se usa <code>archivo_sin_nombre</code>. Si el nombre existe y no se pidió sobrescribir, se prueba <code>nombre_1.ext</code>, <code>nombre_2.ext</code>, etc.: se conserva la versión anterior y se agrega la nueva.</p>
+<p><strong>Errores en el cuerpo.</strong> Se detecta la presencia simultánea de <code>Codigo</code> y <code>Mensaje</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Contenido</th>
+<th>Excepción</th>
+<th>Efecto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mensaje con "ticket"</td>
+<td><code>InvalidTicketError</code></td>
+<td>Termina el programa</td>
+</tr>
+<tr>
+<td>Mensaje con "no encontrad"</td>
+<td><code>LicitacionNotFoundError</code></td>
+<td>Vuelve al menú</td>
+</tr>
+<tr>
+<td>Otro mensaje</td>
+<td><code>APIError</code></td>
+<td>Muestra el error y continúa</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Logging.</strong> Consola <code>HH:MM:SS [NIVEL] mensaje</code>; archivo <code>descargas/downloader.log</code> en <code>DEBUG</code> con nombre de módulo. El parámetro <code>ticket</code> se reemplaza por <code>***</code>. Se evitan handlers duplicados.</p>
+<hr/>
+<h2 id="14-limites-y-riesgos">14. Límites y riesgos</h2>
+<table>
+<thead>
+<tr>
+<th>Límite</th>
+<th>Valor</th>
+<th>Nota</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ventana de licitaciones</td>
+<td>~188–200 recientes</td>
+<td>Sin paginación histórica en v1</td>
+</tr>
+<tr>
+<td>Timeout de conexión</td>
+<td>10 s</td>
+<td>Fijado en <code>api_client.py</code></td>
+</tr>
+<tr>
+<td>Timeout de lectura</td>
+<td>30 s</td>
+<td>Configurable</td>
+</tr>
+<tr>
+<td>Reintentos</td>
+<td>4 intentos</td>
+<td>Total, no adicionales</td>
+</tr>
+<tr>
+<td>Pausa entre peticiones</td>
+<td>1–2 s</td>
+<td>Jitter</td>
+</tr>
+<tr>
+<td>Pausa entre archivos</td>
+<td>1–2 s</td>
+<td>Jitter</td>
+</tr>
+<tr>
+<td>Ciclo de monitoreo</td>
+<td>30 min</td>
+<td>Fijado en <code>main.py</code></td>
+</tr>
+<tr>
+<td>Entrada de código</td>
+<td>3 intentos</td>
+<td>Luego vuelve al menú</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Riesgo</th>
+<th>Impacto</th>
+<th>Mitigación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ticket filtrado</td>
+<td>Uso indebido de la cuota</td>
+<td><code>.env</code> ignorado, hash en metadatos</td>
+</tr>
+<tr>
+<td>API caída</td>
+<td>Sin datos</td>
+<td>Reintentos y mensajes claros</td>
+</tr>
+<tr>
+<td>Cambio de contrato</td>
+<td>Errores de parseo</td>
+<td>Código tolerante a variantes</td>
+</tr>
+<tr>
+<td>Disco lleno</td>
+<td>Descargas incompletas</td>
+<td><code>.part</code> y parada controlada</td>
+</tr>
+<tr>
+<td>Listado incompleto</td>
+<td>Oportunidades no vistas</td>
+<td>Monitoreo y consulta por código</td>
+</tr>
+<tr>
+<td>Uso excesivo</td>
+<td>Bloqueo por tasa</td>
+<td>Pausas y backoff</td>
+</tr>
+<tr>
+<td>Documentos maliciosos</td>
+<td>Riesgo al abrirlos</td>
+<td>Fuente oficial y análisis previo</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Dependencia de la API.</strong> El proyecto no funciona sin ella: no hay modo offline, caché ni datos de ejemplo. El ticket es obligatorio, los endpoints y campos pueden cambiar sin aviso, los límites no están publicados formalmente y la disponibilidad no está garantizada.</p>
+<hr/>
+<h2 id="15-solucion-de-problemas">15. Solución de problemas</h2>
+<table>
+<thead>
+<tr>
+<th>Síntoma</th>
+<th>Causa probable</th>
+<th>Solución</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>No se encontró MERCADO_PUBLICO_TICKET</code></td>
+<td><code>.env</code> ausente o variable no exportada</td>
+<td>Crear <code>.env</code> o exportar la variable</td>
+</tr>
+<tr>
+<td><code>Ticket inválido</code></td>
+<td>Ticket incorrecto o con espacios</td>
+<td>Verificar el valor</td>
+</tr>
+<tr>
+<td><code>Licitación no encontrada</code></td>
+<td>Código inexistente o fuera de ventana</td>
+<td>Revisar el código en el portal</td>
+</tr>
+<tr>
+<td><code>No se encontraron documentos</code></td>
+<td><code>Archivos.json</code> no disponible</td>
+<td>Abrir la ficha web indicada</td>
+</tr>
+<tr>
+<td><code>Error de conexión</code> repetido</td>
+<td>Red, proxy o DNS</td>
+<td>Probar <code>curl</code> y revisar proxy</td>
+</tr>
+<tr>
+<td><code>Error SSL</code></td>
+<td>Certificados desactualizados</td>
+<td>Actualizar la cadena de confianza</td>
+</tr>
+<tr>
+<td>Descargas lentas</td>
+<td>Servidor lento o archivos grandes</td>
+<td>Normal; el streaming evita RAM</td>
+</tr>
+<tr>
+<td>Sin resultados en modo 2</td>
+<td>Términos muy específicos</td>
+<td>Usar términos más generales</td>
+</tr>
+<tr>
+<td>Monitoreo sin novedades</td>
+<td>No hay licitaciones nuevas</td>
+<td>Verificar el ciclo y ampliar términos</td>
+</tr>
+<tr>
+<td><code>monitoreo_vistos.json</code> crece</td>
+<td>Acumulación normal</td>
+<td>Archivar o rotar</td>
+</tr>
+<tr>
+<td>Caracteres raros en Windows</td>
+<td>Consola sin UTF-8</td>
+<td><code>chcp 65001</code> y Windows Terminal</td>
+</tr>
+</tbody>
+</table>
+<p>Guía ampliada con causa raíz: <a href="https://github.com/jmadasme/licitaciones-mercado-publico/blob/main/datasheet.md">docs/datasheet.md</a>.</p>
+<hr/>
+<h2 id="16-seguridad">16. Seguridad</h2>
+<ol>
+<li><strong>Nunca commitear <code>.env</code>.</strong> Ya está en <code>.gitignore</code>; verificar con <code>git status</code>.</li>
+<li><strong>No pegar el ticket</strong> en issues, capturas o chats. Si se filtró, solicitar uno nuevo.</li>
+<li><strong>No registrar el ticket.</strong> El cliente enmascara <code>ticket</code> como <code>***</code>; la URL se construye en memoria.</li>
+<li><strong>Revisar <code>metadata.json</code> antes de compartirlo.</strong> Guarda <code>url_origen</code>; el ticket no se agrega allí, pero conviene revisar.</li>
+<li><strong>Variables de entorno en servidores.</strong> Evita secretos en disco.</li>
+<li><strong>Permisos:</strong> <code>chmod 600 .env</code> en sistemas multiusuario.</li>
+<li><strong>No desactivar TLS.</strong> Corregir la cadena de confianza; nunca <code>verify=False</code>.</li>
+<li><strong>Rotar el ticket</strong> si el equipo se comparte.</li>
+</ol>
+<p>El programa solo habla con <code>api.mercadopublico.cl</code> y escribe en disco local.</p>
+<hr/>
+<h2 id="17-advertencias">17. Advertencias</h2>
+<ul>
+<li><strong>Uso personal y responsable.</strong> Respetar los términos de la API y del portal.</li>
+<li><strong>No automatiza la participación.</strong> No reemplaza la revisión de bases, garantías ni plazos.</li>
+<li><strong>Los datos pueden estar incompletos.</strong> Verificar en la ficha oficial antes de decidir.</li>
+<li><strong>El monitoreo no es tiempo real.</strong> Es un sondeo con ventana limitada.</li>
+<li><strong>No usar en paralelo con el mismo ticket.</strong></li>
+<li><strong>Los documentos son de terceros.</strong> Revisar licencias antes de redistribuirlos.</li>
+<li><strong>Sin garantía.</strong> Software "tal cual", según MIT.</li>
+<li><strong>Cumplimiento:</strong> la participación se rige por la Ley 19.886 y su reglamento.</li>
+</ul>
+<hr/>
+<h2 id="18-documentacion-adicional">18. Documentación adicional</h2>
+<table>
+<thead>
+<tr>
+<th>Documento</th>
+<th>Contenido</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/jmadasme/licitaciones-mercado-publico/blob/main/datasheet.md">docs/datasheet.md</a></td>
+<td>Manual de usuario y problemas frecuentes</td>
+</tr>
+<tr>
+<td><a href="https://github.com/jmadasme/licitaciones-mercado-publico/blob/main/developer.md">docs/developer.md</a></td>
+<td>Arquitectura, API de funciones y extensión</td>
+</tr>
+<tr>
+<td><a href="https://github.com/jmadasme/licitaciones-mercado-publico/blob/main/REFERENCES.md">docs/REFERENCES.md</a></td>
+<td>Enlaces oficiales, campos y glosario</td>
+</tr>
+<tr>
+<td><a href="https://github.com/jmadasme/licitaciones-mercado-publico/blob/main/BITACORA.md">docs/BITACORA.md</a></td>
+<td>Decisiones, problemas y lecciones</td>
+</tr>
+<tr>
+<td>PDF incluido</td>
+<td>Diccionario de datos oficial de la API</td>
+</tr>
+</tbody>
+</table>
+<p>Diagramas: <a href="docs/assets/arquitectura.svg">arquitectura</a> · <a href="docs/assets/flujo-tres-modos.svg">flujo de los tres modos</a> · <a href="docs/assets/estructura-descargas.svg">estructura de descargas</a>.</p>
+<hr/>
+<h2 id="19-contribuir">19. Contribuir</h2>
+<p>Abrir un issue con el problema o la mejora; crear una rama descriptiva; mantener módulos pequeños y funciones documentadas; probar los tres modos; no incluir tickets, <code>.env</code>, descargas ni logs; enviar un pull request explicando el antes y el después.</p>
+<p>Ideas bienvenidas: filtro por fecha, exportación CSV/JSON, salida no interactiva, notificaciones por correo, soporte de órdenes de compra y pruebas con <code>pytest</code>.</p>
+<hr/>
+<h2 id="20-licencia">20. Licencia</h2>
+<p>Distribuido bajo licencia <strong>MIT</strong>. El texto completo está en <a href="LICENSE">LICENSE</a>.</p>
+<p><strong>Copyright (c) 2026 jmadasme</strong></p>
+<p>Se permite usar, copiar, modificar, fusionar, publicar, distribuir, sublicenciar y vender el software, siempre que se conserve el aviso de copyright y esta nota de permiso. El software se entrega "tal cual", sin garantías de ningún tipo.</p>
+<hr/>
+<p align="center">
+<sub>Hecho para revisar licitaciones sin abrir cien pestañas. Datos oficiales de Mercado Público, ChileCompra.</sub>
+</p></div></div></section><section class="section tight"><div class="wrap"><div class="section-head reveal"><div class="kicker">Lo que no funcionó</div><h2>Los tropiezos, documentados</h2><p class="section-sub">Las primeras versiones existen para que estos errores no se repitan: cada una dejó una decisión de diseño verificable.</p></div><div class="fail-grid reveal"><div class="fail"><div class="v">Versión única</div><h3>La API no busca por texto</h3><p>La API v1 solo entrega un listado reciente de unas doscientas licitaciones y no admite búsqueda por palabras clave ni paginación histórica. La herramienta descarga esa ventana y filtra localmente, por lo que una coincidencia antigua puede quedar fuera. El README lo advierte y no presenta el resultado como una búsqueda exhaustiva.</p></div><div class="fail"><div class="v">Versión única</div><h3>Filtro de vigencia conservador</h3><p>El modo 'solo vigentes' compara estrictamente CodigoEstado con 5, aunque la API puede publicar procesos vigentes con códigos 1 u 11. Esa decisión evita falsos positivos, pero excluye licitaciones abiertas. El README documenta el criterio y aconseja revisar el estado en el sitio oficial antes de confiar en el filtro.</p></div><div class="fail"><div class="v">Versión única</div><h3>Modo interactivo incompatible con cron</h3><p>main.py funciona como menú interactivo y espera entrada por terminal; sin TTY, un cron o un servicio lo dejan bloqueado o fallan al leer. El README recomienda envolver las funciones en un script no interactivo, pero no incluye ese envoltorio, de modo que la automatización queda a cargo del usuario.</p></div><div class="fail"><div class="v">Versión única</div><h3>Errores con HTTP 200</h3><p>La API puede responder con estado 200 o 203 y un cuerpo que contiene Codigo y Mensaje de error, de modo que confiar solo en el código HTTP daría por válida una consulta fallida. El cliente inspecciona el JSON antes de continuar; el README explica ese comportamiento como una defensa necesaria, no como una peculiaridad opcional.</p></div></div></div></section><section class="section tight"><div class="wrap"><div class="section-head reveal"><div class="kicker">Ficha de evaluación</div><h2>Cómo se mide este proyecto</h2><p class="section-sub">Seis criterios con la misma escala en todo el catálogo, para comparar sin marketing.</p></div><div class="rating-head reveal"><div class="rating-avg">4.3<small>/5</small></div><div><strong>Madurez global</strong><p>CLI madura y bien documentada para una API limitada; su utilidad real depende de asumir la ventana corta de la API y el filtro de estados conservador.</p></div></div><div class="rating reveal"><div class="rating-row"><div class="rating-name">Madurez</div><div class="rating-bar"><i style="width:80%"></i></div><div class="rating-score">4/5</div><div class="rating-note">CLI completa con reintentos, descargas atómicas, metadatos y monitoreo probado.</div></div><div class="rating-row"><div class="rating-name">Reproducibilidad</div><div class="rating-bar"><i style="width:80%"></i></div><div class="rating-score">4/5</div><div class="rating-note">requirements.txt y .env documentados; solo requiere una clave de la API.</div></div><div class="rating-row"><div class="rating-name">Documentación</div><div class="rating-bar"><i style="width:100%"></i></div><div class="rating-score">5/5</div><div class="rating-note">README y guía de API explican modos, límites, errores y estructura de salida.</div></div><div class="rating-row"><div class="rating-name">Honestidad de límites</div><div class="rating-bar"><i style="width:100%"></i></div><div class="rating-score">5/5</div><div class="rating-note">Declara ventana de la API, filtro conservador y necesidad de envoltorio para cron.</div></div><div class="rating-row"><div class="rating-name">Valor demostrativo</div><div class="rating-bar"><i style="width:80%"></i></div><div class="rating-score">4/5</div><div class="rating-note">Resuelve un caso real de seguimiento de compras públicas con bajo costo.</div></div><div class="rating-row"><div class="rating-name">Facilidad de despliegue</div><div class="rating-bar"><i style="width:80%"></i></div><div class="rating-score">4/5</div><div class="rating-note">Python 3.9, pip y una variable de entorno; sin servicios externos obligatorios.</div></div></div></div></section><section class="section tight"><div class="wrap"><div class="section-head reveal"><div class="kicker">Preguntas típicas</div><h2>Lo que suelen preguntar</h2></div><div class="faq reveal"><details><summary>¿Qué es este proyecto?</summary><p>Una CLI en Python que consulta la API v1 de Mercado Público para buscar licitaciones por código o palabras clave, monitorear cada 30 minutos y descargar documentos adjuntos.</p></details><details><summary>¿Permite búsquedas históricas?</summary><p>No. La API solo entrega una ventana reciente de unas 200 licitaciones, sin búsqueda textual ni paginación histórica; la herramienta filtra esa ventana localmente.</p></details><details><summary>¿Cómo se ejecuta?</summary><p>Con Python 3.9 o superior, las dependencias de requirements.txt y una clave de API en .env. main.py es interactivo, así que para cron hace falta un envoltorio no interactivo.</p></details><details><summary>¿Qué se puede reutilizar?</summary><p>El cliente HTTP con validación de cuerpo, reintentos y backoff, la descarga atómica con .part y SHA-256, y la sanitización de nombres; el filtro de vigencia y el modo de uso deben adaptarse.</p></details></div></div></section>
 <section class="cta"><div class="wrap"><div class="cta-box reveal">
   <div class="kicker">Siguiente paso</div><h2>¿Te animás?</h2>
   <p>Usá esto como base y referencia para licitaciones mercado público. Este proyecto es la prueba de que se puede hacer con componentes reales.</p>
