@@ -77,11 +77,33 @@
     catch { return String(n); }
   };
 
-  const loadCoins = async () => {
+  const coinCacheKey = `psc-coins:${coinNamespace}`;
+  const readCachedCoins = () => {
     try {
-      const res = await fetch(`${coinApi}/get/${encodeURIComponent(coinNamespace)}/coins`, { cache: "no-store" });
+      const raw = localStorage.getItem(coinCacheKey);
+      if (raw === null) return null;
+      const v = Number(raw);
+      return Number.isFinite(v) && v >= 0 ? v : null;
+    } catch { return null; }
+  };
+  const writeCachedCoins = (v) => {
+    try { localStorage.setItem(coinCacheKey, String(v)); } catch {}
+  };
+
+  const loadCoins = async () => {
+    const cached = readCachedCoins();
+    if (cached !== null) {
+      coinCount.textContent = formatCoins(cached);
+      setCoinMessage(`${formatCoins(cached)} ${cached === 1 ? "reconocimiento anónimo" : "reconocimientos anónimos"} · actualizando…`);
+    }
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 5000);
+    try {
+      const res = await fetch(`${coinApi}/get/${encodeURIComponent(coinNamespace)}/coins`, { cache: "no-store", signal: ctrl.signal });
+      clearTimeout(timer);
       if (res.status === 404) {
         coinCount.textContent = "0";
+        writeCachedCoins(0);
         setCoinMessage("Todavía no hay monedas. Podés ser la primera persona en regalar una.");
         return;
       }
@@ -89,10 +111,17 @@
       const data = await res.json();
       if (typeof data.value !== "number") throw new Error("respuesta inválida");
       coinCount.textContent = formatCoins(data.value);
+      writeCachedCoins(data.value);
       setCoinMessage(`${formatCoins(data.value)} ${data.value === 1 ? "reconocimiento anónimo" : "reconocimientos anónimos"}.`);
     } catch {
-      coinCount.textContent = "—";
-      setCoinMessage("El contador no está disponible ahora. Podés intentar de nuevo en un momento.", "bad");
+      clearTimeout(timer);
+      if (cached !== null) {
+        coinCount.textContent = formatCoins(cached);
+        setCoinMessage(`${formatCoins(cached)} ${cached === 1 ? "reconocimiento anónimo" : "reconocimientos anónimos"} · último valor guardado.`);
+      } else {
+        coinCount.textContent = "—";
+        setCoinMessage("El contador no está disponible ahora. Podés intentar de nuevo en un momento.", "bad");
+      }
     }
   };
 
@@ -102,12 +131,16 @@
     coinBusy = true;
     coinBtn.disabled = true;
     setCoinMessage("Registrando tu moneda…");
+    const hitCtrl = new AbortController();
+    const hitTimer = setTimeout(() => hitCtrl.abort(), 8000);
     try {
-      const res = await fetch(`${coinApi}/hit/${encodeURIComponent(coinNamespace)}/coins`, { cache: "no-store" });
+      const res = await fetch(`${coinApi}/hit/${encodeURIComponent(coinNamespace)}/coins`, { cache: "no-store", signal: hitCtrl.signal });
+      clearTimeout(hitTimer);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       if (typeof data.value !== "number") throw new Error("respuesta inválida");
       coinCount.textContent = formatCoins(data.value);
+      writeCachedCoins(data.value);
       setCoinMessage("Moneda registrada. Gracias por reconocer el proyecto.", "ok");
       coinBtn.textContent = "Regalar otra moneda";
       coinCount.animate(
@@ -115,6 +148,7 @@
         { duration: 420, easing: "ease-out" }
       );
     } catch {
+      clearTimeout(hitTimer);
       setCoinMessage("No pudimos registrar la moneda. Revisá la conexión e intentá otra vez.", "bad");
     } finally {
       setTimeout(() => {
