@@ -99,12 +99,20 @@
     } catch { return null; }
   };
 
+  let coinValue = 0;
+  const renderCoins = (n) => {
+    coinValue = n;
+    coinCount.textContent = formatCoins(n);
+  };
+
+  const coinPlural = (n) => n === 1 ? "reconocimiento anónimo" : "reconocimientos anónimos";
+
   const loadCoins = async () => {
     let initial = readCachedCoins();
     if (initial === null) initial = await readStaticCoins();
     if (initial !== null) {
-      coinCount.textContent = formatCoins(initial);
-      setCoinMessage(`${formatCoins(initial)} ${initial === 1 ? "reconocimiento anónimo" : "reconocimientos anónimos"} · actualizando…`);
+      renderCoins(initial);
+      setCoinMessage(`${formatCoins(initial)} ${coinPlural(initial)} · actualizando…`);
     }
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), 5000);
@@ -112,7 +120,7 @@
       const res = await fetch(`${coinApi}/get/${encodeURIComponent(coinNamespace)}/coins`, { cache: "no-store", signal: ctrl.signal });
       clearTimeout(timer);
       if (res.status === 404) {
-        coinCount.textContent = "0";
+        renderCoins(0);
         writeCachedCoins(0);
         setCoinMessage("Todavía no hay monedas. Podés ser la primera persona en regalar una.");
         return;
@@ -120,14 +128,14 @@
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       if (typeof data.value !== "number") throw new Error("respuesta inválida");
-      coinCount.textContent = formatCoins(data.value);
+      renderCoins(data.value);
       writeCachedCoins(data.value);
-      setCoinMessage(`${formatCoins(data.value)} ${data.value === 1 ? "reconocimiento anónimo" : "reconocimientos anónimos"}.`);
+      setCoinMessage(`${formatCoins(data.value)} ${coinPlural(data.value)}.`);
     } catch {
       clearTimeout(timer);
       if (initial !== null) {
-        coinCount.textContent = formatCoins(initial);
-        setCoinMessage(`${formatCoins(initial)} ${initial === 1 ? "reconocimiento anónimo" : "reconocimientos anónimos"}.`);
+        renderCoins(initial);
+        setCoinMessage(`${formatCoins(initial)} ${coinPlural(initial)}.`);
       } else {
         coinCount.textContent = "—";
         setCoinMessage("El contador no está disponible ahora. Podés intentar de nuevo en un momento.", "bad");
@@ -140,7 +148,19 @@
     if (coinBusy) return;
     coinBusy = true;
     coinBtn.disabled = true;
-    setCoinMessage("Registrando tu moneda…");
+
+    // Optimista: reflejar el +1 al instante, sin depender del servicio externo.
+    const optimistic = coinValue + 1;
+    renderCoins(optimistic);
+    writeCachedCoins(optimistic);
+    setCoinMessage("Moneda registrada. Gracias por reconocer el proyecto.", "ok");
+    coinBtn.textContent = "Regalar otra moneda";
+    coinCount.animate(
+      [{ transform: "scale(1)" }, { transform: "scale(1.12)" }, { transform: "scale(1)" }],
+      { duration: 420, easing: "ease-out" }
+    );
+
+    // Sincronización en segundo plano con Abacus (si responde, manda su valor real).
     const hitCtrl = new AbortController();
     const hitTimer = setTimeout(() => hitCtrl.abort(), 8000);
     try {
@@ -148,18 +168,14 @@
       clearTimeout(hitTimer);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
-      if (typeof data.value !== "number") throw new Error("respuesta inválida");
-      coinCount.textContent = formatCoins(data.value);
-      writeCachedCoins(data.value);
-      setCoinMessage("Moneda registrada. Gracias por reconocer el proyecto.", "ok");
-      coinBtn.textContent = "Regalar otra moneda";
-      coinCount.animate(
-        [{ transform: "scale(1)" }, { transform: "scale(1.12)" }, { transform: "scale(1)" }],
-        { duration: 420, easing: "ease-out" }
-      );
+      if (typeof data.value === "number") {
+        renderCoins(data.value);
+        writeCachedCoins(data.value);
+        setCoinMessage("Moneda registrada. Gracias por reconocer el proyecto.", "ok");
+      }
     } catch {
       clearTimeout(hitTimer);
-      setCoinMessage("No pudimos registrar la moneda. Revisá la conexión e intentá otra vez.", "bad");
+      // Sin conexión con Abacus: se mantiene el valor optimista local.
     } finally {
       setTimeout(() => {
         coinBusy = false;
