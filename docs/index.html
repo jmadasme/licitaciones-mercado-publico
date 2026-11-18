@@ -205,6 +205,7 @@ h2{font-size:clamp(30px,4vw,46px);line-height:1.05;letter-spacing:-.04em;margin:
 
 </style>
 <link rel="stylesheet" href="assets/community.css?v=1">
+<link href="rec/player.css?v=1" rel="stylesheet"/>
 </head>
 <body>
 <header class="nav"><div class="wrap nav-in">
@@ -213,7 +214,8 @@ h2{font-size:clamp(30px,4vw,46px);line-height:1.05;letter-spacing:-.04em;margin:
     <a href="#proyecto">Proyecto</a>
     <a href="#versiones">Versiones</a>
     <a href="#stack">Stack</a>
-    <a href="#docs">Docs</a>
+    <a href="#video">Video</a>
+<a href="#docs">Docs</a>
     <a href="#comunidad">Comunidad</a>
     <a class="btn btn-ghost" style="padding:9px 15px" href="/software/">← Software</a>
   </nav>
@@ -237,7 +239,46 @@ h2{font-size:clamp(30px,4vw,46px);line-height:1.05;letter-spacing:-.04em;margin:
   </div>
 </div></section>
 
-<section class="stats"><div class="wrap stats-grid"><div class="stat"><div class="stat-num">3</div><div class="stat-label">modos</div></div><div class="stat"><div class="stat-num">30 min</div><div class="stat-label">monitoreo</div></div><div class="stat"><div class="stat-num">Python</div><div class="stat-label">stack</div></div><div class="stat"><div class="stat-num">1</div><div class="stat-label">versión</div></div></div></section><section class="section tight"><div class="wrap"><div class="section-head reveal"><div class="kicker">El concepto</div><h2>Qué es y por qué existe</h2></div><div class="rich reveal"><p>Herramienta de línea de comandos para consultar y monitorear licitaciones del Mercado Público chileno mediante su API oficial. Permite buscar por código, filtrar por palabras clave y ejecutar un monitoreo periódico que recuerda los procesos ya vistos. Descarga los documentos adjuntos con reintentos, nombres saneados y metadatos que incluyen el hash del ticket.</p><p>Está pensada para pymes, consultoras y analistas que siguen oportunidades sin pagar un servicio de alertas. Su aporte es el manejo cuidadoso de una API restrictiva: valida el cuerpo además del código HTTP, respeta el rate limit y escribe los archivos de forma atómica. El README expone con claridad las limitaciones de la versión 1 de la API, en especial la ausencia de búsqueda textual y de paginación histórica.</p></div></div></section><section class="section tight"><div class="wrap"><div class="section-head reveal"><div class="kicker">El proyecto en detalle</div><h2>Documentación preservada</h2><p class="section-sub">El README original, completo y en su contexto.</p></div><div class="detail rich reveal">
+<section class="stats"><div class="wrap stats-grid"><div class="stat"><div class="stat-num">3</div><div class="stat-label">modos</div></div><div class="stat"><div class="stat-num">30 min</div><div class="stat-label">monitoreo</div></div><div class="stat"><div class="stat-num">Python</div><div class="stat-label">stack</div></div><div class="stat"><div class="stat-num">1</div><div class="stat-label">versión</div></div></div></section>
+<section class="section tight rec-section" id="video" style="--accent:#2E7DFF;--accent2:#14F195">
+<div class="wrap">
+<div class="rec-kicker">REC · VIDEO · 2:53</div>
+<h2 class="rec-h2">Licitaciones Mercado Público</h2>
+<p class="rec-lead">Herramienta de línea de comandos para buscar, descargar y monitorear licitaciones del Mercado Público de Chile con la API oficial. Consulta por código, búsqueda por palabras y vigilancia cada 30 minutos, con metadatos y trazabilidad.</p>
+<div class="rec-banner">
+<span class="rec-banner-icon">📋</span>
+<strong>Puedes copiar y pegar los comandos del video desde el video !!!</strong>
+<span>Pausá, seleccioná el texto de la terminal y copiá.</span>
+</div>
+<div class="rec-shell">
+<div class="rec-bar"><i></i><i></i><i></i><span class="rec-title">Licitaciones Mercado Público · asciinema</span><span class="rec-rec"><b></b>REC</span></div>
+<div class="rec-screen-wrap">
+<div class="rec-screen" id="rec-screen"></div>
+<div class="rec-poster" id="rec-poster">
+<div class="rec-kicker">ASCIINEMA · 2:53</div>
+<h3>Licitaciones Mercado Público</h3>
+<p>Herramienta de línea de comandos para buscar, descargar y monitorear licitaciones del Mercado Público de Chile con la API oficial. Consulta por código, búsqueda por palabras y vigilancia cada 30 minutos, con metadatos y trazabilidad.</p>
+<div class="rec-poster-meta">licitaciones-mercado-publico · código real</div>
+<button class="rec-btn rec-primary" id="rec-start" type="button">▶ Reproducir</button>
+</div>
+</div>
+<div class="rec-controls">
+<button class="rec-btn rec-primary" id="rec-play" type="button">▶ Reproducir</button>
+<button class="rec-btn" id="rec-restart" type="button">↺ Reiniciar</button>
+<input class="rec-progress" id="rec-range" type="range" min="0" max="1000" value="0" aria-label="Progreso"/>
+<span class="rec-time" id="rec-time">0:00 / 2:53</span>
+<select class="rec-speed" id="rec-speed" aria-label="Velocidad"><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select>
+<button class="rec-btn" id="rec-full" type="button" title="Pantalla completa">⛶</button>
+<button class="rec-btn" id="rec-copy" type="button">⧉ Copiar comandos</button>
+<a class="rec-download" href="rec/licitaciones-mercado-publico.cast" download>descargar .cast</a>
+</div>
+</div>
+<p class="rec-note">Requiere un ticket gratuito de la API de Mercado Público; el repositorio no incluye credenciales.</p>
+<div class="rec-chapters"><span class="rec-chip"><b>0:06</b> EL PROBLEMA</span><span class="rec-chip"><b>0:19</b> ARQUITECTURA</span><span class="rec-chip"><b>0:32</b> EL TICKET</span><span class="rec-chip"><b>0:45</b> CLIENTE HTTP</span><span class="rec-chip"><b>0:58</b> REINTENTOS</span><span class="rec-chip"><b>1:12</b> CONSULTA</span><span class="rec-chip"><b>1:24</b> BÚSQUEDA</span><span class="rec-chip"><b>1:37</b> DESCARGA</span><span class="rec-chip"><b>1:52</b> NOMBRES SEGUROS</span><span class="rec-chip"><b>2:06</b> METADATOS</span><span class="rec-chip"><b>2:18</b> MONITOREO</span><span class="rec-chip"><b>2:32</b> CÓMO EJECUTARLO</span></div>
+</div>
+</section>
+
+<section class="section tight"><div class="wrap"><div class="section-head reveal"><div class="kicker">El concepto</div><h2>Qué es y por qué existe</h2></div><div class="rich reveal"><p>Herramienta de línea de comandos para consultar y monitorear licitaciones del Mercado Público chileno mediante su API oficial. Permite buscar por código, filtrar por palabras clave y ejecutar un monitoreo periódico que recuerda los procesos ya vistos. Descarga los documentos adjuntos con reintentos, nombres saneados y metadatos que incluyen el hash del ticket.</p><p>Está pensada para pymes, consultoras y analistas que siguen oportunidades sin pagar un servicio de alertas. Su aporte es el manejo cuidadoso de una API restrictiva: valida el cuerpo además del código HTTP, respeta el rate limit y escribe los archivos de forma atómica. El README expone con claridad las limitaciones de la versión 1 de la API, en especial la ausencia de búsqueda textual y de paginación histórica.</p></div></div></section><section class="section tight"><div class="wrap"><div class="section-head reveal"><div class="kicker">El proyecto en detalle</div><h2>Documentación preservada</h2><p class="section-sub">El README original, completo y en su contexto.</p></div><div class="detail rich reveal">
 <p><img alt="Python" src="https://img.shields.io/badge/Python-3.9%2B-457B9D?style=flat-square"/>
 <img alt="Dependencias" src="https://img.shields.io/badge/deps-requests%20%7C%20dotenv%20%7C%20tqdm-2A9D8F?style=flat-square"/>
 <img alt="API" src="https://img.shields.io/badge/API-Mercado%20P%C3%BAblico%20v1-5B7C99?style=flat-square"/>
@@ -1578,5 +1619,7 @@ Licitaciones encontradas: 1
 <script>window.PORTFOLIO_COMMUNITY={account:"jmadasme",repo:"licitaciones-mercado-publico",coinNamespace:"jmadasme-licitaciones-mercado-publico-coins-v1",faqs:[{"q": "¿Necesito una API key?", "a": "Sí, un ticket de la API de Mercado Público. Se configura por variable de entorno."}, {"q": "¿Qué diferencia hay entre los modos?", "a": "Código busca una licitación exacta; palabras clave filtra por términos; monitoreo repite la consulta cada 30 minutos."}, {"q": "¿Descarga los documentos?", "a": "Sí, el downloader baja los archivos asociados y la metadata cuando están disponibles."}, {"q": "¿Puedo dejarlo corriendo solo?", "a": "Sí, con el modo monitoreo o un cron/servicio. El repositorio no incluye un daemon."}, {"q": "¿Es oficial?", "a": "No. Es una herramienta de automatización sobre la API pública; no reemplaza los canales oficiales."}]};</script>
 <script src="assets/community.js?v=2" defer></script>
 
+<script defer src="rec/licitaciones-mercado-publico.cast.js?v=1"></script>
+<script defer src="rec/player.js?v=1"></script>
 </body>
 </html>
