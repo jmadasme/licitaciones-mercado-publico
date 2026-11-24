@@ -32,7 +32,7 @@
     box.className = "tel";
     box.innerHTML =
       '<div class="tel-head">' +
-        '<span class="tel-label"><span class="dot"></span>telemetría</span>' +
+        '<span class="tel-label"><span class="dot"></span>pulse</span>' +
         '<span class="tel-num" id="tel-num">&mdash;</span>' +
       "</div>" +
       '<div class="tel-grid" id="tel-grid"></div>';
