@@ -18,8 +18,8 @@
     style.textContent = [
       ".tel{width:100%;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}",
       ".tel-head{display:flex;align-items:baseline;gap:20px;flex-wrap:wrap}",
-      ".tel-label{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px}",
-      ".tel-label .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px rgba(42,157,143,.14)}",
+      ".tel-label{font-family:var(--mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#F5C518;display:flex;align-items:center;gap:8px}",
+      ".tel-label .dot{width:7px;height:7px;border-radius:50%;background:#F5C518;box-shadow:0 0 0 3px rgba(245,197,24,.20)}",
       ".tel-num{font-family:var(--mono);font-size:26px;font-weight:500;letter-spacing:-.03em;color:var(--text);line-height:1}",
       ".tel-grid{display:flex;justify-content:space-between;gap:2px;width:100%;margin-top:16px;overflow:hidden}",
       ".tel-col{display:flex;flex-direction:column;gap:2px;flex:0 0 auto}",
